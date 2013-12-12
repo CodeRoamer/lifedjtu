@@ -5,7 +5,7 @@
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<display-name>lifedjtu</display-name>
-	<!-- 注意： 1、只用在spring中配置了事物才能在web.xml配置openSessionInViewFilter 否则会出错。 2、openSessionInViewFilter必须配置在strutsfilter之前。 -->
+	<!-- 
 	<filter>
 		<filter-name>openSessionInViewFilter</filter-name>
 		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
@@ -13,7 +13,7 @@
 	<filter-mapping>
 		<filter-name>openSessionInViewFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
