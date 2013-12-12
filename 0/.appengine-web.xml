@@ -3,11 +3,11 @@
 <appengine-web-app>
 	<application></application>
 	<version></version>
-	<access_key></access_key>
-	<secure_key></secure_key>
-	<local_sql_host></local_sql_host>
-	<local_sql_port></local_sql_port>
-	<local_sql_user></local_sql_user>
+	<access_key>pOWAykgHjL49otmQx0VRByc3</access_key>
+	<secure_key>Q2lxcGw4MFp0TTVMcnVHVFV0UlRYNGtOdUVCeUlHZ0Y=</secure_key>
+	<local_sql_host>127.0.0.1</local_sql_host>
+	<local_sql_port>3306</local_sql_port>
+	<local_sql_user>root</local_sql_user>
 	<local_sql_password></local_sql_password>
 	<save_emulation_data>false</save_emulation_data>
-</appengine-web-app>
+<sandbox>true</sandbox></appengine-web-app>

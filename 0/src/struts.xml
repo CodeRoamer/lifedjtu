@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE struts PUBLIC  
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="struts2" extends="struts-default" namespace="/">
+		<action name="user" class="userAction">
+			<result name="success">success.jsp</result>
+			<result name="list">list.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+	</package>
+</struts>
