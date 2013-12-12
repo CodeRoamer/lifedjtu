@@ -16,6 +16,6 @@
   </head>
   
   <body>
-    Life In DJTU <br>
+    ${msg } <br>
   </body>
 </html>

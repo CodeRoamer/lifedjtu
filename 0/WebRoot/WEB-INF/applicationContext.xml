@@ -17,10 +17,16 @@
 	<!-- 数据库连接池 -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<!--  
 		<property name="url"
 			value="jdbc:mysql://sqld.duapp.com:4050/ZvyYJemJBmhFPqLgtQst?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true" />
 		<property name="username" value="pOWAykgHjL49otmQx0VRByc3" />
 		<property name="password" value="Ciqpl80ZtM5LruGTUtRTX4kNuEByIGgF" />
+		-->
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1:3306/life_djtu?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true" />
+		<property name="username" value="root" />
+		<property name="password" value="" />
 	</bean>
 	<!-- hibernate sessionFactory 创建 -->
 	<bean id="sessionFactory"
@@ -55,7 +61,7 @@
 		</tx:attributes>
 	</tx:advice>
 	<aop:config>
-		<aop:pointcut expression="execution(public * test.service..*.*(..))"
+		<aop:pointcut expression="execution(public * com.lifedjtu.jw.business.impl..*.*(..))"
 			id="myPointcut" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut" />
 	</aop:config>

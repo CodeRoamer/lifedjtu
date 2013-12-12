@@ -4,7 +4,7 @@
  
   <!-- Configure java.util.logging -->
   <system-properties>
-    <property name="test.com" value="haha,test"/>
+    <property name="com.lifedjtu" value="haha,test"/>
   </system-properties>
 
   <static-files>
