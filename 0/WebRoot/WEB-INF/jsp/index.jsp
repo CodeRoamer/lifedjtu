@@ -51,7 +51,7 @@
       <!-- Jumbotron -->
       <div class="jumbotron">
         <h1>Life in DJTU</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        <p class="lead">吃在交大，生活在交大，玩在交大，受罪也在交大~这生活，也是生活！</p>
         <a class="btn btn-large btn-success" href="#">立即体验</a>
       </div>
 

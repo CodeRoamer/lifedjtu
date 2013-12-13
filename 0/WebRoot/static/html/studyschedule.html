@@ -1,0 +1,4654 @@
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+<head>
+    <title>1018110207 李辛洋 个人教学计划管理</title>
+    <Meta http-equiv="Content-Type" Content="text/html; Charset=gbk">
+    <Meta http-equiv="Content-Language" Content="zh-CN">
+    <Meta http-equiv="MSThemeCompatible" Content="No">
+    <Meta name="Description" Content="综合教务 教学计划管理">
+    <Meta name="Author" Content="Educational Technology Institute, Tsinghua University">
+    <Meta name="Copyright" Content="Copyright(c)2005 Educational Technology Institute, Tsinghua University">
+    <link href="../../styles/css/content.css" rel="stylesheet" type="text/css">
+    <script language="javascript" src="../../styles/js/common.js"></script>
+    <script language="javascript" src="../../styles/js/general.js"></script>
+    <script language="JavaScript">
+        function checkSelected(formc){
+            var result=false;
+            for(var i=0;i<formc.scid.length;i++){
+                if(formc.scid[i].checked==true){
+                    result=true;
+                    break;
+                }
+            }
+            return result;
+        }
+        function MM_openBrWindow(theURL,winName,features) { //v2.0
+            window.open(theURL,winName,features);
+        }
+        function checkForm(cname,formc)
+        {
+            var isok = false;
+            if(checkSelected(formc))
+                isok = confirm("您确定删除“"+cname+"”分组中所选的课程？");
+
+            return isok;
+        }
+        function selectScid(formc,value)
+        {
+            for (i=0;i<formc.scid.length;i++) {
+            if (value!=null)
+                formc.scid[i].checked=value;
+            else
+                 formc.scid[i].checked=!formc.scid[i].checked;
+            }
+        }
+    </script>
+</head>
+<body>
+<center>
+
+<table cellspacing="0" cellpadding="0" id="title">
+    <tr>
+        <td nowrap="nowrap"><div>教学计划维护</div></td>
+    </tr>
+</table>
+<table cellspacing="0" cellpadding="0" class="infolist_tab">
+    <tr>
+        <th>学号</th>
+        <th>姓名</th>
+        <th>院系</th>
+        <th>专业</th>
+        <th>班级</th>
+    </tr>
+    <tr class="infolist_common">
+        <td class="center">1018110207</td>
+        <td>李辛洋</td>
+        <td>外国语学院</td>
+        <td>英语+软件工程</td>
+        <td>R英语102</td>
+    </tr>
+    <tr>
+        <td colspan="5" id="foot"><img src="../../styles/images/space.gif"/></td>
+    </tr>
+
+    <tr>
+        <th>年级</th>
+        <th>学生类别</th>
+        <th>专业方向</th>
+        <th>毕业要求</th>
+        <th>
+        &nbsp;
+
+
+        </th>
+    </tr>
+    <tr class="infolist_common">
+        <td class="center">2010级</td>
+        <td >本科（本科）5年</td>
+        <td >软件项目管理</td>
+        <td>总学分：<b>0.0</b>&nbsp;&nbsp;平均学分积：<b>0.0</b></td>
+        <td>
+
+           &nbsp;
+
+          
+
+        </td>
+
+
+    </tr>
+    <tr>
+        <td colspan="5" id="foot"><img src="../../styles/images/space.gif"/></td>
+    </tr>
+</table>
+
+
+
+<table cellpadding="0" cellspacing="0" class="button_tab">
+    <form name="form1" method="post" action="">
+        <tr>
+            <td>
+
+                
+
+                
+
+                
+
+                
+                <input type="button" value="按学期查询教学计划"  onClick="window.open('./studyschedule_view_byterm.jsdo?studentId=188796&classId=6399','')" class="button">
+
+                
+
+                 
+
+            </td>
+        </tr>
+    </form>
+</table>
+<br/>
+<script type="text/javascript">
+    function showmemoform(){
+        var memotag = document.getElementById("memotable");
+        if(memotag.style.display=="none")
+            memotag.style.display="";
+        else
+            memotag.style.display="none";
+    }
+</script>
+<table cellpadding="0" cellspacing="0" class="broken_tab">
+    <tr>
+        <th width="10%">备注</th>
+        <td>无</td>
+        
+    </tr>
+
+</table>
+<table cellpadding="0" cellspacing="0" class="broken_tab" id="memotable" style="display:none">
+    <form action="./updateStuscheduleMemo.jsdo" name="memoform" method="post">
+       <input type="hidden" name="studentid" value="188796">
+        <input type="hidden" name="classid" value="6399">
+        <input type="hidden" name="stussid" value="7187547">
+        <tr>
+            <td><textarea name="memo" rows="3" cols="80"></textarea>&nbsp;<input type="submit" value="确 定" class="button"></td>
+        </tr>
+    </form>
+</table>
+
+<br/>
+<table cellpadding="0" cellspacing="0" class="explain_tab">
+    <tr>
+        <td><div>
+            <div id="explain_title">说明：</div>
+            <div id="explain_content">“<b>*</b>”表示学生独有的课组，不与专业/方向教学计划联动。</div></div>
+        </td>
+    </tr>
+</table>
+
+
+
+<br/>
+
+<form name="form7187548" method="post" >
+
+<table cellpadding="0" cellspacing="1" class="infolists_tab">
+    <tr>
+        <th colspan="2">分类</th>
+        <th rowspan="2">选课(组)要求</th>
+        <th colspan="3"> 毕业要求</th>
+        
+    </tr>
+    <tr id="second">
+        <td nowrap>分类名称</td>
+        <td  nowrap>说明</td>
+        <td  nowrap>学分</td>
+        <td  nowrap>门数</td>
+        <td  nowrap>是否达到要求</td>
+    </tr>
+    <tr class="infolists_common">
+        <td nowrap> 必修</td>
+        <td></td>
+        <td class="center" nowrap>必修</td>
+        <td class="center" nowrap>
+           <span id="group7187548Credit" class='statushalt'></span>
+
+        203.0</td>
+        <td class="center" nowrap>
+           <span id="group7187548Nums" class='statushalt'></span>
+        75</td>
+        <td class="center"><span  class='statushalt'>未通过</span></td>
+    </tr>
+</table>
+<table cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td><img src="../../styles/images/space.gif" height="5"></td>
+    </tr>
+</table>
+<table cellspacing="1" cellpadding="0" class="infolists_tab">
+    <tr>
+        <th rowspan="2" nowrap>课程编号</th>
+        <th rowspan="2" nowrap>课程名称</th>
+        <th rowspan="2" nowrap>考核<br/>方式</th>
+        <th rowspan="2" nowrap>学分</th>
+        <th rowspan="2" nowrap>学时</th>
+        <th rowspan="2"  >讲课<br>学时</th><th rowspan="2"  >实验<br>学时</th><th rowspan="2"  >其他<br>学时</th>
+        <th rowspan="2" nowrap>课程<br/>类别</th>
+        <th colspan="10"> 开课学期</th>
+        <th rowspan="2" nowrap>是否<br/>及格</th>
+        
+    </tr>
+    <tr id="second">
+        
+        <td>1秋<br>2010</td>
+        
+        <td>1春<br>2011</td>
+        
+        <td>2秋<br>2011</td>
+        
+        <td>2春<br>2012</td>
+        
+        <td>3秋<br>2012</td>
+        
+        <td>3春<br>2013</td>
+        
+        <td>4秋<br>2013</td>
+        
+        <td>4春<br>2014</td>
+        
+        <td>5秋<br>2014</td>
+        
+        <td>5春<br>2015</td>
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0040108009</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1917" target="_blank" class="infolist" >电工与电子技术(D)</a></td>
+        <td>未确定</td>
+        <td>4.0</td>
+        <td nowrap>64.0</td>
+        <td >64.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0040108010</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1918" target="_blank" class="infolist" >电工与电子技术实验(D)</a></td>
+        <td>未确定</td>
+        <td>0.5</td>
+        <td nowrap>16.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0070107005</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1356" target="_blank" class="infolist" >高等数学(C)Ⅰ</a></td>
+        <td>未确定</td>
+        <td>5.0</td>
+        <td nowrap>80.0</td>
+        <td >80.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0070107006</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1256" target="_blank" class="infolist" >高等数学(C)Ⅱ</a></td>
+        <td>未确定</td>
+        <td>4.0</td>
+        <td nowrap>64.0</td>
+        <td >64.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0070407005</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1263" target="_blank" class="infolist" >大学物理(B)</a></td>
+        <td>未确定</td>
+        <td>4.0</td>
+        <td nowrap>64.0</td>
+        <td >64.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305013</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2050" target="_blank" class="infolist" >英语听力Ⅰ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305014</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1268" target="_blank" class="infolist" >英语听力Ⅱ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305015</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2051" target="_blank" class="infolist" >英语听力Ⅲ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305016</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2052" target="_blank" class="infolist" >英语听力Ⅳ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305071</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4393" target="_blank" class="infolist" >高级英语Ⅰ</a></td>
+        <td>未确定</td>
+        <td>6.0</td>
+        <td nowrap>96.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305072</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4394" target="_blank" class="infolist" >高级英语Ⅱ</a></td>
+        <td>未确定</td>
+        <td>6.0</td>
+        <td nowrap>96.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305109</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2746" target="_blank" class="infolist" >英语阅读Ⅰ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305110</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1327" target="_blank" class="infolist" >英语阅读Ⅱ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305111</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2747" target="_blank" class="infolist" >英语阅读Ⅲ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305112</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2748" target="_blank" class="infolist" >英语阅读Ⅳ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305121</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2755" target="_blank" class="infolist" >英语口语Ⅰ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305122</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1329" target="_blank" class="infolist" >英语口语Ⅱ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305123</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2756" target="_blank" class="infolist" >英语口语Ⅲ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305124</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2757" target="_blank" class="infolist" >英语口语Ⅳ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305127</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2760" target="_blank" class="infolist" >英语写作Ⅰ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305128</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2761" target="_blank" class="infolist" >英语写作Ⅱ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305129</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2762" target="_blank" class="infolist" >翻译理论与实践Ⅰ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305130</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2763" target="_blank" class="infolist" >翻译理论与实践Ⅱ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305132</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2765" target="_blank" class="infolist" >美国文学作品选读</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305133</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2766" target="_blank" class="infolist" >口译Ⅰ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305144</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2777" target="_blank" class="infolist" >英语语言学概论</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305161</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4091" target="_blank" class="infolist" >综合英语Ⅰ</a></td>
+        <td>未确定</td>
+        <td>6.0</td>
+        <td nowrap>96.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305162</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4203" target="_blank" class="infolist" >综合英语Ⅱ</a></td>
+        <td>未确定</td>
+        <td>6.0</td>
+        <td nowrap>96.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305163</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4381" target="_blank" class="infolist" >综合英语Ⅲ</a></td>
+        <td>未确定</td>
+        <td>6.0</td>
+        <td nowrap>96.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305164</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4382" target="_blank" class="infolist" >综合英语Ⅳ</a></td>
+        <td>未确定</td>
+        <td>6.0</td>
+        <td nowrap>96.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305165</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4383" target="_blank" class="infolist" >综合英语Ⅴ</a></td>
+        <td>未确定</td>
+        <td>6.0</td>
+        <td nowrap>96.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305166</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4384" target="_blank" class="infolist" >综合英语Ⅵ</a></td>
+        <td>未确定</td>
+        <td>6.0</td>
+        <td nowrap>96.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305173</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4396" target="_blank" class="infolist" >英语基础综合训练</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>3.0周</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305177</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4388" target="_blank" class="infolist" >英语听力Ⅴ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305178</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4389" target="_blank" class="infolist" >英语听力Ⅵ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305180</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4395" target="_blank" class="infolist" >英国文学作品选读</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080405201</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2130" target="_blank" class="infolist" >日语Ⅰ</a></td>
+        <td>未确定</td>
+        <td>5.0</td>
+        <td nowrap>80.0</td>
+        <td >80.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080405202</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2131" target="_blank" class="infolist" >日语Ⅱ</a></td>
+        <td>未确定</td>
+        <td>5.0</td>
+        <td nowrap>80.0</td>
+        <td >80.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080405206</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4385" target="_blank" class="infolist" >日语Ⅲ</a></td>
+        <td>未确定</td>
+        <td>5.0</td>
+        <td nowrap>80.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080405207</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4386" target="_blank" class="infolist" >日语Ⅳ</a></td>
+        <td>未确定</td>
+        <td>5.0</td>
+        <td nowrap>80.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0100003001</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1658" target="_blank" class="infolist" >形势与政策Ⅰ</a></td>
+        <td>未确定</td>
+        <td>0.5</td>
+        <td nowrap>16.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0100003002</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1753" target="_blank" class="infolist" >形势与政策Ⅱ</a></td>
+        <td>未确定</td>
+        <td>0.5</td>
+        <td nowrap>16.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0100003003</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1690" target="_blank" class="infolist" >形势与政策Ⅲ</a></td>
+        <td>未确定</td>
+        <td>0.5</td>
+        <td nowrap>16.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0100003004</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2234" target="_blank" class="infolist" >形势与政策Ⅳ</a></td>
+        <td>未确定</td>
+        <td>0.5</td>
+        <td nowrap>16.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0100103001</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1661" target="_blank" class="infolist" >马克思主义基本原理</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>48.0</td>
+        <td >48.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0100103003</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=5383" target="_blank" class="infolist" >毛泽东思想和中国特色社会主义理论体系概论</a></td>
+        <td>未确定</td>
+        <td>5.0</td>
+        <td nowrap>80.0</td>
+        <td >64.0</td><td>&nbsp;</td><td >16.0</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0100106003</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1231" target="_blank" class="infolist" >中国近现代史纲要</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >24.0</td><td>&nbsp;</td><td >8.0</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0100203001</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1230" target="_blank" class="infolist" >思想道德修养与法律基础</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>48.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0100404001</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1742" target="_blank" class="infolist" >大学生心理健康教育</a></td>
+        <td>未确定</td>
+        <td>0.5</td>
+        <td nowrap>16.0</td>
+        <td >16.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0110104001</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1657" target="_blank" class="infolist" >体育Ⅰ</a></td>
+        <td>未确定</td>
+        <td>1.0</td>
+        <td nowrap>1.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0110104002</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1754" target="_blank" class="infolist" >体育Ⅱ</a></td>
+        <td>未确定</td>
+        <td>1.0</td>
+        <td nowrap>1.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0110104003</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2783" target="_blank" class="infolist" >体育Ⅲ</a></td>
+        <td>未确定</td>
+        <td>1.0</td>
+        <td nowrap>36.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0110104004</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2281" target="_blank" class="infolist" >体育Ⅳ</a></td>
+        <td>未确定</td>
+        <td>1.0</td>
+        <td nowrap>36.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120308002</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1456" target="_blank" class="infolist" >计算机基础实践</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>2.0</td>
+        <td >8.0</td><td>&nbsp;</td><td >24.0</td>
+        <td nowrap>非学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120308006</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2835" target="_blank" class="infolist" >C语言课程设计</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>2.0周</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120308007</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=5210" target="_blank" class="infolist" >C语言程序设计</a></td>
+        <td>未确定</td>
+        <td>4.0</td>
+        <td nowrap>64.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120408040</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4263" target="_blank" class="infolist" >计算机网络</a></td>
+        <td>未确定</td>
+        <td>3.5</td>
+        <td nowrap>56.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120408048</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4265" target="_blank" class="infolist" >操作系统</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>48.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120508004</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2877" target="_blank" class="infolist" >Java课程设计(B)</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>2.0周</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120508010</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4266" target="_blank" class="infolist" >C++程序设计</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>48.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120508102</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2895" target="_blank" class="infolist" >JAVA程序设计</a></td>
+        <td>未确定</td>
+        <td>3.5</td>
+        <td nowrap>56.0</td>
+        <td >40.0</td><td >16.0</td><td >16.0</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120508104</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=5205" target="_blank" class="infolist" >数据结构</a></td>
+        <td>未确定</td>
+        <td>4.0</td>
+        <td nowrap>64.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120808007</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4268" target="_blank" class="infolist" >软件工程</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>48.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120808008</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4283" target="_blank" class="infolist" >软件工程实践</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>2.0周</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120908010</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2925" target="_blank" class="infolist" >数据库课程设计</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>2.0周</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120908012</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4267" target="_blank" class="infolist" >数据库原理与应用</a></td>
+        <td>未确定</td>
+        <td>3.5</td>
+        <td nowrap>56.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120908013</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=5203" target="_blank" class="infolist" >JSP基础与应用</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>48.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120908024</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4503" target="_blank" class="infolist" >新型主机导论及操作系统概述</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0121008012</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=5204" target="_blank" class="infolist" >计算机组织与结构</a></td>
+        <td>未确定</td>
+        <td>4.0</td>
+        <td nowrap>64.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            1030100001</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1368" target="_blank" class="infolist" >军训</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>2.0周</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            1030100002</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1655" target="_blank" class="infolist" >军事理论</a></td>
+        <td>未确定</td>
+        <td>1.0</td>
+        <td nowrap>36.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            1040000002</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=5564" target="_blank" class="infolist" >大学生就业与创业指导Ⅱ</a></td>
+        <td>未确定</td>
+        <td>0.25</td>
+        <td nowrap>18.0</td>
+        <td >6.0</td><td>&nbsp;</td><td >8.0</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            1080000001</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1656" target="_blank" class="infolist" >入学教育</a></td>
+        <td>未确定</td>
+        <td>0.5</td>
+        <td nowrap>1.0周</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            1080000005</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1748" target="_blank" class="infolist" >大学生卫生保健教育</a></td>
+        <td>未确定</td>
+        <td>0.5</td>
+        <td nowrap>16.0</td>
+        <td >16.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            1080000010</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=5566" target="_blank" class="infolist" >大学生就业与创业指导Ⅳ</a></td>
+        <td>未确定</td>
+        <td>0.25</td>
+        <td nowrap>8.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+
+    <script type="text/javascript">
+        if(166.75<203.0)
+                document.getElementById("group7187548Credit").innerHTML="166.75 &lt; ";
+
+          if(60<75)
+                document.getElementById("group7187548Nums").innerHTML="60 &lt; ";
+
+    </script>
+ 
+
+</table>
+<br>
+
+
+<br>
+</form>
+
+<form name="form118684836" method="post" >
+
+<table cellpadding="0" cellspacing="1" class="infolists_tab">
+    <tr>
+        <th colspan="2">分类</th>
+        <th rowspan="2">选课(组)要求</th>
+        <th colspan="3"> 毕业要求</th>
+        
+    </tr>
+    <tr id="second">
+        <td nowrap>分类名称</td>
+        <td  nowrap>说明</td>
+        <td  nowrap>学分</td>
+        <td  nowrap>门数</td>
+        <td  nowrap>是否达到要求</td>
+    </tr>
+    <tr class="infolists_common">
+        <td nowrap> 二类专业(1)限选</td>
+        <td></td>
+        <td class="center" nowrap>限选</td>
+        <td class="center" nowrap>
+           <span id="group118684836Credit" class='statushalt'></span>
+
+        0.0</td>
+        <td class="center" nowrap>
+           <span id="group118684836Nums" class='statushalt'></span>
+        0</td>
+        <td class="center"><span  class='statusnatural'>通过</span></td>
+    </tr>
+</table>
+<table cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td><img src="../../styles/images/space.gif" height="5"></td>
+    </tr>
+</table>
+<table cellspacing="1" cellpadding="0" class="infolists_tab">
+    <tr>
+        <th rowspan="2" nowrap>课程编号</th>
+        <th rowspan="2" nowrap>课程名称</th>
+        <th rowspan="2" nowrap>考核<br/>方式</th>
+        <th rowspan="2" nowrap>学分</th>
+        <th rowspan="2" nowrap>学时</th>
+        <th rowspan="2"  >讲课<br>学时</th><th rowspan="2"  >实验<br>学时</th><th rowspan="2"  >其他<br>学时</th>
+        <th rowspan="2" nowrap>课程<br/>类别</th>
+        <th colspan="10"> 开课学期</th>
+        <th rowspan="2" nowrap>是否<br/>及格</th>
+        
+    </tr>
+    <tr id="second">
+        
+        <td>1秋<br>2010</td>
+        
+        <td>1春<br>2011</td>
+        
+        <td>2秋<br>2011</td>
+        
+        <td>2春<br>2012</td>
+        
+        <td>3秋<br>2012</td>
+        
+        <td>3春<br>2013</td>
+        
+        <td>4秋<br>2013</td>
+        
+        <td>4春<br>2014</td>
+        
+        <td>5秋<br>2014</td>
+        
+        <td>5春<br>2015</td>
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120908025</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4504" target="_blank" class="infolist" >COBOL语言编程</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120908026</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4505" target="_blank" class="infolist" >CICS应用编程</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120908027</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4506" target="_blank" class="infolist" >DB2数据库应用与编程</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+
+    <script type="text/javascript">
+        if(6.0<0.0)
+                document.getElementById("group118684836Credit").innerHTML="6.0 &lt; ";
+
+          if(3<0)
+                document.getElementById("group118684836Nums").innerHTML="3 &lt; ";
+
+    </script>
+ 
+
+</table>
+<br>
+
+
+<br>
+</form>
+
+<form name="form22333595" method="post" >
+
+<table cellpadding="0" cellspacing="1" class="infolists_tab">
+    <tr>
+        <th colspan="2">分类</th>
+        <th rowspan="2">选课(组)要求</th>
+        <th colspan="3"> 毕业要求</th>
+        
+    </tr>
+    <tr id="second">
+        <td nowrap>分类名称</td>
+        <td  nowrap>说明</td>
+        <td  nowrap>学分</td>
+        <td  nowrap>门数</td>
+        <td  nowrap>是否达到要求</td>
+    </tr>
+    <tr class="infolists_common">
+        <td nowrap> 一类专业(1)限选</td>
+        <td></td>
+        <td class="center" nowrap>限选</td>
+        <td class="center" nowrap>
+           <span id="group22333595Credit" class='statushalt'></span>
+
+        16.0</td>
+        <td class="center" nowrap>
+           <span id="group22333595Nums" class='statushalt'></span>
+        0</td>
+        <td class="center"><span  class='statushalt'>未通过</span></td>
+    </tr>
+</table>
+<table cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td><img src="../../styles/images/space.gif" height="5"></td>
+    </tr>
+</table>
+<table cellspacing="1" cellpadding="0" class="infolists_tab">
+    <tr>
+        <th rowspan="2" nowrap>课程编号</th>
+        <th rowspan="2" nowrap>课程名称</th>
+        <th rowspan="2" nowrap>考核<br/>方式</th>
+        <th rowspan="2" nowrap>学分</th>
+        <th rowspan="2" nowrap>学时</th>
+        <th rowspan="2"  >讲课<br>学时</th><th rowspan="2"  >实验<br>学时</th><th rowspan="2"  >其他<br>学时</th>
+        <th rowspan="2" nowrap>课程<br/>类别</th>
+        <th colspan="10"> 开课学期</th>
+        <th rowspan="2" nowrap>是否<br/>及格</th>
+        
+    </tr>
+    <tr id="second">
+        
+        <td>1秋<br>2010</td>
+        
+        <td>1春<br>2011</td>
+        
+        <td>2秋<br>2011</td>
+        
+        <td>2春<br>2012</td>
+        
+        <td>3秋<br>2012</td>
+        
+        <td>3春<br>2013</td>
+        
+        <td>4秋<br>2013</td>
+        
+        <td>4春<br>2014</td>
+        
+        <td>5秋<br>2014</td>
+        
+        <td>5春<br>2015</td>
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305114</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2749" target="_blank" class="infolist" >英语阅读Ⅵ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305134</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2767" target="_blank" class="infolist" >口译Ⅱ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305135</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2768" target="_blank" class="infolist" >英语语音模仿</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305136</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2769" target="_blank" class="infolist" >英语视听Ⅰ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305137</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2770" target="_blank" class="infolist" >英语视听Ⅱ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305143</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2776" target="_blank" class="infolist" >英语报刊杂志选读</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305145</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2778" target="_blank" class="infolist" >英语国家概况</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305146</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2779" target="_blank" class="infolist" >美国社会与文化</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305148</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2781" target="_blank" class="infolist" >英语词汇学概论</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305149</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2782" target="_blank" class="infolist" >商务英语Ⅰ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305176</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4391" target="_blank" class="infolist" >英语阅读Ⅴ</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305179</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=4390" target="_blank" class="infolist" >英语语法修辞</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+
+    <script type="text/javascript">
+        if(12.0<16.0)
+                document.getElementById("group22333595Credit").innerHTML="12.0 &lt; ";
+
+          if(6<0)
+                document.getElementById("group22333595Nums").innerHTML="6 &lt; ";
+
+    </script>
+ 
+
+</table>
+<br>
+
+
+<br>
+</form>
+
+<form name="form118684666" method="post" >
+
+<table cellpadding="0" cellspacing="1" class="infolists_tab">
+    <tr>
+        <th colspan="2">分类</th>
+        <th rowspan="2">选课(组)要求</th>
+        <th colspan="3"> 毕业要求</th>
+        
+    </tr>
+    <tr id="second">
+        <td nowrap>分类名称</td>
+        <td  nowrap>说明</td>
+        <td  nowrap>学分</td>
+        <td  nowrap>门数</td>
+        <td  nowrap>是否达到要求</td>
+    </tr>
+    <tr class="infolists_common">
+        <td nowrap> 一类专业任选</td>
+        <td></td>
+        <td class="center" nowrap>限选</td>
+        <td class="center" nowrap>
+           <span id="group118684666Credit" class='statushalt'></span>
+
+        0.0</td>
+        <td class="center" nowrap>
+           <span id="group118684666Nums" class='statushalt'></span>
+        0</td>
+        <td class="center"><span  class='statusnatural'>通过</span></td>
+    </tr>
+</table>
+<table cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td><img src="../../styles/images/space.gif" height="5"></td>
+    </tr>
+</table>
+<table cellspacing="1" cellpadding="0" class="infolists_tab">
+    <tr>
+        <th rowspan="2" nowrap>课程编号</th>
+        <th rowspan="2" nowrap>课程名称</th>
+        <th rowspan="2" nowrap>考核<br/>方式</th>
+        <th rowspan="2" nowrap>学分</th>
+        <th rowspan="2" nowrap>学时</th>
+        <th rowspan="2"  >讲课<br>学时</th><th rowspan="2"  >实验<br>学时</th><th rowspan="2"  >其他<br>学时</th>
+        <th rowspan="2" nowrap>课程<br/>类别</th>
+        <th colspan="10"> 开课学期</th>
+        <th rowspan="2" nowrap>是否<br/>及格</th>
+        
+    </tr>
+    <tr id="second">
+        
+        <td>1秋<br>2010</td>
+        
+        <td>1春<br>2011</td>
+        
+        <td>2秋<br>2011</td>
+        
+        <td>2春<br>2012</td>
+        
+        <td>3秋<br>2012</td>
+        
+        <td>3春<br>2013</td>
+        
+        <td>4秋<br>2013</td>
+        
+        <td>4春<br>2014</td>
+        
+        <td>5秋<br>2014</td>
+        
+        <td>5春<br>2015</td>
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305125</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2758" target="_blank" class="infolist" >高级英语口语</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305126</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=2759" target="_blank" class="infolist" >英语演讲艺术</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305152</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1931" target="_blank" class="infolist" >国际商务谈判</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩</td>
+
+        
+               
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0080305154</td>
+        <td><a href="../../manager/querycourse/course_detail.jsdo?cid=1933" target="_blank" class="infolist" >英语诗歌赏析</a></td>
+        <td>未确定</td>
+        <td>2.0</td>
+        <td nowrap>32.0</td>
+        <td >32.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td nowrap>非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格</td>
+
+        
+               
+
+        
+    </tr>
+    
+
+    <script type="text/javascript">
+        if(4.0<0.0)
+                document.getElementById("group118684666Credit").innerHTML="4.0 &lt; ";
+
+          if(2<0)
+                document.getElementById("group118684666Nums").innerHTML="2 &lt; ";
+
+    </script>
+ 
+
+</table>
+<br>
+
+
+<br>
+</form>
+
+<br/>
+<table cellpadding="0" cellspacing="0" class="subtitle">
+    <tr>
+        <td>专业方向教学计划</td>
+        <td>&nbsp;</td>
+        <td id="rightbg">&nbsp;</td>
+    </tr>
+</table>
+
+
+<table cellpadding="0" cellspacing="0" class="broken_tab">
+    <tr>
+        <td>专业方向：软件项目管理</td>
+        
+        <td>毕业要求 总学分：0.0 平均学分积：0.0</td>
+        <td>
+            
+        </td>
+        <td class="broken">
+            
+        </td>
+
+    </tr>
+</table><br>
+
+
+<form name="form202329371" method="post" >
+<br><table cellpadding="0" cellspacing="1" class="infolists_tab">
+    <tr>
+        <th colspan="2">分类</th>
+        <th rowspan="2"> 选课(组)要求</th>
+        <th colspan="3"> 毕业要求</th>
+        
+    </tr>
+    <tr id="second">
+        <td nowrap>分类名称</td>
+        <td nowrap>说明</td>
+        <td nowrap>学分</td>
+        <td nowrap>门数</td>
+        <td nowrap>是否达到要求</td>
+    </tr>
+    <tr class="infolists_common">
+        <td nowrap> 二类专业(2)必修</td>
+        <td></td>
+        <td class="center" nowrap>必修</td>
+        <td class="center" nowrap>
+         <span id="group202329371Credit" class='statushalt'></span>
+        6.0</td>
+        <td class="center" nowrap>
+
+         <span id="group202329371Nums" class='statushalt'></span>
+        2</td>
+        <td class="center"><span  class='statushalt'>未通过</span></td>
+    </tr>
+</table>
+<table cellpadding="0" cellspacing="0" border="0">
+    <Tr>
+        <td><img src="../../styles/images/space.gif" height="5"/></td>
+    </Tr>
+</table>
+<table cellspacing="1" cellpadding="0" class="infolists_tab">
+    <tr>
+        <th rowspan="2" nowrap>课程编号</th>
+        <th rowspan="2" nowrap>课程名称</th>
+        <th rowspan="2" nowrap>考核<br/>方式</th>
+        <th rowspan="2" nowrap>学分</th>
+        <th rowspan="2" nowrap>学时</th>
+         <th rowspan="2"  >讲课<br>学时</th><th rowspan="2"  >实验<br>学时</th><th rowspan="2"  >其他<br>学时</th>
+        <th rowspan="2" nowrap>课程<br/>类别</th>
+        <th colspan="10" nowrap> 开课学期</th>
+        <th rowspan="2" nowrap>是否<br/>及格</th>
+
+        
+    </tr>
+    <tr id="second">
+        
+        <td nowrap class="center">1秋<br>2010</td>
+        
+        <td nowrap class="center">1春<br>2011</td>
+        
+        <td nowrap class="center">2秋<br>2011</td>
+        
+        <td nowrap class="center">2春<br>2012</td>
+        
+        <td nowrap class="center">3秋<br>2012</td>
+        
+        <td nowrap class="center">3春<br>2013</td>
+        
+        <td nowrap class="center">4秋<br>2013</td>
+        
+        <td nowrap class="center">4春<br>2014</td>
+        
+        <td nowrap class="center">5秋<br>2014</td>
+        
+        <td nowrap class="center">5春<br>2015</td>
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120808009</td>
+        <td><a href="../querycourse/course_detail.jsdo?cid=4300" target="_blank" class="infolist" >UML</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>48.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td >非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格
+        
+
+        </td>
+
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120808019</td>
+        <td><a href="../querycourse/course_detail.jsdo?cid=4299" target="_blank" class="infolist" >项目管理与案例分析</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>48.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td >学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>无成绩
+        
+
+        </td>
+
+        
+    </tr>
+    
+
+    <script type="text/javascript">
+        if(3.0<6.0)
+                document.getElementById("group202329371Credit").innerHTML="3.0 &lt; ";
+
+          if(1<2)
+                document.getElementById("group202329371Nums").innerHTML="1 &lt; ";
+
+    </script>  
+
+
+</table>
+
+</form>
+
+<form name="form202329483" method="post" >
+<br><table cellpadding="0" cellspacing="1" class="infolists_tab">
+    <tr>
+        <th colspan="2">分类</th>
+        <th rowspan="2"> 选课(组)要求</th>
+        <th colspan="3"> 毕业要求</th>
+        
+    </tr>
+    <tr id="second">
+        <td nowrap>分类名称</td>
+        <td nowrap>说明</td>
+        <td nowrap>学分</td>
+        <td nowrap>门数</td>
+        <td nowrap>是否达到要求</td>
+    </tr>
+    <tr class="infolists_common">
+        <td nowrap> 二类专业(2)限选</td>
+        <td></td>
+        <td class="center" nowrap>限选</td>
+        <td class="center" nowrap>
+         <span id="group202329483Credit" class='statushalt'></span>
+        0.0</td>
+        <td class="center" nowrap>
+
+         <span id="group202329483Nums" class='statushalt'></span>
+        0</td>
+        <td class="center"><span  class='statusnatural'>通过</span></td>
+    </tr>
+</table>
+<table cellpadding="0" cellspacing="0" border="0">
+    <Tr>
+        <td><img src="../../styles/images/space.gif" height="5"/></td>
+    </Tr>
+</table>
+<table cellspacing="1" cellpadding="0" class="infolists_tab">
+    <tr>
+        <th rowspan="2" nowrap>课程编号</th>
+        <th rowspan="2" nowrap>课程名称</th>
+        <th rowspan="2" nowrap>考核<br/>方式</th>
+        <th rowspan="2" nowrap>学分</th>
+        <th rowspan="2" nowrap>学时</th>
+         <th rowspan="2"  >讲课<br>学时</th><th rowspan="2"  >实验<br>学时</th><th rowspan="2"  >其他<br>学时</th>
+        <th rowspan="2" nowrap>课程<br/>类别</th>
+        <th colspan="10" nowrap> 开课学期</th>
+        <th rowspan="2" nowrap>是否<br/>及格</th>
+
+        
+    </tr>
+    <tr id="second">
+        
+        <td nowrap class="center">1秋<br>2010</td>
+        
+        <td nowrap class="center">1春<br>2011</td>
+        
+        <td nowrap class="center">2秋<br>2011</td>
+        
+        <td nowrap class="center">2春<br>2012</td>
+        
+        <td nowrap class="center">3秋<br>2012</td>
+        
+        <td nowrap class="center">3春<br>2013</td>
+        
+        <td nowrap class="center">4秋<br>2013</td>
+        
+        <td nowrap class="center">4春<br>2014</td>
+        
+        <td nowrap class="center">5秋<br>2014</td>
+        
+        <td nowrap class="center">5春<br>2015</td>
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120808011</td>
+        <td><a href="../querycourse/course_detail.jsdo?cid=2908" target="_blank" class="infolist" >软件体系结构</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>48.0</td>
+        <td >48.0</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td >非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格
+        
+
+        </td>
+
+        
+    </tr>
+    
+
+    <script type="text/javascript">
+        if(3.0<0.0)
+                document.getElementById("group202329483Credit").innerHTML="3.0 &lt; ";
+
+          if(1<0)
+                document.getElementById("group202329483Nums").innerHTML="1 &lt; ";
+
+    </script>  
+
+
+</table>
+
+</form>
+
+<form name="form202329595" method="post" >
+<br><table cellpadding="0" cellspacing="1" class="infolists_tab">
+    <tr>
+        <th colspan="2">分类</th>
+        <th rowspan="2"> 选课(组)要求</th>
+        <th colspan="3"> 毕业要求</th>
+        
+    </tr>
+    <tr id="second">
+        <td nowrap>分类名称</td>
+        <td nowrap>说明</td>
+        <td nowrap>学分</td>
+        <td nowrap>门数</td>
+        <td nowrap>是否达到要求</td>
+    </tr>
+    <tr class="infolists_common">
+        <td nowrap> 二类专业任选</td>
+        <td></td>
+        <td class="center" nowrap>限选</td>
+        <td class="center" nowrap>
+         <span id="group202329595Credit" class='statushalt'></span>
+        0.0</td>
+        <td class="center" nowrap>
+
+         <span id="group202329595Nums" class='statushalt'></span>
+        0</td>
+        <td class="center"><span  class='statusnatural'>通过</span></td>
+    </tr>
+</table>
+<table cellpadding="0" cellspacing="0" border="0">
+    <Tr>
+        <td><img src="../../styles/images/space.gif" height="5"/></td>
+    </Tr>
+</table>
+<table cellspacing="1" cellpadding="0" class="infolists_tab">
+    <tr>
+        <th rowspan="2" nowrap>课程编号</th>
+        <th rowspan="2" nowrap>课程名称</th>
+        <th rowspan="2" nowrap>考核<br/>方式</th>
+        <th rowspan="2" nowrap>学分</th>
+        <th rowspan="2" nowrap>学时</th>
+         <th rowspan="2"  >讲课<br>学时</th><th rowspan="2"  >实验<br>学时</th><th rowspan="2"  >其他<br>学时</th>
+        <th rowspan="2" nowrap>课程<br/>类别</th>
+        <th colspan="10" nowrap> 开课学期</th>
+        <th rowspan="2" nowrap>是否<br/>及格</th>
+
+        
+    </tr>
+    <tr id="second">
+        
+        <td nowrap class="center">1秋<br>2010</td>
+        
+        <td nowrap class="center">1春<br>2011</td>
+        
+        <td nowrap class="center">2秋<br>2011</td>
+        
+        <td nowrap class="center">2春<br>2012</td>
+        
+        <td nowrap class="center">3秋<br>2012</td>
+        
+        <td nowrap class="center">3春<br>2013</td>
+        
+        <td nowrap class="center">4秋<br>2013</td>
+        
+        <td nowrap class="center">4春<br>2014</td>
+        
+        <td nowrap class="center">5秋<br>2014</td>
+        
+        <td nowrap class="center">5春<br>2015</td>
+        
+    </tr>
+    
+    <tr class="infolists_common" onMouseOver="javascript:this.className='infolists_current'" onMouseOut="javascript:this.className='infolists_common'">
+        <td nowrap>
+            
+            0120608007</td>
+        <td><a href="../querycourse/course_detail.jsdo?cid=4296" target="_blank" class="infolist" >VC++程序设计</a></td>
+        <td>未确定</td>
+        <td>3.0</td>
+        <td nowrap>48.0</td>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        <td >非学位课</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td class="infolists_status">Y</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td >&nbsp;</td>
+        
+        <td nowrap>及格
+        
+
+        </td>
+
+        
+    </tr>
+    
+
+    <script type="text/javascript">
+        if(3.0<0.0)
+                document.getElementById("group202329595Credit").innerHTML="3.0 &lt; ";
+
+          if(1<0)
+                document.getElementById("group202329595Nums").innerHTML="1 &lt; ";
+
+    </script>  
+
+
+</table>
+
+</form>
+
+</center>
+</body>
+</html>

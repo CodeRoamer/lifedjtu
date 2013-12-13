@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>综合教务管理系统</title>
+    <link href="/academic/styles/frameV2/frame.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/academic/styles/frameV2/jquery-1.2.3.pack.js"></script>
+    <script type="text/javascript" src="/academic/styles/frameV2/changeFrame.js"></script>
+    <script type="text/javascript">
+        function demo(obj, Rname) {
+            $("#nav").find("a").removeAttr("class");
+            $(obj).attr("class", Rname);
+            var _middleframeWrap = parent.document.getElementById("_middleframeWrap");
+            _middleframeWrap.cols = '191,*';
+        }
+    </script>
+
+</head>
+
+
+<body>
+<div id="header">
+    <div class="header">
+        <div id="logo">
+            <div id="subMenu">
+                <ul>
+
+
+                    <li>
+
+
+                        <a href="./index.jsp"
+                           target="_top">首页</a>
+                    </li>
+                    <li>
+
+                        <a href="./logout_security_check "
+                           target="_top">
+
+                            退出
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="./showPersonalInfo.do" target="mainFrame">我的信息</a>
+                    </li>
+                    <li>
+                        <a href="./accessModule.do?moduleId=155" target="mainFrame">修改密码</a>
+                    </li>
+                    <li style="border-right:none;">
+                        <a href="./calendarinfo/viewCalendarInfo.do" target="mainFrame">教学运行公告</a>
+                    </li>
+
+
+                    
+
+                </ul>
+
+
+                
+            </div>
+            <div id="greeting">
+                您好！<span>李赫(1018110323)</span>，欢迎登录
+            </div>
+        </div>
+        <div id="nav">
+            <ul>
+                <li><a href="listLeft.do?moduleType=-1" target="menuFrame" class="Thover" onclick="demo(this,'Thover')"><span>全部</span></a></li>
+                
+                    <li><a href="listLeft.do?moduleType=6" target="menuFrame"
+                           onclick="demo(this,'Thover')"><span>教师空间</span></a></li>
+                
+                    <li><a href="listLeft.do?moduleType=7" target="menuFrame"
+                           onclick="demo(this,'Thover')"><span>学生空间</span></a></li>
+                
+                    <li><a href="listLeft.do?moduleType=8" target="menuFrame"
+                           onclick="demo(this,'Thover')"><span>公共信息</span></a></li>
+                
+            </ul>
+        </div>
+        <div class="topSidebar"><a href="#" title="点击收缩">sideBar</a></div>
+        <div class="nav_left"></div>
+    </div>
+</div>
+</body>
+</html>

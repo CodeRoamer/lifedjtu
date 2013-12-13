@@ -1,0 +1,1171 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>本学期课程安排</title>
+    <Meta http-equiv="Content-Type" Content="text/html; Charset=gbk">
+    <Meta http-equiv="Content-Language" Content="zh-CN">
+    <Meta http-equiv="MSThemeCompatible" Content="No">
+    <Meta name="Author" Content="Educational Technology Institute, Tsinghua University">
+    <Meta name="Copyright" Content="Copyright(c)2005 Educational Technology Institute, Tsinghua University">
+    <link href="../../styles/css/content.css" rel="stylesheet" type="text/css">
+    <script language="javascript" src="../../styles/js/common.js"></script>
+    <script language="javascript" src="../../styles/js/general.js"></script>
+    <script language="javascript" src="../../styles/js/jquery.js"></script>
+<style type="text/css">
+    #bookInfo{
+        position:absolute;z-index:9999;border:1px solid #49b6e6;width:400px;background:#fff;
+        margin:0;padding:10px;display:none;text-align:left;
+    }
+</style>    
+    <script type="text/javascript">
+        $(window).load(function(){
+            $('.showBook').each(function(){
+                $(this).mouseover(function(){
+//                      $('#bookInfo').remove();
+                      if($('#bookInfo').length == 0){
+                            $(document.body).append('<p id="bookInfo"></p>');
+                      }
+                      var _top = $(this).offset().top;
+                      var _left = $(this).offset().left;
+                      var info = $(this).attr('rel');
+
+                      $('#bookInfo').html(info).css({
+                            top:_top - 10,
+                            left:_left - 400
+                      }).fadeIn(500);
+
+                });
+                $(document).click(function(e){
+                    if(!$(e.target).is('#bookInfo')){
+                        $('#bookInfo').fadeOut(500,function(){
+                             $('#bookInfo').remove();
+                        });
+                    }
+                });
+                
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+<table cellspacing="0" cellpadding="0" id="title">
+    <tr>
+        <td nowrap="nowrap">
+            <div>
+                2013秋 课程安排
+            </div>
+        </td>
+    </tr>
+</table>
+
+<p>
+    <input type="button"
+           onClick="openwindow('../../manager/coursearrange/showTimetable.do?id=188976&yearid=33&termid=2&timetableType=STUDENT&sectionType=BASE','')"
+           class="button" value="个人课表">
+    
+
+</p>
+<table cellpadding="0" cellspacing="0" class="subtitle">
+    <tr>
+        <td class="subtitle">学年学期</td>
+    </tr>
+</table>
+<table cellpadding="0" cellspacing="0" class="broken_tab">
+    <form action="">
+        <tr>
+            <td>学年</td>
+            <td>
+                
+                <select name="year">
+                    
+                    <option value=33 >
+                        2013
+                    </option>
+                    
+                    <option value=26 >
+                        2006
+                    </option>
+                    
+                    <option value=27 >
+                        2007
+                    </option>
+                    
+                    <option value=28 >
+                        2008
+                    </option>
+                    
+                    <option value=29 >
+                        2009
+                    </option>
+                    
+                    <option value=30 >
+                        2010
+                    </option>
+                    
+                    <option value=31 >
+                        2011
+                    </option>
+                    
+                    <option value=32 >
+                        2012
+                    </option>
+                    
+                    <option value=34 >
+                        2014
+                    </option>
+                    
+                    <option value=35 >
+                        2015
+                    </option>
+                    
+                    <option value=36 >
+                        2016
+                    </option>
+                    
+                    <option value=37 >
+                        2017
+                    </option>
+                    
+                    <option value=38 >
+                        2018
+                    </option>
+                    
+                    <option value=39 >
+                        2019
+                    </option>
+                    
+                    <option value=40 >
+                        2020
+                    </option>
+                    
+                </select>
+            </td>
+            <td>学期</td>
+            <td>
+                
+                <select name="term">
+                    
+                    <option value=2 >
+                        秋
+                    </option>
+                    
+                    <option value=1 >
+                        春
+                    </option>
+                    
+                </select>
+            </td>
+            <td>
+                <input type="submit" value="查 询" class="button">
+            </td>
+        </tr>
+    </form>
+</table>
+
+
+<!--调课信息-->
+
+<eduaffair:CTRT studentid="188976" year="33" term="2"
+                windowStyle="main"></eduaffair:CTRT>
+
+
+<br>
+<table cellpadding="0" cellspacing="0" class="infolist_tab">
+    <tr>
+        <th>课程号</th>
+        <th>课程<br>
+            序号
+        </th>
+        <th>课程名称</th>
+        <th>任课教师</th>
+        <th>学 分</th>
+        <th>选课属性</th>
+        <th>考核方式</th>
+        <th>考试<br>
+            性质
+        </th>
+        <th>是否<br>
+            缓考
+        </th>
+        <th>上课时间、地点</th>
+        <th>教材</th>
+        <th>教学记录</th>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0080305071
+        </td>
+        <td>102
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=4393"
+               target="_blank" class="infolist">高级英语Ⅰ
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=37383'  class="infolist" target='_blank'>李宏</a><br>
+            
+        </td>
+        <td class="center">6.0
+        </td>
+        <td class="center">
+            必修
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-18周
+                    </td>
+                    <td width="20%" nowrap>周四
+                    </td>
+                    <td width="20%" nowrap>下午5、6节
+                    </td>
+                    <td width="40%" nowrap>J228
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td width="20%" nowrap>7-18周
+                    </td>
+                    <td width="20%" nowrap>周五
+                    </td>
+                    <td width="20%" nowrap>上午1、2节
+                    </td>
+                    <td width="40%" nowrap>J228
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td width="20%" nowrap>1-18周
+                    </td>
+                    <td width="20%" nowrap>周一
+                    </td>
+                    <td width="20%" nowrap>上午1、2节
+                    </td>
+                    <td width="40%" nowrap>J228
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=275683166"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0080305129
+        </td>
+        <td>100
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=2762"
+               target="_blank" class="infolist">翻译理论与实践Ⅰ
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=37382'  class="infolist" target='_blank'>侯雅楠</a><br>
+            
+        </td>
+        <td class="center">2.0
+        </td>
+        <td class="center">
+            必修
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>3-18周
+                    </td>
+                    <td width="20%" nowrap>周一
+                    </td>
+                    <td width="20%" nowrap>上午3、4节
+                    </td>
+                    <td width="40%" nowrap>J206
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=274814420"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0080305132
+        </td>
+        <td>100
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=2765"
+               target="_blank" class="infolist">美国文学作品选读
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=37365'  class="infolist" target='_blank'>尹翎鸥</a><br>
+            
+        </td>
+        <td class="center">2.0
+        </td>
+        <td class="center">
+            必修
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-16周
+                    </td>
+                    <td width="20%" nowrap>周二
+                    </td>
+                    <td width="20%" nowrap>上午3、4节
+                    </td>
+                    <td width="40%" nowrap>J406
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=274811103"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0080305133
+        </td>
+        <td>102
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=2766"
+               target="_blank" class="infolist">口译Ⅰ
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=37383'  class="infolist" target='_blank'>李宏</a><br>
+            
+        </td>
+        <td class="center">2.0
+        </td>
+        <td class="center">
+            必修
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-16周
+                    </td>
+                    <td width="20%" nowrap>周二
+                    </td>
+                    <td width="20%" nowrap>下午5、6节
+                    </td>
+                    <td width="40%" nowrap>J603
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=275683205"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0080305146
+        </td>
+        <td>100
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=2779"
+               target="_blank" class="infolist">美国社会与文化
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=179590'  class="infolist" target='_blank'>李利群</a><br>
+            
+        </td>
+        <td class="center">2.0
+        </td>
+        <td class="center">
+            限选
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>3-18周
+                    </td>
+                    <td width="20%" nowrap>周二
+                    </td>
+                    <td width="20%" nowrap>上午1、2节
+                    </td>
+                    <td width="40%" nowrap>J206
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=274815666"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0080305148
+        </td>
+        <td>100
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=2781"
+               target="_blank" class="infolist">英语词汇学概论
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=37388'  class="infolist" target='_blank'>沈万顺</a><br>
+            
+        </td>
+        <td class="center">2.0
+        </td>
+        <td class="center">
+            限选
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-16周
+                    </td>
+                    <td width="20%" nowrap>周三
+                    </td>
+                    <td width="20%" nowrap>上午1、2节
+                    </td>
+                    <td width="40%" nowrap>J206
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=274815670"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0080305152
+        </td>
+        <td>100
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=1931"
+               target="_blank" class="infolist">国际商务谈判
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=37385'  class="infolist" target='_blank'>陆华强</a><br>
+            
+        </td>
+        <td class="center">2.0
+        </td>
+        <td class="center">
+            限选
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-16周
+                    </td>
+                    <td width="20%" nowrap>周五
+                    </td>
+                    <td width="20%" nowrap>下午7、8节
+                    </td>
+                    <td width="40%" nowrap>J206
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=274815442"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0080405206
+        </td>
+        <td>100
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=4385"
+               target="_blank" class="infolist">日语Ⅲ
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=194876'  class="infolist" target='_blank'>高松</a><br>
+            
+        </td>
+        <td class="center">5.0
+        </td>
+        <td class="center">
+            必修
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-18周
+                    </td>
+                    <td width="20%" nowrap>周五
+                    </td>
+                    <td width="20%" nowrap>下午5、6节
+                    </td>
+                    <td width="40%" nowrap>J108
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td width="20%" nowrap>15-18周
+                    </td>
+                    <td width="20%" nowrap>周六
+                    </td>
+                    <td width="20%" nowrap>上午1、2节
+                    </td>
+                    <td width="40%" nowrap>J108
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td width="20%" nowrap>1-18周
+                    </td>
+                    <td width="20%" nowrap>周一
+                    </td>
+                    <td width="20%" nowrap>下午7、8节
+                    </td>
+                    <td width="40%" nowrap>J108
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=274811173"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0100003004
+        </td>
+        <td>110
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=2234"
+               target="_blank" class="infolist">形势与政策Ⅳ
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=202060'  class="infolist" target='_blank'>刘昀</a><br>
+            
+        </td>
+        <td class="center">0.5
+        </td>
+        <td class="center">
+            必修
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>9-13周
+                    </td>
+                    <td width="20%" nowrap>周六
+                    </td>
+                    <td width="20%" nowrap>下午5、6节
+                    </td>
+                    <td width="40%" nowrap>J208
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=351862897"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0120408042
+        </td>
+        <td>101
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=4305"
+               target="_blank" class="infolist">网络安全
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=42620'  class="infolist" target='_blank'>王春爽</a><br>
+            
+        </td>
+        <td class="center">3.5
+        </td>
+        <td class="center">
+            必修
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-14周
+                    </td>
+                    <td width="20%" nowrap>周六
+                    </td>
+                    <td width="20%" nowrap>上午1-4节
+                    </td>
+                    <td width="40%" nowrap>9401
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=295787285"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0120408043
+        </td>
+        <td>100
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=4304"
+               target="_blank" class="infolist">网络管理
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=59780'  class="infolist" target='_blank'>丰超</a><br>
+            
+        </td>
+        <td class="center">3.0
+        </td>
+        <td class="center">
+            限选
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-12周
+                    </td>
+                    <td width="20%" nowrap>周日
+                    </td>
+                    <td width="20%" nowrap>上午1-4节
+                    </td>
+                    <td width="40%" nowrap>8701（取卡）
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=274815771"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0120408046
+        </td>
+        <td>100
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=5217"
+               target="_blank" class="infolist">局域网技术
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=232260'  class="infolist" target='_blank'>佟宁</a><br>
+            
+        </td>
+        <td class="center">3.0
+        </td>
+        <td class="center">
+            限选
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-12周
+                    </td>
+                    <td width="20%" nowrap>周日
+                    </td>
+                    <td width="20%" nowrap>下午5-8节
+                    </td>
+                    <td width="40%" nowrap>8701（取卡）
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=274815824"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>0120908013
+        </td>
+        <td>110
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=5203"
+               target="_blank" class="infolist">JSP基础与应用
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=37188'  class="infolist" target='_blank'>唐斌</a><br>
+            
+        </td>
+        <td class="center">3.0
+        </td>
+        <td class="center">
+            必修
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-12周
+                    </td>
+                    <td width="20%" nowrap>周一
+                    </td>
+                    <td width="20%" nowrap>下午5、6节
+                    </td>
+                    <td width="40%" nowrap>2501
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td width="20%" nowrap>1-12周
+                    </td>
+                    <td width="20%" nowrap>周四
+                    </td>
+                    <td width="20%" nowrap>上午3、4节
+                    </td>
+                    <td width="40%" nowrap>J208
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=275369028"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td>ls1080105045
+        </td>
+        <td>100
+        </td>
+        <td>
+            <a href="../../manager/querycourse/course_detail.jsdo?cid=6689"
+               target="_blank" class="infolist">漫画入门与欣赏
+            </a></td>
+        <td class="center">
+       <a href='../../teacher/showTeacherInfoItem.do?userid=42930'  class="infolist" target='_blank'>张妍</a><br>
+            
+        </td>
+        <td class="center">2.0
+        </td>
+        <td class="center">
+            任选
+        </td>
+        <td class="center">未确定
+        </td>
+        <td class="center">正常考试
+        </td>
+        <td class="center">非缓考
+        </td>
+        <td>
+            
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="none">
+                
+                <tr>
+                    <td width="20%" nowrap>1-8周
+                    </td>
+                    <td width="20%" nowrap>周六
+                    </td>
+                    <td width="20%" nowrap>上午1-4节
+                    </td>
+                    <td width="40%" nowrap>J227
+                    </td>
+                </tr>
+                
+
+            </table>
+            
+        </td>
+
+        <td class="center">
+            &nbsp;
+        </td>
+        <td class="center"><a href="../../teacher/teachingtask/recordStudentIndex.do?epid=274816440"
+                              target="_blank"><img src="../../styles/images/see.gif" alt="查看"/></a></td>
+    </tr>
+    
+</table>
+<br>
+<table width="92%" cellpadding="0" cellspacing="0" class="subtitle">
+    <tr>
+        <td>上课大节</td>
+        
+        <td id="rightbg">&nbsp;</td>
+    </tr>
+</table>
+<table cellpadding="0" cellspacing="0" class="infolist_tab">
+    <tr>
+        <th>序号</th>
+        <th>名称</th>
+        <th>包含小节</th>
+        
+        <th>时间</th>
+        
+
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td class="center">1
+        </td>
+        <td class="center">上午1、2节
+        </td>
+        <td class="center">第1-2小节</td>
+        
+        <td class="center">
+            08:00
+            --
+            09:50
+        </td>
+        
+
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td class="center">2
+        </td>
+        <td class="center">上午1-4节
+        </td>
+        <td class="center">第1-4小节</td>
+        
+        <td class="center">
+            08:00
+            --
+            12:00
+        </td>
+        
+
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td class="center">3
+        </td>
+        <td class="center">全天
+        </td>
+        <td class="center">第1-8小节</td>
+        
+        <td class="center">
+            08:00
+            --
+            17:55
+        </td>
+        
+
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td class="center">4
+        </td>
+        <td class="center">上午3、4节
+        </td>
+        <td class="center">第3-4小节</td>
+        
+        <td class="center">
+            10:10
+            --
+            12:00
+        </td>
+        
+
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td class="center">5
+        </td>
+        <td class="center">下午5、6节
+        </td>
+        <td class="center">第5-6小节</td>
+        
+        <td class="center">
+            14:00
+            --
+            15:50
+        </td>
+        
+
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td class="center">6
+        </td>
+        <td class="center">下午5-8节
+        </td>
+        <td class="center">第5-8小节</td>
+        
+        <td class="center">
+            14:00
+            --
+            17:55
+        </td>
+        
+
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td class="center">7
+        </td>
+        <td class="center">下午7、8节
+        </td>
+        <td class="center">第7-8小节</td>
+        
+        <td class="center">
+            16:05
+            --
+            17:55
+        </td>
+        
+
+    </tr>
+    
+    <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+        onMouseOut="javascript:this.className='infolist_common'">
+        <td class="center">8
+        </td>
+        <td class="center">晚上9-10节
+        </td>
+        <td class="center">第9-10小节</td>
+        
+        <td class="center">
+            19:00
+            --
+            20:50
+        </td>
+        
+
+    </tr>
+    
+</table>
+</body>
+</html>
+

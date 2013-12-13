@@ -1,12 +1,19 @@
 package com.lifedjtu.jw.pojos;
 
 public class User extends EntityObject{
+	private String id;
 	private String studentId;
 	private String password;
 	
 	private String username;
 	private String curSessionId;
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getStudentId() {
 		return studentId;
 	}
