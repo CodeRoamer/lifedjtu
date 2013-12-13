@@ -2,10 +2,15 @@
 <!DOCTYPE struts PUBLIC  
 "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
 "http://struts.apache.org/dtds/struts-2.3.dtd">
-<struts>
+<struts>	
 	<package name="struts2" extends="struts-default" namespace="/">
+	
+		<result-types>
+			<result-type name="jsonResult" class="com.lifedjtu.jw.ui.struts2.result.JsonResult"></result-type>
+		</result-types>
+	
 		<action name="index" class="com.lifedjtu.jw.ui.struts2.core.MainAction">
-			<result name="success">/jsp/hello.jsp</result>
+			<result name="success">/WEB-INF/jsp/index.jsp</result>
 		</action>
 	</package>
 </struts>
