@@ -38,9 +38,9 @@
             <div class="container">
               <ul class="nav">
                 <li class="active"><a href="#">主页</a></li>
+                <li><a href="#">客户端下载</a></li>
                 <li><a href="#">服务</a></li>
                 <li><a href="#">开发人员</a></li>
-                <li><a href="#">客户端下载</a></li>
                 <li><a href="#">关于</a></li>
               </ul>
             </div>
