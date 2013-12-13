@@ -15,21 +15,15 @@
 	<context:component-scan base-package="com.lifedjtu.jw.dao.impl" />
 	<context:component-scan base-package="com.lifedjtu.jw.business.impl" />
 	<!-- 数据库连接池 -->
-	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		 
-		<property name="url"
-			value="jdbc:mysql://sqld.duapp.com:4050/ZvyYJemJBmhFPqLgtQst?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true" />
-		<property name="username" value="pOWAykgHjL49otmQx0VRByc3" />
-		<property name="password" value="Ciqpl80ZtM5LruGTUtRTX4kNuEByIGgF" />
 		
-		<property name="url"
-			value="jdbc:mysql://127.0.0.1:3306/life_djtu?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true" />
+		<property name="url" value="jdbc:mysql://localhost/lifedjtu" />
 		<property name="username" value="root" />
-		<property name="password" value="" />
-	</bean> -->
+		<property name="password" value="357159" />
+	</bean> 
 	<!-- hibernate sessionFactory 创建 -->
-	<!-- <bean id="sessionFactory"
+	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan">
@@ -47,7 +41,7 @@
 	</bean>
 	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
 		<property name="sessionFactory" ref="sessionFactory"></property>
-	</bean> -->
+	</bean>
 	<!-- 事物配置 -->
 	<!-- <bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
