@@ -60,8 +60,8 @@
       <!-- Example row of columns -->
       <div class="row-fluid">
         <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <h2>集成教务在线</h2>
+          <p>我们将全部的教务在线功能搬到您小小的手机上，查看成绩，查看课表，查看考试，查看学籍等等。更有一键搜寻空教室，一键完成教学评估，考试通知推送，考试成绩推送，当天课表推送等重重惊喜。</p>
           <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
         <div class="span4">
