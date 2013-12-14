@@ -8,6 +8,15 @@ public class User extends EntityObject{
 	private String username;
 	private String curSessionId;
 	
+	private String freeLoginHashCode;
+	
+	
+	public String getFreeLoginHashCode() {
+		return freeLoginHashCode;
+	}
+	public void setFreeLoginHashCode(String freeLoginHashCode) {
+		this.freeLoginHashCode = freeLoginHashCode;
+	}
 	public String getId() {
 		return id;
 	}
