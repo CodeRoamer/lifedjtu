@@ -12,6 +12,14 @@ public class DomElement extends EntityObject{
 	private List<String> classes;
 	private Map<String,String> attributes;
 	private String tagName;
+	private String tag;
+	
+	public String getTag() {
+		return tag;
+	}
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
 	public String getHtml() {
 		return html;
 	}

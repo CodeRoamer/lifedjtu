@@ -24,12 +24,14 @@ public class ExtractorTest {
 		String line;
 		while((line=reader.readLine())!=null){
 			content+=line;
-		}
-
-		List<DomElement> list = $("table[class=infolist_tab]:eq(2) tr",content);
+		}		
 		
+		
+		long current = System.currentTimeMillis();
+		List<DomElement> list = $("table[class=infolist_tab] > tr",content);
+		System.out.println((System.currentTimeMillis()-current)/(double)1000+"s");
 		for(DomElement domElement : list){
-			System.out.println(domElement.toJSON());
+			System.out.println(domElement.getText());
 		}
 	}
 }
