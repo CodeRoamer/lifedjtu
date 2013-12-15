@@ -286,7 +286,7 @@ public class Extractor {
 	}
 	
 	//找到直接的孩子，然后返回
-	private static List<DomElement> findAllDirectChildrenAndSelect(String html, String selector){
+	public static List<DomElement> findAllDirectChildrenAndSelect(String html, String selector){
 		Matcher matcher = allTagFindPattern.matcher(html);
 		int sequenceIndex = 0;
 		Vector<Tag> tags = new Vector<Tag>();

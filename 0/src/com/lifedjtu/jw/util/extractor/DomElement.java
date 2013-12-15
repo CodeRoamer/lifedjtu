@@ -69,4 +69,7 @@ public class DomElement extends EntityObject{
 	public List<DomElement> find(String selector){
 		return Extractor.$(selector, html);
 	}
+	public List<DomElement> children(String selector){
+		return Extractor.findAllDirectChildrenAndSelect(html, selector);
+	}
 }
