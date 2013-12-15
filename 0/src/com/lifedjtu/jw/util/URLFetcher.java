@@ -14,6 +14,8 @@ import com.baidu.bae.api.fetchurl.BasicNameValuePair;
 import com.baidu.bae.api.fetchurl.NameValuePair;
 import com.lifedjtu.jw.config.LifeDjtuConfig;
 
+
+//请使用IP地址，节约DNS查询时间
 public class URLFetcher {	
 	public static FetchResponse fetchURLByGet(String url, String sessionId){
 		FetchResponse fetchResponse = new FetchResponse();
@@ -99,12 +101,20 @@ public class URLFetcher {
 	}
 	
 	public static void main(String[] args){
-		FetchResponse response = fetchURLByPost("jw.djtu.edu.cn/academic/j_acegi_security_check", null, MapMaker.instance("j_username", "1018110323").param("j_password", "xxxxxx").toMap());
-		
-		FetchResponse header = fetchURLByGet("jw.djtu.edu.cn/academic/showHeader.do", response.getSessionId());
-		
-		String infoString = $("#greeting", header.getResponseBody()).get(0).getText();
-		
-		System.out.println(infoString);
+		long currentTime = System.currentTimeMillis();
+		FetchResponse response = fetchURLByPost("202.199.128.21/academic/j_acegi_security_check", null, MapMaker.instance("j_username", "1018110323").param("j_password", "*****").toMap());
+		System.err.println((System.currentTimeMillis()-currentTime)/(double)1000+"s");
+		currentTime = System.currentTimeMillis();
+		FetchResponse response2 = fetchURLByGet("202.199.128.21/academic/showHeader.do", response.getSessionId());
+		System.err.println((System.currentTimeMillis()-currentTime)/(double)1000+"s");
+
+		if(response2.getStatusCode()!=200){
+			System.out.println("登陆失败或已经超时，重新登陆！");
+		}else {
+			
+			String infoString = $("#greeting", response2.getResponseBody()).get(0).getText();
+			
+			System.out.println(infoString);
+		}
 	}
 }

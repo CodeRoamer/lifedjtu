@@ -12,5 +12,11 @@
 		<action name="index" class="com.lifedjtu.jw.ui.struts2.core.MainAction">
 			<result name="success">/WEB-INF/jsp/index.jsp</result>
 		</action>
+		
+		<action name="signin" method="signin" class="com.lifedjtu.jw.ui.struts2.core.MainWebServiceAction">
+			<result name="success" type="jsonResult">message</result>
+		</action>
+		
+		
 	</package>
 </struts>

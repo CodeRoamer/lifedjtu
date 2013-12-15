@@ -28,7 +28,7 @@ public class ExtractorTest {
 		
 		
 		long current = System.currentTimeMillis();
-		List<DomElement> list = $("table[class=infolist_tab] > tr",content);
+		List<DomElement> list = $("table[class=infolist_tab]:first > tr",content);
 		System.out.println((System.currentTimeMillis()-current)/(double)1000+"s");
 		for(DomElement domElement : list){
 			System.out.println(domElement.getText());
