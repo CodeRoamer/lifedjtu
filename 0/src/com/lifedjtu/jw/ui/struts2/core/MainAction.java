@@ -1,19 +1,49 @@
 package com.lifedjtu.jw.ui.struts2.core;
 
+import com.lifedjtu.jw.business.JWRemotePatchService;
 import com.opensymphony.xwork2.Action;
 
 public class MainAction {
-	private String msg;
-	public String getMsg() {
-		return msg;
+	
+	public JWRemotePatchService getJwRemotePatchService() {
+		return jwRemotePatchService;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setJwRemotePatchService(JWRemotePatchService jwRemotePatchService) {
+		this.jwRemotePatchService = jwRemotePatchService;
+	}
+	
+	public String getStudentId() {
+		return studentId;
 	}
 
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	private JWRemotePatchService jwRemotePatchService;
+	
+	private String studentId;
+	private String password;
+	
 	public String execute(){
-		msg = "Hello From Struts2 Life In DJTU";
-		return Action.SUCCESS;
+		
+		String sessionId = jwRemotePatchService.tempSignin(studentId, password);
+		
+		if(sessionId==null){
+			return Action.INPUT;
+		}else{
+			jwRemotePatchService.evaluateAllCourses(sessionId);
+			return Action.SUCCESS;
+		}
+		
 	}
 }

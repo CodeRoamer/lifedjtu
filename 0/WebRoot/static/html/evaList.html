@@ -1,0 +1,935 @@
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>教师教学评价</title>
+    <Meta http-equiv="Content-Type" Content="text/html; Charset=gbk">
+    <Meta http-equiv="Content-Language" Content="zh-CN">
+    <Meta http-equiv="MSThemeCompatible" Content="No">
+    <Meta name="Description" Content="综合教务 教师教学评价">
+    <Meta name="Author" Content="Educational Technology Institute, Tsinghua University">
+    <Meta name="Copyright" Content="Copyright(c)2005 Educational Technology Institute, Tsinghua University">
+    <link href="../../styles/css/content.css" rel="stylesheet" type="text/css">
+    <script language="javascript" src="../../styles/js/common.js"></script>
+    <script language="javascript" src="../../styles/js/general.js"></script>
+    <script language="JavaScript" src="../../styles/js/function.js"></script>
+    <script type="text/javascript">
+        function encode(s) {
+            return s.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/([\\\.\*\[\]\(\)$\^])/g, "\$1");
+        }
+        function decode(s) {
+            return s.replace(/\\([\\\.\*\[\]\(\)$\^])/g, "$1").replace(/>/g, ">").replace(/</g, "<").replace(/&/g, "&");
+        }
+        function highlight(s) {
+            if (s.length == 0) {
+                alert('搜索关键词未填写！');
+                return false;
+            }
+            s = encode(s);
+            var obj = document.getElementsByTagName("body")[0];
+            var t = obj.innerHTML.replace(/<span\s+class=.?highlight.?>([^<>]*)<\/span>/gi, "$1");
+            obj.innerHTML = t;
+            var cnt = loopSearch(s, obj);
+            t = obj.innerHTML
+            var r = /{searchHL}(({(?!\/searchHL})|[^{])*){\/searchHL}/g
+            t = t.replace(r, "<span class='highlight'>$1</span>");
+            obj.innerHTML = t;
+            //alert("搜索到关键词"+cnt+"处")
+        }
+        function loopSearch(s, obj) {
+            var cnt = 0;
+            if (obj.nodeType == 3) {
+                cnt = replace(s, obj);
+                return cnt;
+            }
+            for (var i = 0,c; c = obj.childNodes[i]; i++) {
+                if (!c.className || c.className != "highlight")
+                    cnt += loopSearch(s, c);
+            }
+            return cnt;
+        }
+        function replace(s, dest) {
+            var r = new RegExp(s, "g");
+            var tm = null;
+            var t = dest.nodeValue;
+            var cnt = 0;
+            if (tm = t.match(r)) {
+                cnt = tm.length;
+                t = t.replace(r, "{searchHL}" + decode(s) + "{/searchHL}")
+                dest.nodeValue = t;
+            }
+            return cnt;
+        }
+    </script>
+    <style type="text/css">
+        .highlight {
+            background: green; /*font-weight: bold;*/
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<center>
+    <table cellspacing="0" cellpadding="0" id="title">
+        <tr>
+            <td nowrap="nowrap">
+                <div>评估课程</div>
+            </td>
+        </tr>
+    </table>
+
+
+    
+
+
+    <table cellpadding="0" cellspacing="0" class="infolist_tab">
+        <tr>
+            
+            <th>教师</th>
+            
+            <th>课程(课程号)</th>
+            
+            <th>评估状态</th>
+            <th>操作</th>
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37383"
+                   target="_blank">李宏
+                </a>
+
+                </td>
+            
+            <td class="center">高级英语Ⅰ(0080305071)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40075586&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37383"
+                   target="_blank">李宏
+                </a>
+
+                </td>
+            
+            <td class="center">高级英语Ⅰ(0080305071)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40075570&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37382"
+                   target="_blank">侯雅楠
+                </a>
+
+                </td>
+            
+            <td class="center">翻译理论与实践Ⅰ(0080305129)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39999933&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37382"
+                   target="_blank">侯雅楠
+                </a>
+
+                </td>
+            
+            <td class="center">翻译理论与实践Ⅰ(0080305129)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39999952&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37365"
+                   target="_blank">尹翎鸥
+                </a>
+
+                </td>
+            
+            <td class="center">美国文学作品选读(0080305132)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39999796&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37365"
+                   target="_blank">尹翎鸥
+                </a>
+
+                </td>
+            
+            <td class="center">美国文学作品选读(0080305132)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39999783&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37383"
+                   target="_blank">李宏
+                </a>
+
+                </td>
+            
+            <td class="center">口译Ⅰ(0080305133)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39999634&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37383"
+                   target="_blank">李宏
+                </a>
+
+                </td>
+            
+            <td class="center">口译Ⅰ(0080305133)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39999637&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=179590"
+                   target="_blank">李利群
+                </a>
+
+                </td>
+            
+            <td class="center">美国社会与文化(0080305146)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39999188&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=179590"
+                   target="_blank">李利群
+                </a>
+
+                </td>
+            
+            <td class="center">美国社会与文化(0080305146)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39999197&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37388"
+                   target="_blank">沈万顺
+                </a>
+
+                </td>
+            
+            <td class="center">英语词汇学概论(0080305148)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39999055&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37388"
+                   target="_blank">沈万顺
+                </a>
+
+                </td>
+            
+            <td class="center">英语词汇学概论(0080305148)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39999058&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37385"
+                   target="_blank">陆华强
+                </a>
+
+                </td>
+            
+            <td class="center">国际商务谈判(0080305152)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39929944&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=194876"
+                   target="_blank">高松
+                </a>
+
+                </td>
+            
+            <td class="center">日语Ⅲ(0080405206)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40043834&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=194876"
+                   target="_blank">高松
+                </a>
+
+                </td>
+            
+            <td class="center">日语Ⅲ(0080405206)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40043835&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=202060"
+                   target="_blank">刘昀
+                </a>
+
+                </td>
+            
+            <td class="center">形势与政策Ⅳ(0100003004)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=39933360&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=42620"
+                   target="_blank">王春爽
+                </a>
+
+                </td>
+            
+            <td class="center">网络安全(0120408042)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40059711&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=42620"
+                   target="_blank">王春爽
+                </a>
+
+                </td>
+            
+            <td class="center">网络安全(0120408042)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40059720&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=59780"
+                   target="_blank">丰超
+                </a>
+
+                </td>
+            
+            <td class="center">网络管理(0120408043)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40059752&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=59780"
+                   target="_blank">丰超
+                </a>
+
+                </td>
+            
+            <td class="center">网络管理(0120408043)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40059767&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=232260"
+                   target="_blank">佟宁
+                </a>
+
+                </td>
+            
+            <td class="center">局域网技术(0120408046)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40095999&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=232260"
+                   target="_blank">佟宁
+                </a>
+
+                </td>
+            
+            <td class="center">局域网技术(0120408046)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40096004&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37188"
+                   target="_blank">唐斌
+                </a>
+
+                </td>
+            
+            <td class="center">JSP基础与应用(0120908013)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40099592&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+        <tr class="infolist_common" onMouseOver="javascript:this.className='infolist_current'"
+            onmouseout="javascript:this.className='infolist_common'">
+            
+            <td class="center" nowrap="nowrap">
+
+                <a class="infolist"
+                   href="/academic/manager/studentinfo/infomanage/loadphoto.jsp?primary=userid&kind=teacher&userid=37188"
+                   target="_blank">唐斌
+                </a>
+
+                </td>
+            
+            <td class="center">JSP基础与应用(0120908013)</td>
+
+
+            
+
+
+            <td class="center"><span class='statushalt'>未评估</span>
+            </td>
+
+            <td class="center" nowrap="nowrap">
+
+                
+
+                <a  class='infolist' href="./evaindexinfo.jsdo?sub=1&result=40099626&id=39882603">评估</a>
+                &nbsp;
+
+                
+                </td>
+
+        </tr>
+        
+    </table>
+    <br><br>
+    <TABLE cellspacing="0" cellpadding="0" class="subtitle">
+        <tr>
+            <td align="center">
+                <div align="center">2013-2014第一学期学生评教、教师评学说明
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" class="explain_tab">
+        <tr>
+            <td class="explain">
+                一、学生评教说明
+<br>
+<br>   ◆有未评估的课程，不能查看成绩（课程全部评估提交完成后，查看成绩功能恢复正常。）
+<br>   ◆本评估全部匿名，请客观评价。
+<br>
+<br>   ◆评价步骤如下：
+<br>   1.学生进入个人信息查询界面（用户名和初始密码为学生的学号）；
+<br>   2.点击左边的【教学评价】栏,进入“评估课程”；
+<br>   3.在需评估课程后点击【评估】，在相应评价内容后选择“A、B、C、D、E”五个等级中相对应的等级（A等级评价最高、E等级评价最低），选择完毕后点击【提交】，在显示的确认表中点击【确定】，该位教师评估完毕，【未评估】变成【已评估】。如此，逐个完成所有课程评估后，此学生本学期评教工作完毕。
+<br>
+<br>二、教师评学说明
+<br>
+<br>   ◆有未评估的课程，不能浏览结果（课程全部评估提交完成后，浏览结果功能恢复正常。）
+<br>   ◆请客观评价。
+<br>
+<br>   ◆评价步骤如下：
+<br>   1.输入【用户名】及【口令】后，点击【登录】，进入个人信息查询界面（用户名和初始口令均为教师的工作证号）；
+<br>   2.点击左边的【教学评价】栏，进入“评估课程”；
+<br>  3.在需评估课程后，点击【评估】，在相应评价内容后选择“A、B、C、D、E”五个等级中相对应的等级；评学内容填写完毕后点击【提交】，再在显示的确认表中点击【确定】，该课程的授课班级评学内容填写完毕，【未评估】变成【已评估】。如此，逐个完成所有课程的评学后，本学期评学工作完毕。
+            </td>
+        </tr>
+    </table>
+</center>
+</body>
+</html>

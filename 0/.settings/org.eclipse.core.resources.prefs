@@ -1,6 +1,9 @@
 eclipse.preferences.version=1
 encoding//WebRoot/WEB-INF/jsp/index.jsp=UTF-8
+encoding//WebRoot/WEB-INF/jsp/result.jsp=UTF-8
 encoding//WebRoot/static/html/currcourse.html=UTF-8
+encoding//WebRoot/static/html/evaItem.html=UTF-8
+encoding//WebRoot/static/html/evaList.html=UTF-8
 encoding//WebRoot/static/html/exam.html=UTF-8
 encoding//WebRoot/static/html/romeschedule.html=UTF-8
 encoding//WebRoot/static/html/studyschedule.html=UTF-8

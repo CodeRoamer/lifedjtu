@@ -9,7 +9,7 @@
 			<result-type name="jsonResult" class="com.lifedjtu.jw.ui.struts2.result.JsonResult"></result-type>
 		</result-types>
 	
-		<action name="index" class="com.lifedjtu.jw.ui.struts2.core.MainAction">
+		<action name="index">
 			<result name="success">/WEB-INF/jsp/index.jsp</result>
 		</action>
 		
@@ -17,6 +17,14 @@
 			<result name="success" type="jsonResult">message</result>
 		</action>
 		
+		<action name="evaluate">
+			<result name="success">/WEB-INF/jsp/evaluate.jsp</result>
+		</action>
+		
+		<action name="doEvaluate" class="com.lifedjtu.jw.ui.struts2.core.MainAction">
+			<result name="success">/WEB-INF/jsp/result.jsp</result>
+			<result name="input">/WEB-INF/jsp/evaluate.jsp</result>
+		</action>
 		
 	</package>
 </struts>
