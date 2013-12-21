@@ -1,34 +1,35 @@
 package com.lifedjtu.jw.pojos;
 
 public class CourseTakenItem extends EntityObject{
-	private int fromWeek;
-	private int toWeek;
-	private int weekday;
-	private int[] takenCondition;
+	private String week;
+	private String day;
+	private String time;
 	private String roomName;
-	public int getFromWeek() {
-		return fromWeek;
+	
+	public CourseTakenItem(String week, String day, String time, String roomName) {
+		super();
+		this.week = week;
+		this.day = day;
+		this.time = time;
+		this.roomName = roomName;
 	}
-	public void setFromWeek(int fromWeek) {
-		this.fromWeek = fromWeek;
+	public String getWeek() {
+		return week;
 	}
-	public int getToWeek() {
-		return toWeek;
+	public void setWeek(String week) {
+		this.week = week;
 	}
-	public void setToWeek(int toWeek) {
-		this.toWeek = toWeek;
+	public String getDay() {
+		return day;
 	}
-	public int getWeekday() {
-		return weekday;
+	public void setDay(String day) {
+		this.day = day;
 	}
-	public void setWeekday(int weekday) {
-		this.weekday = weekday;
+	public String getTime() {
+		return time;
 	}
-	public int[] getTakenCondition() {
-		return takenCondition;
-	}
-	public void setTakenCondition(int[] takenCondition) {
-		this.takenCondition = takenCondition;
+	public void setTime(String time) {
+		this.time = time;
 	}
 	public String getRoomName() {
 		return roomName;

@@ -6,6 +6,19 @@ public class Exam extends EntityObject{
 	private String examDate;
 	private String roomName;
 	private String courseProperty;
+	
+	public Exam(String courseAliasName, String courseName, String examDate,
+			String roomName, String courseProperty) {
+		super();
+		this.courseAliasName = courseAliasName;
+		this.courseName = courseName;
+		this.examDate = examDate;
+		this.roomName = roomName;
+		this.courseProperty = courseProperty;
+	}
+	
+	
+
 	public String getCourseAliasName() {
 		return courseAliasName;
 	}
@@ -35,6 +48,13 @@ public class Exam extends EntityObject{
 	}
 	public void setCourseProperty(String courseProperty) {
 		this.courseProperty = courseProperty;
+	}
+	
+	@Override
+	public String toString() {
+		return "Exam [courseAliasName=" + courseAliasName + ", courseName="
+				+ courseName + ", examDate=" + examDate + ", roomName="
+				+ roomName + ", courseProperty=" + courseProperty + "]\n";
 	}
 	
 }

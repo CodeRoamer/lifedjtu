@@ -1,12 +1,61 @@
 package com.lifedjtu.jw.business.impl;
 
+import java.util.List;
+
+import org.junit.Test;
 import org.springframework.stereotype.Component;
 
 import com.lifedjtu.jw.business.TestService;
+import com.lifedjtu.jw.util.extractor.DomElement;
 
-@Component("testService")
-public class TestServiceImpl implements TestService{
-	public String greeting(){
-		return "From Spring";
+
+public class TestServiceImpl {
+	public static void main(String args[]){
+		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
+		
+		//System.out.println(jwRemoteServiceImpl.signinRemote("1018110201", "357159"));
+		
+		//System.out.println(jwRemoteServiceImpl.fetchStudentRegistry("883F27E687B490A034A8E51A00C5D4B5"));
+		//System.out.println(jwRemoteServiceImpl.changeRemotePassword("883F27E687B490A034A8E51A00C5D4B5", "357159", "357159", "357159"));
+	}
+	
+	@Test
+	public void testFetchStudentRegistry(){
+		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
+		String sessionId = jwRemoteServiceImpl.signinRemote("1018110201", "357159");
+		List<DomElement> list1 = jwRemoteServiceImpl.fetchStudentRegistry(sessionId).getTh();
+		List<DomElement> list2 = jwRemoteServiceImpl.fetchStudentRegistry(sessionId).getTd();
+		DomElement domElement = list1.get(0);
+		System.out.println(domElement.getText());
+		domElement = list2.get(0);
+		System.out.println(domElement.getText());
+	}
+	
+	@Test
+	public void testQueryRoom(){
+		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
+		String sessionId = jwRemoteServiceImpl.signinRemote("1018110201", "357159");
+		jwRemoteServiceImpl.queryRoom(sessionId, 78, 1061, 1063);
+	}
+	
+	@Test
+	public void testQueryRemoteCourseTable(){
+		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
+		String sessionId = jwRemoteServiceImpl.signinRemote("1018110201", "357159");
+		System.out.println(jwRemoteServiceImpl.queryRemoteCourseTable(sessionId).toString());
+	}
+	
+	@Test
+	public void testQueryRemoteExams(){
+		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
+		String sessionId = jwRemoteServiceImpl.signinRemote("1018110201", "357159");
+		System.out.println(jwRemoteServiceImpl.queryRemoteExams(sessionId).toString());
+	}
+	
+	@Test
+	public void testQueryRemoteScores(){
+		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
+		String sessionId = jwRemoteServiceImpl.signinRemote("1018110201", "357159");
+		System.out.println(jwRemoteServiceImpl.queryRemoteScores(sessionId).toString());
 	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import com.lifedjtu.jw.pojos.*;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
-import com.lifedjtu.jw.pojos.dto.ScoreDto;
+import com.lifedjtu.jw.pojos.Score;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 
 public interface JWRemoteService {
@@ -24,5 +24,5 @@ public interface JWRemoteService {
 	
 	public List<Exam> queryRemoteExams(String sessionId);
 	
-	public List<ScoreDto> queryRemoteScores(String session);
+	public List<Score> queryRemoteScores(String sessionId);
 }
