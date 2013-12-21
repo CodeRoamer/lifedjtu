@@ -1,0 +1,449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>瀛︾睄淇℃伅</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <!-- Mimic Internet Explorer 7 -->
+      <meta http-equiv="X-UA-Compatible" content="IE=7"> <!-- IE7 mode -->
+    <link href="/academic/styles/default/css/text.css" rel="stylesheet" type="text/css">
+    <link href="/academic/styles/default/css/main.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" language="javascript" src="/academic/styles/js/jquery.js" ></script>
+    <script type="text/javascript" language="javascript" src="/academic/styles/js/function.js" ></script>
+    <script type="text/javascript" language="javascript" src="/academic/styles/js/common.js" ></script>
+    <script type="text/javascript" language="javascript" src="/academic/styles/js/selectDate.js" ></script>
+    <script type="text/javascript" language="javascript" src="/academic/styles/js/selectTime.js" ></script>
+    <script type="text/javascript" language="javascript" src="/academic/styles/default/js/page.js" ></script>
+
+    <script type="text/javascript" language="javascript" src="/academic/styles/js/selectDateTime.js" ></script>
+       <script type="text/javascript" language="javascript" src="/academic/styles/js/j_common.js" ></script>
+
+      
+
+      <!--[if lt IE 7]>
+
+      <script src="/academic/styles/js/jquery.bgiframe.min.js" type="text/javascript"></script>
+      <![endif]-->
+
+  </head>                                
+  <body>
+    <center>
+         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    var xmlhttp;
+    var xmlhttpd;
+    function changeClasses(majorId, gradeId, stusortId) {
+        if (window.ActiveXObject) {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        } else  if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        }
+        var url = "changeClass.do?majorid=" + majorId + "&gradeid=" + gradeId + "&stusortid=" + stusortId;//鎻愪氦鍙傛暟
+        xmlhttp.open("POST", url);
+        xmlhttp.send(null);
+        xmlhttp.onreadystatechange = listClasses;//杩斿洖骞舵墽琛岀浉搴攋s
+
+        var url1 = "changeDirection.do?majorid=" + majorId;
+        if (window.ActiveXObject) {
+            xmlhttpd = new ActiveXObject("Microsoft.XMLHTTP");
+        } else  if (window.XMLHttpRequest) {
+            xmlhttpd = new XMLHttpRequest();
+        }
+        xmlhttpd.open("POST", url1);
+        xmlhttpd.send(null);
+        xmlhttpd.onreadystatechange = listDirections;
+
+    }
+    function listClasses() {
+        if (xmlhttp.readyState == 4)
+            if (xmlhttp.status == 200) {
+                var mytext = xmlhttp.responseText;
+                document.getElementById("classChange").innerHTML = mytext;//鏇挎崲span id涓簃ajorChange鎵€鍖呭惈鐨勫尯鍩�
+                document.getElementById("areaChange").innerHTML = "<select name='areaid'><option value=''>--璇烽€夋嫨--</option></select><em class='error'>锕�</em><input type='hidden' name='required_areaid' value='0'/>";//鏇挎崲span directionChange
+            }
+    }
+    function listDirections() {
+        if (xmlhttpd.readyState == 4)
+            if (xmlhttpd.status == 200) {
+                var mytext = xmlhttpd.responseText;
+                document.getElementById("directionChange").innerHTML = mytext;//鏇挎崲span id涓簃ajorChange鎵€鍖呭惈鐨勫尯鍩�
+            }
+    }
+</script>
+
+<script type="text/javascript">
+    var xmlhttp;
+    var xmlhttpd;
+    function changeOnlyClasses(majorId, gradeId, stusortId) {
+        if (window.ActiveXObject) {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        } else  if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        }
+        var url = "changeOnylClass.do?majorid=" + majorId + "&gradeid=" + gradeId + "&stusortid=" + stusortId;//鎻愪氦鍙傛暟
+        xmlhttp.open("POST", url);
+        xmlhttp.send(null);
+        xmlhttp.onreadystatechange = listClasses;//杩斿洖骞舵墽琛岀浉搴攋s
+    }
+    function listClasses() {
+        if (xmlhttp.readyState == 4)
+            if (xmlhttp.status == 200) {
+                var mytext = xmlhttp.responseText;
+                document.getElementById("classChange").innerHTML = mytext;//鏇挎崲span id涓簃ajorChange鎵€鍖呭惈鐨勫尯鍩�
+                document.getElementById("areaChange").innerHTML = "<select name='areaid'><option value=''>--璇烽€夋嫨--</option></select><em class='error'>锕�</em><input type='hidden' name='required_areaid' value='0'/>";//鏇挎崲span directionChange
+            }
+    }
+</script>
+
+<script type="text/javascript">
+    var xmlhttp;
+    var xmlhttpd;
+    function changeAreaes(classid) {
+        if (window.ActiveXObject) {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        } else  if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        }
+        var url = "changeArea.do?classid=" + classid;//鎻愪氦鍙傛暟
+        xmlhttp.open("GET", url);
+        xmlhttp.send(null);
+        xmlhttp.onreadystatechange = listAreas;//杩斿洖骞舵墽琛岀浉搴攋s
+
+
+    var url1 = "changeLeanStyle.do?classid=" + classid;
+    if (window.ActiveXObject) {
+        xmlhttpd = new ActiveXObject("Microsoft.XMLHTTP");
+    } else  if (window.XMLHttpRequest) {
+        xmlhttpd = new XMLHttpRequest();
+    }
+    xmlhttpd.open("POST", url1);
+    xmlhttpd.send(null);
+    xmlhttpd.onreadystatechange = listLearnStyles;
+
+
+    function listAreas() {
+        if (xmlhttp.readyState == 4)
+            if (xmlhttp.status == 200) {
+                var mytext = xmlhttp.responseText;
+                document.getElementById("areaChange").innerHTML = mytext;//鏇挎崲span id涓簃ajorChange鎵€鍖呭惈鐨勫尯鍩�
+            }
+    }
+    function listLearnStyles() {
+        if (xmlhttp.readyState == 4)
+            if (xmlhttp.status == 200) {
+                var mytext = xmlhttp.responseText;
+                document.getElementById("learnStyleChange").innerHTML = mytext;//鏇挎崲span id涓簂earnStyleChange鎵€鍖呭惈鐨勫尯鍩�
+            }
+    }
+    }
+</script>
+<script type="text/javascript">
+    var xmlhttp;
+    function changeMajor(depId) {
+        if (window.ActiveXObject)
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        else  if (window.XMLHttpRequest)
+            xmlhttp = new XMLHttpRequest();
+        var url = "changeMajor.do?departmentid=" + depId;//鎻愪氦鍙傛暟
+        xmlhttp.onreadystatechange = listMajors;//杩斿洖骞舵墽琛岀浉搴攋s
+        xmlhttp.open("GET", url);
+        xmlhttp.send(null);
+    }
+    function listMajors() {
+        if (xmlhttp.readyState == 4)
+            if (xmlhttp.status == 200) {
+                var mytext = xmlhttp.responseText;
+                document.getElementById("majorChange").innerHTML = mytext;//鏇挎崲span id涓簃ajorChange鎵€鍖呭惈鐨勫尯鍩�
+                document.getElementById("classChange").innerHTML = "<select name='classid'><option value=''>--璇烽€夋嫨--</option></select><em class='error'>锕�</em><input type='hidden' name='required_classid' value='0'/>";//鏇挎崲span classChange
+                document.getElementById("directionChange").innerHTML = "<select name='directionId'><option value=''>--璇烽€夋嫨--</option></select>";//鏇挎崲span directionChange
+                document.getElementById("areaChange").innerHTML = "<select name='areaid'><option value=''>--璇烽€夋嫨--</option></select><em class='error'>锕�</em><input type='hidden' name='required_areaid' value='0'/>";//鏇挎崲span directionChange
+            }
+    }
+    function _viewphoto(mypic, imgSrc) {
+        var mp = document.getElementById(mypic);
+        if (imgSrc) {
+            mp.src = imgSrc;
+            mp.style.display = "";
+        }
+    }
+
+    function deletephoto() {
+        alert("鍒犻櫎鎴栦慨鏀圭収鐗囦笌鍏朵粬淇℃伅涓€鏍烽渶鈥滀繚瀛樷€濆悗鐢熸晥!");
+        var mp = document.getElementById("showimg");
+        mp.src = "/academic/styles/images/defaultpic.jpg";
+        mp.style.display = "";
+        //document.getElementById("photo").insertAdjacentHTML("afterEnd", "<input type=\"hidden\" value=\"0\" name=\"dp\"/>");
+        $("input[name='photo']").after("<input type=\"hidden\" value=\"0\" name=\"dp\"/>");
+    }
+
+</script>
+<script type="text/javascript">
+    function addSave() {
+        document.forms[0].action = "/academic/manager/studentinfo/studentInfoAddDo.do";
+        document.forms[0].submit();
+    }
+</script>
+
+<div class="title">
+    <span class="left"><em>
+        
+            
+            瀛︾睄淇℃伅
+        
+    </em>
+    </span>
+    <span class="right">&nbsp;</span>
+</div>
+
+<form name="studentModifyInfoAcquireFillForm" method="post" action="/academic/student/studentinfo/studentInfoModifyDo.do" enctype="multipart/form-data">
+<input type="hidden" name="stuUserId" value="188772">
+<input type="hidden" name="frombase" value="0">
+<input type="hidden" name="wantTag" value="0">
+    <table cellspacing="0" cellpadding="0" class="form">
+        <tr>
+            <th width="12%" align="left">瀛﹀彿</th><td width="35%"><input type="hidden" name="username" value="1018110201">1018110201<em class="error"></em></td>
+            <th width="12%" align="left">鏇剧敤鍚�</th><td ><input type="hidden" name="oldRealName" value="">&nbsp;</td>
+            <td width="7%" rowspan="7"><img src="/academic/manager/studentinfo/showStudentImage.jsp" width="120" hight="150" name="showimg" id="showimg"><br></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">濮撳悕</th><td ><input type="hidden" name="realname" value="榻愮闇�">榻愮闇�<em class="error"></em></td>
+            <th width="12%" align="left">濮撳悕鎷奸煶</th><td ><input type="hidden" name="realNamePinYin" value="qiyifei">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鑻辨枃鍚�</th><td ><input type="hidden" name="enname" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">鎬у埆</th><td ><input type="hidden" name="gender" value="鐢�">鐢�<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鍑虹敓鏃ユ湡</th><td ><input type="hidden" name="birthday" value="1992-05-13">1992-05-13<em class="error"></em></td>
+            <th width="12%" align="left">鍑虹敓鍦�</th><td ><input type="hidden" name="birthplace" value="">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鍥界睄</th><td ><input type="hidden" name="nationalityId" value="1151">涓浗<em class="error"></em></td>
+            <th width="12%" align="left">绫嶈疮</th><td ><input type="hidden" name="nativePlace" value="">&nbsp;<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">璇佷欢绫诲瀷</th><td ><input type="hidden" name="cardtypeId" value="27">韬唤璇�<em class="error"></em></td>
+            <th width="12%" align="left">璇佷欢鍙风爜</th><td ><input type="hidden" name="idno" value="130902199205133213">130902199205133213<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">姘戞棌</th><td ><input type="hidden" name="folkid" value="1095">姹夋棌<em class="error"></em></td>
+            <th width="12%" align="left">鏀挎不闈㈣矊</th><td ><input type="hidden" name="politicalStatusId" value="1154">鍏遍潚鍥㈠憳<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">濠氬Щ鐘跺喌</th><td ><input type="hidden" name="marrageStatusId" value="202">鏈�<em class="error"></em></td>
+            <th width="12%" align="left">鏂囧寲绋嬪害</th><td  colspan="2"><input type="hidden" name="literacyId" value="0">鏈煡<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">澶栬璇</th><td ><input type="hidden" name="foreignLanguageId" value="1216">鑻辫<em class="error"></em></td>
+            <th width="12%" align="left">澶栬姘村钩</th><td  colspan="2"><input type="hidden" name="languageLevelId" value="0">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鍋ュ悍鐘跺喌</th><td ><input type="hidden" name="health" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">瀛︾敓鏉ユ簮</th><td  colspan="2"><input type="hidden" name="stusourceId" value="0">鏈煡<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鑰冨尯</th><td ><input type="hidden" name="regionid" value="1193">娌冲寳<em class="error"></em></td>
+            <th width="12%" align="left">鑰冪敓鍙�</th><td  colspan="2"><input type="hidden" name="examStuNo" value="">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鑰冪敓鐗瑰緛</th><td ><input type="hidden" name="characteristicId" value="0">&nbsp;</td>
+            <th width="12%" align="left">褰曞彇绫诲瀷</th><td  colspan="2"><input type="hidden" name="enrollTypeId" value="0">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">褰曞彇骞翠唤</th><td ><input type="hidden" name="enrollYearId" value="">&nbsp;</td>
+            <th width="12%" align="left">鏂扮敓鎶ュ埌鐘舵€�</th><td  colspan="2"><input type="hidden" name="freshmanCheckInId" value="0">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">楂樿€冩€诲垎</th><td ><input type="hidden" name="entrExamScore" value="566">566<em class="error"></em></td>
+            <th width="12%" align="left">鍏ュ鍑嗚€冭瘉鍙�</th><td  colspan="2"><input type="hidden" name="entranceExamNo" value="10130901150523">10130901150523<em class="error"></em></td>
+
+        </tr>
+        <tr>
+            <th width="12%" align="left">鍏ュ褰曞彇璇佸彿</th><td ><input type="hidden" name="entranceNo" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">涓鍚�</th><td  colspan="2"><input type="hidden" name="highschool" value="">&nbsp;<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">涓浠ｇ爜</th><td ><input type="hidden" name="highschoolCode" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">涓姣曚笟鏃ユ湡</th><td  colspan="2"><input type="hidden" name="highschoolGraDate" value="">&nbsp;<em class="error"></em></td>
+        </tr>
+        <tr>
+
+            <th width="12%" align="left">涓姣曚笟璇佷功缂栧彿</th><td ><input type="hidden" name="highschoolGraCode" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">鍏ュ骞寸骇</th><td  colspan="2"><input type="hidden" name="entranceGradeid" value="6323">2010绾�<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鍏ュ鏃ユ湡</th><td ><input type="hidden" name="entranceDate" value="2010-09-01">2010-09-01<em class="error"></em></td>
+            <th width="12%" align="left">鍏ュ鏂瑰紡</th><td  colspan="2"><input type="hidden" name="entranceTypeId" value="70">鍏ㄥ浗缁熻€�<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鍩瑰吇鏂瑰紡</th><td ><input type="hidden" name="trainingModeId" value="1184">闈炲畾鍚�<em class="error"></em></td>
+            <th width="12%" align="left">鎺堣绫诲瀷</th><td  colspan="2"><input type="hidden" name="classTypeId" value="0">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">闄㈢郴</th><td ><input type="hidden" name="departmentid" value="809">澶栧浗璇闄�<em class="error"></em></td>
+            <th width="12%" align="left">涓撲笟</th><td  colspan="2"><div id="majorChange"><input type="hidden" name="majorid" value="4217">鑻辫+杞欢宸ョ▼</div><em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">骞寸骇</th><td ><div id="gradeChange"><input type="hidden" name="gradeid" value="6323">2010绾�</div><em class="error"></em></td>
+            <th width="12%" align="left">瀛︾敓绫诲埆</th><td  colspan="2"><div id="stusortChange"><input type="hidden" name="stusortid" value="1074">鏈(鏈)5骞�</div><em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鐝骇</th><td ><div id="classChange"><input type="hidden" name="classid" value="6399">R鑻辫102</div><em class="error"></em></td>
+            <th width="12%" align="left">涓撲笟鏂瑰悜</th><td  colspan="2"><div id="directionChange"><input type="hidden" name="directionId" value="8601">缃戠粶宸ョ▼涓庢暟鎹畨鍏�</div><em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鏍″尯</th><td ><div id="areaChange"><input type="hidden" name="areaid" value="78">鏃呴『鏍″尯</div><em class="error"></em></td>
+            <th width="12%" align="left">瀛︾睄琛ㄥ彿</th><td  colspan="2"><input type="hidden" name="stuno" value="">&nbsp;<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鏄惁鏈夊绫�</th><td ><input type="hidden" name="stuStatus" value="0">鏄�<em class="error"></em></td>
+            <th width="12%" align="left">鏄惁鍦ㄦ牎</th><td  colspan="2"><input type="hidden" name="schoolStatus" value="0">鏄�<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">瀛︾敓褰撳墠鐘舵€�</th><td  colspan="4"><input type="hidden" name="currentStatus" value="0">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">閾惰鍗″彿</th><td ><input type="hidden" name="bankNo" value="">&nbsp;</td>
+            <th width="12%" align="left">涓€鍗￠€氬彿</th><td  colspan="2"><input type="hidden" name="oneCardNo" value="">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">瀛︿範褰㈠紡</th><td ><input type="hidden" name="learnStyleId" value="151">楂樼瓑瀛︽牎锛堝鍘嗘暀鑲诧級<em class="error"></em></td>
+            <th width="12%" align="left">瀛︿範鏂瑰紡</th><td  colspan="2"><input type="hidden" name="learnTypeId" value="163">鑴变骇<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">姣曚笟绫诲瀷</th><td ><input type="hidden" name="isgraduated" value="0">&nbsp;</td>
+            <th width="12%" align="left">姣曚笟鍘诲悜</th><td  colspan="2"><input type="hidden" name="postGraduateId" value="0">鏈煡<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">姣曚笟璇佸彿</th><td ><input type="hidden" name="gdplm" value="">&nbsp;</td>
+            <th width="12%" align="left">姣曚笟鏃ユ湡</th><td  colspan="2"><input type="hidden" name="graduateDate" value="2015-07-01">2015-07-01<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鏈瘯涓氬師鍥 </th><td ><input type="hidden" name="notGraduatedReasonId" value="0">&nbsp;</td>
+            <th width="12%" align="left">瀛︿綅鐘舵€�</th><td  colspan="2"><input type="hidden" name="degreeStatus" value="0">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">瀛︿綅</th><td ><input type="hidden" name="ddplmSortId" value="">&nbsp;</td>
+            <th width="12%" align="left">瀛︿綅璇佸彿</th><td  colspan="2"><input type="hidden" name="ddplm" value="">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">瀛︿綅鏃ユ湡</th><td ><input type="hidden" name="degreeDate" value="">&nbsp;</td>
+            <th width="12%" align="left">鏈幏瀛︿綅鍘熷洜</th><td  colspan="2"><input type="hidden" name="noDegreeReasonId" value="0">&nbsp;</td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鐢靛瓙閭</th><td ><input type="hidden" name="email" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">绉诲姩鐢佃瘽</th><td  colspan="2"><input type="hidden" name="moblePhone" value="">&nbsp;<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">涔樿溅璧峰绔�</th><td ><input type="hidden" name="startStop" value="">&nbsp;</td>
+            <th width="12%" align="left">涔樿溅缁堢偣绔�</th><td  colspan="2"><input type="hidden" name="endStop" value="">&nbsp;</td>
+        </tr>
+    </table>
+    <br>
+    <table cellspacing="0" cellpadding="0" class="form">
+        <tr>
+            <th width="12%" align="left">鑱旂郴鐢佃瘽</th><td ><input type="hidden" name="tel" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">閭斂缂栫爜</th><td ><input type="hidden" name="postalcode" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">閫氳鍦板潃</th><td  colspan="4"><input type="hidden" name="address" value="">&nbsp;<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">鍙傚姞宸ヤ綔鏃堕棿</th><td width="15%"><input type="hidden" name="workTime" value="">&nbsp;</td>
+            <th width="12%" align="left">鑱岀О</th><td width="15%"><input type="hidden" name="rankId" value="0">&nbsp;</td>
+            <th width="12%" align="left">宸ヤ綔鍗曚綅</th><td ><input type="hidden" name="workUnit" value="">&nbsp;<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">宸ヤ綔鍗曚綅鐢佃瘽</th><td ><input type="hidden" name="workUnitTel" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">宸ヤ綔鍗曚綅閭斂缂栫爜</th><td ><input type="hidden" name="workUnitPostalCode" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">宸ヤ綔鍗曚綅鍦板潃</th><td ><input type="hidden" name="workUnitAdress" value="">&nbsp;<em class="error"></em></td>
+        </tr>
+        <tr>
+            <th width="12%" align="left">瀹跺涵鐢佃瘽</th><td ><input type="hidden" name="familyTel" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">瀹跺涵閭斂缂栫爜</th><td ><input type="hidden" name="familyPostalCode" value="">&nbsp;<em class="error"></em></td>
+            <th width="12%" align="left">瀹跺涵浣忓潃</th><td ><input type="hidden" name="familyAdress" value="">&nbsp;<em class="error"></em></td>
+        </tr>
+    </table>
+    <br>
+    <table cellspacing="0" cellpadding="0" class="form">
+        <tr>
+            <th width="12%" align="left">澶囨敞</th><td  colspan="4" row><input type="hidden" name="memo" value="">&nbsp;<em class="error"></em></td>
+        </tr>
+    </table>
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br/>
+<table cellspacing="0" cellpadding="0" class="button_tab">
+    <tr>
+        <td>
+            
+
+            
+
+            
+            
+        </td>
+    </tr>
+</table>
+
+</form>
+
+
+
+<script type="text/javascript">
+    $(function() {
+        $('#realname').blur(function() {
+            var realname = document.getElementById("realname").value;
+            $.get('studentHanZI2PinYin.do', {realname:realname}, function(data) {
+                $('#realNamePinYin').val(data);
+            });
+
+        });
+
+    });
+</script>
+
+
+    </center>
+  </body>
+</html>
