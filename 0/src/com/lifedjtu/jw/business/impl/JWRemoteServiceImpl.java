@@ -1,6 +1,5 @@
 package com.lifedjtu.jw.business.impl;
 
-import static com.lifedjtu.jw.util.extractor.Extractor.$;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,11 +175,11 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 		}
 		//System.out.println(fetchResponse.getResponseBody());
 		List<DomElement> list = Extractor.$("table[class=infolist_tab]:first > tr",fetchResponse.getResponseBody());
-		List<Course> courses = new ArrayList();
+		List<Course> courses = new ArrayList<Course>();
 		for(int i=1;i<list.size()-3;i++){
 			List<DomElement> courseTemp = list.get(i).children("td");
 			List<DomElement> courseTakenItemTemp = courseTemp.get(9).find("tr");
-			List<CourseTakenItem> courseTakenItems = new ArrayList();
+			List<CourseTakenItem> courseTakenItems = new ArrayList<CourseTakenItem>();
 			for(int j=0;j<courseTakenItemTemp.size();j++){
 				List<DomElement> taken = courseTakenItemTemp.get(j).children("td");
 				CourseTakenItem item = new CourseTakenItem(taken.get(0).getText().trim(),
@@ -212,7 +211,7 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 			return null;
 		}
 		List<DomElement> list = Extractor.$("table[class=infolist_tab] > tr",fetchResponse.getResponseBody());
-		List<Exam> exams = new ArrayList();
+		List<Exam> exams = new ArrayList<Exam>();
 		for(int i=1;i<list.size();i++){
 			List<DomElement> examTemp = list.get(i).children("td");
 			Exam exam = new Exam(examTemp.get(0).getText().trim(),
@@ -233,7 +232,7 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 			return null;
 		}
 		List<DomElement> list = Extractor.$("table[class=datalist] > tr",fetchResponse.getResponseBody());
-		List<Score> scores = new ArrayList();
+		List<Score> scores = new ArrayList<Score>();
 		for(int i=1;i<list.size();i++){
 			List<DomElement> scoreTemp = list.get(i).children("td");
 			Score score = new Score(scoreTemp.get(0).getText().trim(),
