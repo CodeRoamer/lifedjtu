@@ -24,7 +24,7 @@ public class RoomWeekInfo extends EntityObject {
 	public String toString(){
 		String s = "";
 		for(int i=0;i<roomDayInfos.size();i++){
-			s += roomDayInfos.get(i).toString();
+			s += "周" + (i+1) + roomDayInfos.get(i).toString();
 		}
 		return s;
 	}

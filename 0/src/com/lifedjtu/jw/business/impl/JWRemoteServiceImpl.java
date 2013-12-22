@@ -54,9 +54,21 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(studentRegistryURL, sessionId);
 		System.out.println(fetchResponse.getResponseBody());
-		List<DomElement> list1 = Extractor.$("table[class=form] th",fetchResponse.getResponseBody());
-		List<DomElement> list2 = Extractor.$("table[class=form] td",fetchResponse.getResponseBody());
-		StudentRegistry studentRegistry = new StudentRegistry(list1, list2);
+		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
+		List<DomElement> title = Extractor.$("table[class=form] th",fetchResponse.getResponseBody());
+		List<DomElement> value = Extractor.$("table[class=form] td",fetchResponse.getResponseBody());
+		List<String> titles = new ArrayList<String>();
+		List<String> values = new ArrayList<String>();
+		for(int i=0;i<title.size();i++){
+			titles.add(title.get(i).getText().trim());
+		}
+		for(int i=0;i<value.size();i++){
+			values.add(value.get(i).getText().trim());
+		}
+		values.remove(2);
+		StudentRegistry studentRegistry = new StudentRegistry(titles, values);
 		return studentRegistry;
 	}
 
@@ -84,6 +96,9 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 				.param("whichweek", new Integer(week).toString())
 				.param("week", new Integer(weekday).toString())
 				.toMap());
+		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
 		//System.out.println(fetchResponse.getResponseBody());
 		List<DomElement> list = Extractor.$("tr[class=infolist_common]",fetchResponse.getResponseBody());
 		//System.out.println(list.size());
@@ -117,7 +132,11 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 																					.param("buildingid", new Integer(buildingId).toString())
 																					.param("room", new Integer(roomId).toString())
 																					.toMap());
+		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
 		List<DomElement> table = Extractor.$("table[class=infolists_tab]",fetchResponse.getResponseBody());
+		//System.out.println(fetchResponse.getResponseBody());
 		List<RoomWeekInfo> weekInfos = new ArrayList<RoomWeekInfo>();
 		for(int i=0;i<table.size();i++){
 			List<RoomDayInfo> dayInfos = new ArrayList<RoomDayInfo>();
@@ -125,9 +144,9 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 			List<DomElement> list = table.get(i).children("tr");
 			for(int j=1;j<list.size();j++){
 				List<String> classes = new ArrayList<String>();
-				List<DomElement> lines = list.get(j).children("td");
-				for(int k=1;k<lines.size();k++){
-					classes.add(lines.get(k).getText().trim());
+				List<DomElement> node = list.get(j).children("td");
+				for(int k=1;k<node.size();k++){
+					classes.add(node.get(k).getText().trim());
 				}
 				week.add(classes);
 			}
@@ -152,6 +171,9 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	public List<Course> queryRemoteCourseTable(String sessionId) {
 		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryRemoteCourseTableURL, sessionId);
+		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
 		//System.out.println(fetchResponse.getResponseBody());
 		List<DomElement> list = Extractor.$("table[class=infolist_tab]:first > tr",fetchResponse.getResponseBody());
 		List<Course> courses = new ArrayList();
@@ -186,6 +208,9 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	public List<Exam> queryRemoteExams(String sessionId) {
 		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryRemoteExamsURL, sessionId);
+		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
 		List<DomElement> list = Extractor.$("table[class=infolist_tab] > tr",fetchResponse.getResponseBody());
 		List<Exam> exams = new ArrayList();
 		for(int i=1;i<list.size();i++){
@@ -204,6 +229,9 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	public List<Score> queryRemoteScores(String sessionId) {
 		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryRemoteScoresURL, sessionId);
+		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
 		List<DomElement> list = Extractor.$("table[class=datalist] > tr",fetchResponse.getResponseBody());
 		List<Score> scores = new ArrayList();
 		for(int i=1;i<list.size();i++){

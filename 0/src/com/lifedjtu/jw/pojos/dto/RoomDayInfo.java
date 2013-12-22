@@ -24,7 +24,8 @@ public class RoomDayInfo extends EntityObject {
 	public String toString(){
 		String s = "";
 		for(int i=0;i<infos.size();i++){
-			s += infos.get(i) + " ";
+			if(infos.get(i).equals("")) s += "n ";
+			else s += infos.get(i) + " ";
 		}
 		s += "\n";
 		return s;

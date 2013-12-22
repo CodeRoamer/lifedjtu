@@ -6,33 +6,32 @@ import com.lifedjtu.jw.pojos.EntityObject;
 import com.lifedjtu.jw.util.extractor.DomElement;
 
 public class StudentRegistry extends EntityObject{
-	private List<DomElement> th;
-	
-	private List<DomElement> td;
-
-	
-	public StudentRegistry(List<DomElement> th, List<DomElement> td) {
+	private List<String> titles;
+	private List<String> values;
+	public StudentRegistry(List<String> titles, List<String> values) {
 		super();
-		this.th = th;
-		this.td = td;
+		this.titles = titles;
+		this.values = values;
+	}
+	public List<String> getTitles() {
+		return titles;
+	}
+	public void setTitles(List<String> titles) {
+		this.titles = titles;
+	}
+	public List<String> getValues() {
+		return values;
+	}
+	public void setValues(List<String> values) {
+		this.values = values;
 	}
 	
-	public List<DomElement> getTh() {
-		return th;
+	public String toString(){
+		String s = "";
+		for(int i=0;i<titles.size();i++){
+			s += titles.get(i) + ":" + values.get(i) + "\n";
+		}
+		return s;
 	}
-
-	
-	public void setTh(List<DomElement> th) {
-		this.th = th;
-	}
-
-	public List<DomElement> getTd() {
-		return td;
-	}
-
-	public void setTd(List<DomElement> td) {
-		this.td = td;
-	}
-		
 	
 }

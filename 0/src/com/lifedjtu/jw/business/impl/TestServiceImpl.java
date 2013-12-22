@@ -23,19 +23,14 @@ public class TestServiceImpl {
 	public void testFetchStudentRegistry(){
 		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
 		String sessionId = jwRemoteServiceImpl.signinRemote("1018110201", "357159");
-		List<DomElement> list1 = jwRemoteServiceImpl.fetchStudentRegistry(sessionId).getTh();
-		List<DomElement> list2 = jwRemoteServiceImpl.fetchStudentRegistry(sessionId).getTd();
-		DomElement domElement = list1.get(0);
-		System.out.println(domElement.getText());
-		domElement = list2.get(0);
-		System.out.println(domElement.getText());
+		System.out.println(jwRemoteServiceImpl.fetchStudentRegistry(sessionId));
 	}
 	
 	@Test
 	public void testQueryRoom(){
 		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
 		String sessionId = jwRemoteServiceImpl.signinRemote("1018110201", "357159");
-		System.out.println(jwRemoteServiceImpl.queryRoom(sessionId, 78, 1061, 1063).toString());
+		System.out.println(jwRemoteServiceImpl.queryRoom(sessionId, 1, 80, 89));
 	}
 	
 	@Test
