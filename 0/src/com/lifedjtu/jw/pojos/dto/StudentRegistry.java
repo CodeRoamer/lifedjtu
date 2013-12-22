@@ -2,9 +2,10 @@ package com.lifedjtu.jw.pojos.dto;
 
 import java.util.List;
 
+import com.lifedjtu.jw.pojos.EntityObject;
 import com.lifedjtu.jw.util.extractor.DomElement;
 
-public class StudentRegistry {
+public class StudentRegistry extends EntityObject{
 	private List<DomElement> th;
 	
 	private List<DomElement> td;

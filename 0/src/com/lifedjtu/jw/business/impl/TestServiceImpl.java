@@ -35,7 +35,7 @@ public class TestServiceImpl {
 	public void testQueryRoom(){
 		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
 		String sessionId = jwRemoteServiceImpl.signinRemote("1018110201", "357159");
-		jwRemoteServiceImpl.queryRoom(sessionId, 78, 1061, 1063);
+		System.out.println(jwRemoteServiceImpl.queryRoom(sessionId, 78, 1061, 1063).toString());
 	}
 	
 	@Test
@@ -57,5 +57,12 @@ public class TestServiceImpl {
 		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
 		String sessionId = jwRemoteServiceImpl.signinRemote("1018110201", "357159");
 		System.out.println(jwRemoteServiceImpl.queryRemoteScores(sessionId).toString());
+	}
+	
+	@Test
+	public void testQueryBuildingOnDate(){
+		JWRemoteServiceImpl jwRemoteServiceImpl = new JWRemoteServiceImpl();
+		String sessionId = jwRemoteServiceImpl.signinRemote("1018110201", "357159");
+		System.out.println(jwRemoteServiceImpl.queryBuildingOnDate(sessionId, 1, 80, 3, 1).toString());
 	}
 }

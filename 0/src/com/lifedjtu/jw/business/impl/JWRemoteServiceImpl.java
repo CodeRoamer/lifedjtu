@@ -11,7 +11,10 @@ import com.lifedjtu.jw.pojos.Course;
 import com.lifedjtu.jw.pojos.CourseTakenItem;
 import com.lifedjtu.jw.pojos.Exam;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
+import com.lifedjtu.jw.pojos.dto.RoomDayInfo;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
+import com.lifedjtu.jw.pojos.dto.RoomInfoDto;
+import com.lifedjtu.jw.pojos.dto.RoomWeekInfo;
 import com.lifedjtu.jw.pojos.Score;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 
@@ -27,7 +30,8 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	private String studentMessageURL = "http://jw.djtu.edu.cn/academic/showHeader.do";
 	private String studentRegistryURL = "http://jw.djtu.edu.cn/academic/student/studentinfo/studentInfoModifyIndex.do?frombase=0&wantTag=0";
 	private String modifyPasswordURL = "http://jw.djtu.edu.cn/academic/sysmgr/modifypasswd_user.jsdo";
-	private String queryRoomURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedule_week.jsdo";
+	private String queryBuildingOnDateURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedule_week.jsdo";
+	private String queryRoomURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedule.jsdo";
 	private String queryRemoteCourseTableURL = "http://jw.djtu.edu.cn/academic/student/currcourse/currcourse.jsdo";
 	private String queryRemoteExamsURL = "http://jw.djtu.edu.cn/academic/student/exam/index.jsdo";
 	private String queryRemoteScoresURL = "http://jw.djtu.edu.cn/academic/manager/score/studentOwnScore.do";
@@ -75,7 +79,34 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	public BuildingDto queryBuildingOnDate(String sessionId, int aid,
 			int buildingId, int week, int weekday) {
 		// TODO Auto-generated method stub
-		return null;
+		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryBuildingOnDateURL, sessionId, MapMaker.instance("aid", new Integer(aid).toString())
+				.param("buildingid", new Integer(buildingId).toString())
+				.param("whichweek", new Integer(week).toString())
+				.param("week", new Integer(weekday).toString())
+				.toMap());
+		//System.out.println(fetchResponse.getResponseBody());
+		List<DomElement> list = Extractor.$("tr[class=infolist_common]",fetchResponse.getResponseBody());
+		//System.out.println(list.size());
+		List<RoomInfoDto> roomInfoDtos = new ArrayList<RoomInfoDto>();
+		for(int i=0;i<list.size();i++){
+			List<DomElement> info = list.get(i).children("td");
+			List<DomElement> occupyInfo = info.get(6).find("tr").get(1).children("td");
+			List<String> occupyInfos = new ArrayList<String>();
+			for(int j=0;j<occupyInfo.size();j++){
+				//System.out.println(occupyInfo.get(j).getText().trim());
+				occupyInfos.add(occupyInfo.get(j).getText().trim());
+			}
+			RoomInfoDto roomInfoDto = new RoomInfoDto(info.get(0).getText().trim()
+					, info.get(1).getText().trim()
+					, info.get(2).getText().trim()
+					, info.get(3).getText().trim()
+					, info.get(4).getText().trim()
+					, info.get(5).getText().trim()
+					, occupyInfos);
+			roomInfoDtos.add(roomInfoDto);
+		}
+		BuildingDto buildingDto = new BuildingDto(roomInfoDtos);
+		return buildingDto;
 	}
 
 	@Override
@@ -86,9 +117,35 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 																					.param("buildingid", new Integer(buildingId).toString())
 																					.param("room", new Integer(roomId).toString())
 																					.toMap());
-		System.out.println(fetchResponse.getResponseBody());
+		List<DomElement> table = Extractor.$("table[class=infolists_tab]",fetchResponse.getResponseBody());
+		List<RoomWeekInfo> weekInfos = new ArrayList<RoomWeekInfo>();
+		for(int i=0;i<table.size();i++){
+			List<RoomDayInfo> dayInfos = new ArrayList<RoomDayInfo>();
+			List<List<String>> week = new ArrayList<List<String>>();
+			List<DomElement> list = table.get(i).children("tr");
+			for(int j=1;j<list.size();j++){
+				List<String> classes = new ArrayList<String>();
+				List<DomElement> lines = list.get(j).children("td");
+				for(int k=1;k<lines.size();k++){
+					classes.add(lines.get(k).getText().trim());
+				}
+				week.add(classes);
+			}
+			for(int p=0;p<7;p++){
+				List<String> infos = new ArrayList<String>();
+				for(int q=0;q<10;q++){
+					
+					infos.add(week.get(q).get(p));
+				}
+				RoomDayInfo dayInfo = new RoomDayInfo(infos);
+				dayInfos.add(dayInfo);
+			}
+			RoomWeekInfo weekInfo = new RoomWeekInfo(dayInfos);
+			weekInfos.add(weekInfo);
+		}
+		RoomDto roomDto = new RoomDto(weekInfos); 
 		
-		return null;
+		return roomDto;
 	}
 
 	@Override

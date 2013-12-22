@@ -1,5 +1,26 @@
 package com.lifedjtu.jw.pojos.dto;
 
-public class BuildingDto {
+import java.util.List;
 
+import com.lifedjtu.jw.pojos.EntityObject;
+
+public class BuildingDto extends EntityObject{
+	private List<RoomInfoDto> roomInfoDtos;
+
+	public BuildingDto(List<RoomInfoDto> roomInfoDtos) {
+		super();
+		this.roomInfoDtos = roomInfoDtos;
+	}
+
+	public List<RoomInfoDto> getRoomInfoDtos() {
+		return roomInfoDtos;
+	}
+
+	public void setRoomInfoDtos(List<RoomInfoDto> roomInfoDtos) {
+		this.roomInfoDtos = roomInfoDtos;
+	}
+	
+	public String toString(){
+		return roomInfoDtos.toString();
+	}
 }
