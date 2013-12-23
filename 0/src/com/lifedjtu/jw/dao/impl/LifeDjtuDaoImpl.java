@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Component;
 
 import com.lifedjtu.jw.dao.CriteriaWrapper;
 import com.lifedjtu.jw.dao.FieldFilter;
@@ -14,6 +15,7 @@ import com.lifedjtu.jw.dao.Pageable;
 import com.lifedjtu.jw.dao.Sortable;
 import com.lifedjtu.jw.dao.UpdateWrapper;
 
+@Component("lifeDjtuDao")
 public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 	
 	private Class<T> cls;
@@ -52,19 +54,21 @@ public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 	@Override
 	public void addMulti(Collection<T> paramTs) {
 		// TODO Auto-generated method stub
-		
+		hibernateTemplate.saveOrUpdateAll(paramTs);
 	}
 
 	@Override
 	public void addMultiOneByOne(Collection<T> paramTs) {
 		// TODO Auto-generated method stub
-		
+		for(T paraT : paramTs){
+			hibernateTemplate.save(paraT);
+		}
 	}
 
 	@Override
 	public void update(T paramT) {
 		// TODO Auto-generated method stub
-		
+		hibernateTemplate.update(paramT);
 	}
 
 	@Override
@@ -116,7 +120,7 @@ public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 	@Override
 	public void delete(T paramT) {
 		// TODO Auto-generated method stub
-		
+		hibernateTemplate.delete(paramT);
 	}
 
 	@Override
