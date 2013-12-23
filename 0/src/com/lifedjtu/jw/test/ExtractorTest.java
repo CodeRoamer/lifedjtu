@@ -26,12 +26,19 @@ public class ExtractorTest {
 			content+=line;
 		}		
 		
-		
+		//System.out.println(content);
 		long current = System.currentTimeMillis();
-		List<DomElement> list = $("table[class=infolist_tab]:first > tr",content);
+		List<DomElement> list1 = $("table[class=none] > td",content);
+		//List<DomElement> list2 = $("table[class=form] > td",content);
 		System.out.println((System.currentTimeMillis()-current)/(double)1000+"s");
-		for(DomElement domElement : list){
-			System.out.println(domElement.getText());
-		}
+		DomElement domElement = list1.get(0);
+		domElement.toString();
+		System.out.println(domElement.getText());
+		//domElement = list2.get(0);
+		//System.out.println(domElement.getText());
+//		for(DomElement domElement : list){
+//			System.out.println(domElement.getText());
+//		}
+//		if(list.isEmpty()) System.out.println("true");
 	}
 }

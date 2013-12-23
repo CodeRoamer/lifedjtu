@@ -61,11 +61,12 @@ public class JWRemotePatchServiceImpl implements JWRemotePatchService{
 					params.put(name, value);
 				}
 			}
+			System.out.println(params.toString());
 			
-			URLFetcher.fetchURLByPost(baseURL+postAffix, sessionId, params);
+			//URLFetcher.fetchURLByPost(baseURL+postAffix, sessionId, params);
 		}
 		
-		return false;
+		return true;
 	}
 
 }
