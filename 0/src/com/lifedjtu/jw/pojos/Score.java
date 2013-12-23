@@ -1,31 +1,57 @@
 package com.lifedjtu.jw.pojos;
 
 public class Score extends EntityObject{
-	private int year;
-	private int term;
+	private String year;
+	private String term;
 	private String courseAliasName;
 	private String courseSequence;
 	private String courseName;
 	private String courseAttr;
 	private String courseGroup;
-	private double courseMarks;
-	private double normalScore;
-	private double finalScore;
-	private int isPostponed;
+	private String courseMarks;
+	private String normalScore;
+	private String finalScore;
+	private String totalScore;
+	private String isPostponed;
 	private String courseProperty;
 	private String memo;
 	private String teacherName;
 	private String courseCategory;
-	public int getYear() {
+	
+	public Score(String year, String term, String courseAliasName,
+			String courseSequence, String courseName, String courseAttr,
+			String courseGroup, String courseMarks, String normalScore,
+			String finalScore, String totalScore, String isPostponed,
+			String courseProperty, String memo, String teacherName,
+			String courseCategory) {
+		super();
+		this.year = year;
+		this.term = term;
+		this.courseAliasName = courseAliasName;
+		this.courseSequence = courseSequence;
+		this.courseName = courseName;
+		this.courseAttr = courseAttr;
+		this.courseGroup = courseGroup;
+		this.courseMarks = courseMarks;
+		this.normalScore = normalScore;
+		this.finalScore = finalScore;
+		this.totalScore = totalScore;
+		this.isPostponed = isPostponed;
+		this.courseProperty = courseProperty;
+		this.memo = memo;
+		this.teacherName = teacherName;
+		this.courseCategory = courseCategory;
+	}
+	public String getYear() {
 		return year;
 	}
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
-	public int getTerm() {
+	public String getTerm() {
 		return term;
 	}
-	public void setTerm(int term) {
+	public void setTerm(String term) {
 		this.term = term;
 	}
 	public String getCourseAliasName() {
@@ -58,28 +84,34 @@ public class Score extends EntityObject{
 	public void setCourseGroup(String courseGroup) {
 		this.courseGroup = courseGroup;
 	}
-	public double getCourseMarks() {
+	public String getCourseMarks() {
 		return courseMarks;
 	}
-	public void setCourseMarks(double courseMarks) {
+	public void setCourseMarks(String courseMarks) {
 		this.courseMarks = courseMarks;
 	}
-	public double getNormalScore() {
+	public String getNormalScore() {
 		return normalScore;
 	}
-	public void setNormalScore(double normalScore) {
+	public void setNormalScore(String normalScore) {
 		this.normalScore = normalScore;
 	}
-	public double getFinalScore() {
+	public String getFinalScore() {
 		return finalScore;
 	}
-	public void setFinalScore(double finalScore) {
+	public void setFinalScore(String finalScore) {
 		this.finalScore = finalScore;
 	}
-	public int getIsPostponed() {
+	public String getTotalScore() {
+		return totalScore;
+	}
+	public void setTotalScore(String totalScore) {
+		this.totalScore = totalScore;
+	}
+	public String getIsPostponed() {
 		return isPostponed;
 	}
-	public void setIsPostponed(int isPostponed) {
+	public void setIsPostponed(String isPostponed) {
 		this.isPostponed = isPostponed;
 	}
 	public String getCourseProperty() {
@@ -105,6 +137,18 @@ public class Score extends EntityObject{
 	}
 	public void setCourseCategory(String courseCategory) {
 		this.courseCategory = courseCategory;
+	}
+	@Override
+	public String toString() {
+		return "Score [year=" + year + ", term=" + term + ", courseAliasName="
+				+ courseAliasName + ", courseSequence=" + courseSequence
+				+ ", courseName=" + courseName + ", courseAttr=" + courseAttr
+				+ ", courseGroup=" + courseGroup + ", courseMarks="
+				+ courseMarks + ", normalScore=" + normalScore
+				+ ", finalScore=" + finalScore + ", totalScore=" + totalScore
+				+ ", isPostponed=" + isPostponed + ", courseProperty="
+				+ courseProperty + ", memo=" + memo + ", teacherName="
+				+ teacherName + ", courseCategory=" + courseCategory + "]\n";
 	}
 	
 	

@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.orm.hibernate3.HibernateTemplate;
+
 import com.lifedjtu.jw.dao.CriteriaWrapper;
 import com.lifedjtu.jw.dao.FieldFilter;
 import com.lifedjtu.jw.dao.LifeDjtuDao;
@@ -15,6 +17,7 @@ import com.lifedjtu.jw.dao.UpdateWrapper;
 public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 	
 	private Class<T> cls;
+	private HibernateTemplate hibernateTemplate;
 	/**
 	 * Default constructor. 构造函数不传参，但是很重要，为继承的子类抽出泛型的Class对象，以便于 传给DAO方法
 	 */
@@ -43,7 +46,7 @@ public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 	@Override
 	public void add(T paramT) {
 		// TODO Auto-generated method stub
-		
+		hibernateTemplate.save(paramT);
 	}
 
 	@Override
