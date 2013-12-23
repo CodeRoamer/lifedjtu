@@ -68,9 +68,15 @@ public class Filter extends EntityObject {
 		}else{
 			try {
 				String typeAffix = filterType.substring(bottomLineIndex+1);
-				Class clazz = Class.forName("java.lang."+typeAffix);
-				Method method = clazz.getDeclaredMethod("valueOf", Class.forName("java.lang.String"));
-				Object castedObj = method.invoke(null, param);
+				Object castedObj;
+				if(typeAffix.equals("String")){
+					castedObj = param;
+				}else{
+					Class clazz = Class.forName("java.lang."+typeAffix);
+					Method method = clazz.getDeclaredMethod("valueOf", Class.forName("java.lang.String"));
+					castedObj = method.invoke(null, param);
+				}
+				
 				//System.out.println((castedObj).getClass().getName());
 				domElements = handleFilter(domElements, castedObj);
 			} catch (Exception e) {
