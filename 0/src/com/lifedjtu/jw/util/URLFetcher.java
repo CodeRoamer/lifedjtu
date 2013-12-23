@@ -102,12 +102,14 @@ public class URLFetcher {
 	
 	public static void main(String[] args){
 		long currentTime = System.currentTimeMillis();
-		FetchResponse response = fetchURLByPost("202.199.128.21/academic/j_acegi_security_check", null, MapMaker.instance("j_username", "1018110323").param("j_password", "*****").toMap());
+		FetchResponse response = fetchURLByPost("202.199.128.21/academic/j_acegi_security_check", null, MapMaker.instance("j_username", "1018110323").param("j_password", "1234").toMap());
 		System.err.println((System.currentTimeMillis()-currentTime)/(double)1000+"s");
 		currentTime = System.currentTimeMillis();
 		FetchResponse response2 = fetchURLByGet("202.199.128.21/academic/showHeader.do", response.getSessionId());
 		System.err.println((System.currentTimeMillis()-currentTime)/(double)1000+"s");
 
+		System.out.println(response.getSessionId());
+		
 		if(response2.getStatusCode()!=200){
 			System.out.println("登陆失败或已经超时，重新登陆！");
 		}else {
