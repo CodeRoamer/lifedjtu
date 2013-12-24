@@ -26,15 +26,15 @@ import com.lifedjtu.jw.util.extractor.Extractor;
 
 public class JWRemoteServiceImpl implements JWRemoteService {
 
-	private String loginURL = "jw.djtu.edu.cn/academic/j_acegi_security_check";
-	private String studentMessageURL = "http://jw.djtu.edu.cn/academic/showHeader.do";
-	private String studentRegistryURL = "http://jw.djtu.edu.cn/academic/student/studentinfo/studentInfoModifyIndex.do?frombase=0&wantTag=0";
-	private String modifyPasswordURL = "http://jw.djtu.edu.cn/academic/sysmgr/modifypasswd_user.jsdo";
-	private String queryBuildingOnDateURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedule_week.jsdo";
-	private String queryRoomURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedule.jsdo";
-	private String queryRemoteCourseTableURL = "http://jw.djtu.edu.cn/academic/student/currcourse/currcourse.jsdo";
-	private String queryRemoteExamsURL = "http://jw.djtu.edu.cn/academic/student/exam/index.jsdo";
-	private String queryRemoteScoresURL = "http://jw.djtu.edu.cn/academic/manager/score/studentOwnScore.do";
+	private final String loginURL = "jw.djtu.edu.cn/academic/j_acegi_security_check";
+	private final String studentMessageURL = "http://jw.djtu.edu.cn/academic/showHeader.do";
+	private final String studentRegistryURL = "http://jw.djtu.edu.cn/academic/student/studentinfo/studentInfoModifyIndex.do?frombase=0&wantTag=0";
+	private final String modifyPasswordURL = "http://jw.djtu.edu.cn/academic/sysmgr/modifypasswd_user.jsdo";
+	private final String queryBuildingOnDateURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedule_week.jsdo";
+	private final String queryRoomURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedule.jsdo";
+	private final String queryRemoteCourseTableURL = "http://jw.djtu.edu.cn/academic/student/currcourse/currcourse.jsdo";
+	private final String queryRemoteExamsURL = "http://jw.djtu.edu.cn/academic/student/exam/index.jsdo";
+	private final String queryRemoteScoresURL = "http://jw.djtu.edu.cn/academic/manager/score/studentOwnScore.do";
 	
 	@Override
 	public String signinRemote(String studentId, String password) {
