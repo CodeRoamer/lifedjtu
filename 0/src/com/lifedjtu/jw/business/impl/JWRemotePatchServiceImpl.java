@@ -88,7 +88,7 @@ public class JWRemotePatchServiceImpl implements JWRemotePatchService{
 		}else{
 			list = new ArrayList<DomElement>();
 		}
-		System.out.println(list.size());
+		//System.out.println(list.size());
 
 		//List<DomElement> list = $("tr[class=infolist_common] > td:odd",LifeDJTUUtil.fakeEvaList());
 		

@@ -39,10 +39,10 @@ public class Extractor {
 		}else if(selectors.length==3){//中间符号的选择器
 			if(selectors[1].equals(">")){ //亲孩子
 				
-				System.out.println(content.length());
+				//System.out.println(content.length());
 				
 				List<DomElement> domElements = singleSelector(selectors[0], content);
-				System.err.println(domElements.size());
+				//System.err.println(domElements.size());
 				List<DomElement> domElements2 = new ArrayList<DomElement>();
 				for(DomElement domElement : domElements){
 					domElements2.addAll(findAllDirectChildrenAndSelect(domElement.getHtml(), selectors[2]));
@@ -127,6 +127,7 @@ public class Extractor {
 				}
 			}
 			
+			
 //			for(TagSelectorPair pair : listPairs){
 //				System.out.println(pair.toJSON());
 //			}
@@ -134,11 +135,12 @@ public class Extractor {
 			domElements = new ArrayList<DomElement>();
 			
 			//这个pattern用来获取全部的此标签元素，全部的<tr ..>，全部的<table ..>之类的
-			Pattern tagPattern = Pattern.compile("<"+selectorTagName+".*?>",Pattern.MULTILINE);
+			Pattern tagPattern = Pattern.compile("<"+selectorTagName+"[^>]*>",Pattern.MULTILINE);
 			Matcher matcher = tagPattern.matcher(content);
 			int sequenceIndex = 0;
 			while(matcher.find(sequenceIndex)){
 				String selectedTag = matcher.group(0);
+				//System.out.println(selectedTag);
 				//不满足选择器列出的属性键值对的话，扫描下一个此标签元素
 				if(!isFullfilPropertyPattern(listPairs, selectedTag, selectorTagName)){
 					//勿忘更新扫描起点
