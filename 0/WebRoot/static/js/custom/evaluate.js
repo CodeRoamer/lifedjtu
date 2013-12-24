@@ -6,9 +6,27 @@ $('document').ready(function(){
 		// progress bar
 		var barWidth = 0;
 		var bar = $('.eva-bar');
+		var alert = $('.result-alert');
+		alert.children().hide();
+
 		event.preventDefault();
 		var data = {};
 	
+		
+		function makeAlert(type, message){
+			alert.children().hide();
+			if(type==-1){
+				alert.children('.alert-danger').show();
+				alert.children('.alert-danger').text(message);
+			}else if(type==0){
+				alert.children('.alert-success').show();
+				alert.children('.alert-success').text(message);
+			}else if(type==1){
+				alert.children('.alert-info').show();
+				alert.children('.alert-info').text(message);
+			}
+		}
+		
 		data.studentId = $('input[name="studentId"]').val();
 		data.password = $('input[name="password"]').val();
 		
@@ -24,7 +42,7 @@ $('document').ready(function(){
 				 var sessionId = data.sessionId;
 				 if(sessionId==null||sessionId==undefined){
 					 bar.width("100%");
-					 alert("亲，登陆失败了~~密码是不是错啦？");
+					 makeAlert(-1,"亲，登陆失败了~~密码是不是错啦？");
 					 self.text("一键评估");
 					 self.removeAttr("disabled");
 					 bar.width("0%");
@@ -44,7 +62,7 @@ $('document').ready(function(){
 							 
 							 if(entries.length==0){
 								 bar.width("100%");
-								 alert("所有课程已经全部评估完毕！");
+								 makeAlert(0,"所有课程已经全部评估完毕！");
 								 bar.width("0%");
 								 self.text("一键评估");
 								 self.removeAttr("disabled");
@@ -93,7 +111,7 @@ $('document').ready(function(){
 													 if(++handledNum==handleSum){
 														 self.text("一键评估");
 														 self.removeAttr("disabled");
-														 alert("评估完成，如有失败，请重试一至三次");
+														 makeAlert(1,"评估完成，如有失败，请重试一至三次");
 														 bar.width("0%");
 													 }
 													 
@@ -106,14 +124,14 @@ $('document').ready(function(){
 														 if(++handledNum==handleSum){
 															 self.text("一键评估");
 															 self.removeAttr("disabled");
-															 alert("评估完成，如有失败，请重试一至三次");
+															 makeAlert(1,"评估完成，如有失败，请重试一至三次");
 															 bar.width("0%");
 														 }
 													 }
 												 }
 											 },
 											 error:function(){
-												 alert("Wrong!服务器连接丢失，请重新评测");
+												 makeAlert(-1,"Wrong!服务器连接丢失，请重新评测");
 											 }
 										 });
 									 }
@@ -126,7 +144,7 @@ $('document').ready(function(){
 							 
 						 },
 						 error:function(){
-							 alert("获取列表失败~！检查网络连接...");
+							 makeAlert(-1,"获取列表失败~！检查网络连接...");
 							 self.text("一键评估");
 							 self.removeAttr("disabled");
 						 }
