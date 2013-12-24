@@ -64,6 +64,16 @@
       </div>
 
 	<div class="row-fluid">
+		<div class="span2"></div>
+		<div class="span8">
+			<div class="progress progress-striped active">
+    			<div class="bar eva-bar" style="width: 0%;"></div>
+    		</div>
+		</div>
+		<div class="span2"></div>
+	</div>
+
+	<div class="row-fluid">
         <div class="span2"></div>
         <div class="span8">
 			<div class="panel panel-danger">

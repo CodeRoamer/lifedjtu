@@ -3,6 +3,9 @@ $('document').ready(function(){
 	$('.eva-button').click(function(event){
 		var self = $(this);
 		
+		// progress bar
+		var barWidth = 0;
+		var bar = $('.eva-bar');
 		event.preventDefault();
 		var data = {};
 	
@@ -11,6 +14,7 @@ $('document').ready(function(){
 		
 		self.text("登录中...");
 		self.attr("disabled","true");
+		bar.width((barWidth+=5)+"%");
 		
 		$.ajax({
 			 type: "POST",
@@ -19,10 +23,13 @@ $('document').ready(function(){
 			 success: function(data){
 				 var sessionId = data.sessionId;
 				 if(sessionId==null||sessionId==undefined){
+					 bar.width("100%");
 					 alert("亲，登陆失败了~~密码是不是错啦？");
 					 self.text("一键评估");
 					 self.removeAttr("disabled");
+					 bar.width("0%");
 				 }else{
+					 bar.width((barWidth+=5)+"%");
 					 self.text("获取列表...");
 					 var table = $('.eva-table');
 					 table.empty();
@@ -32,7 +39,17 @@ $('document').ready(function(){
 						 url: "evaList.action",
 						 data: {"sessionId": sessionId},
 						 success:function(data){
+							 bar.width((barWidth+=5)+"%");
 							 var entries = data.evaList.entries;
+							 
+							 if(entries.length==0){
+								 bar.width("100%");
+								 alert("所有课程已经全部评估完毕！");
+								 bar.width("0%");
+								 self.text("一键评估");
+								 self.removeAttr("disabled");
+							 }
+							 
 							 $.each(entries, function(index, entry){
 								 var entryDom = '<tr>\
 									 			<td><span class="lead">'+entry.courseName+'</span></td>\
@@ -40,6 +57,12 @@ $('document').ready(function(){
 									 			</tr>';
 								 table.append(entryDom);
 							 });
+							 
+							 
+							 var handleSum = entries.length;
+							 var handledNum = 0;
+							 var segmentWidth = (100-barWidth)/handleSum;
+
 							 
 							 $.each(entries, function(index, entry){
 
@@ -53,7 +76,7 @@ $('document').ready(function(){
 									 $('.item'+index).removeClass("label-warning");
 									 $('.item'+index).addClass("label-info");
 									 
-									 var times = 3;
+									 var times = 4;
 									 
 									 function evaluate(){
 										 times--;
@@ -66,11 +89,26 @@ $('document').ready(function(){
 													 $('.item'+index).removeClass("label-info");
 													 $('.item'+index).addClass("label-success");
 													 $('.item'+index).text("已评估");
+													 bar.width((barWidth+=segmentWidth)+"%");
+													 if(++handledNum==handleSum){
+														 self.text("一键评估");
+														 self.removeAttr("disabled");
+														 alert("评估完成，如有失败，请重试一至三次");
+														 bar.width("0%");
+													 }
+													 
 												 }else{
 													 if(times>0)
 														 evaluate();
 													 else{
 														 $('.item'+index).text("评估失败");
+														 bar.width((barWidth+=segmentWidth)+"%");
+														 if(++handledNum==handleSum){
+															 self.text("一键评估");
+															 self.removeAttr("disabled");
+															 alert("评估完成，如有失败，请重试一至三次");
+															 bar.width("0%");
+														 }
 													 }
 												 }
 											 },
@@ -85,11 +123,12 @@ $('document').ready(function(){
 								 })(index, entry);
 							 });
 							 
-							 self.text("一键评估");
-							 self.removeAttr("disabled");
+							 
 						 },
 						 error:function(){
-							 
+							 alert("获取列表失败~！检查网络连接...");
+							 self.text("一键评估");
+							 self.removeAttr("disabled");
 						 }
 					 });
 					 
@@ -97,8 +136,8 @@ $('document').ready(function(){
 			 },
 			 error: function(xhr, textStatus, error){
 				 alert("评估失败！"+error);
-				 $(this).text("一键评估");
-				 $(this).removeAttr("disabled");
+				 self.text("一键评估");
+				 self.removeAttr("disabled");
 			 }
 		});
 	});

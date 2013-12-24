@@ -80,15 +80,12 @@ public class JWRemotePatchServiceImpl implements JWRemotePatchService{
 		
 		FetchResponse listResponse = URLFetcher.fetchURLByGet(baseURL+listAffix, sessionId);
 		
-		
-		//System.out.println(listResponse.getResponseBody());
 		List<DomElement> list;
 		if(listResponse.getStatusCode()==200){			
 			list = $("tr[class=infolist_common] > td:odd",listResponse.getResponseBody());
 		}else{
 			list = new ArrayList<DomElement>();
 		}
-		//System.out.println(list.size());
 
 		//List<DomElement> list = $("tr[class=infolist_common] > td:odd",LifeDJTUUtil.fakeEvaList());
 		
@@ -142,7 +139,7 @@ public class JWRemotePatchServiceImpl implements JWRemotePatchService{
 				params.put(name, value);
 			}
 		}
-		System.out.println(params.toString());
+		//System.out.println(params.toString());
 		
 		
 		FetchResponse postResponse = URLFetcher.fetchURLByPost(baseURL+postAffix, session, params);
