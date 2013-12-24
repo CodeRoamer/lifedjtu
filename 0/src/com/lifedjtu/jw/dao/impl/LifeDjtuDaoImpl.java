@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 
@@ -111,11 +113,10 @@ public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 		return 0;
 	}
 
-	@Override
-	public void delete(String id) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void delete(String id) {
+//		// TODO Auto-generated method stub
+//	}
 
 	@Override
 	public void delete(T paramT) {
@@ -132,7 +133,7 @@ public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 	@Override
 	public T findOneById(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return hibernateTemplate.get(cls, id);
 	}
 
 	@Override
@@ -226,7 +227,7 @@ public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 	@Override
 	public List<T> findAll() {
 		// TODO Auto-generated method stub
-		return null;
+		return hibernateTemplate.loadAll(cls);
 	}
 
 	@Override
@@ -321,6 +322,20 @@ public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 
 	public void setCls(Class<T> cls) {
 		this.cls = cls;
+	}
+
+
+
+
+	public HibernateTemplate getHibernateTemplate() {
+		return hibernateTemplate;
+	}
+
+
+
+	@Resource
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
 	}
 	
 }

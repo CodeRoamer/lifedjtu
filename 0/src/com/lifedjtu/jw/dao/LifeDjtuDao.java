@@ -30,7 +30,7 @@ public interface LifeDjtuDao<T> {
 	/**
 	 * 删除一个entity
 	 */
-	void delete(String id);
+	//void delete(String id);
 	void delete(T paramT);
 	/**
 	 * 根据传递个命名参数来查找符合条件的表记录，然后执行delete
