@@ -6,10 +6,14 @@ $('document').ready(function(){
 		// progress bar
 		var barWidth = 0;
 		var bar = $('.eva-bar');
+		
+		//alert message
 		var alert = $('.result-alert');
 		alert.children().hide();
 
+		//prevent submit the form
 		event.preventDefault();
+		//prepare the data to post, in order to login
 		var data = {};
 	
 		
@@ -27,11 +31,15 @@ $('document').ready(function(){
 			}
 		}
 		
+		//get user input, studentId and password
 		data.studentId = $('input[name="studentId"]').val();
 		data.password = $('input[name="password"]').val();
 		
+		//change the button state
 		self.text("登录中...");
 		self.attr("disabled","true");
+		
+		//enlarge the width of progress bar
 		bar.width((barWidth+=5)+"%");
 		
 		$.ajax({
