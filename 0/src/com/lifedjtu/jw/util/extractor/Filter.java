@@ -22,7 +22,8 @@ public class Filter extends EntityObject {
 	private static final String GT = "gt_Integer";
 	private static final String CONTAINS = "contains_String";
 	private static final String EMPTY = "empty";
-	private static final String EVEN = "event";
+	private static final String EVEN = "even";
+	private static final String ODD = "odd";
 	private static final String FIRST = "first";
 	private static final String LAST = "last";
 
@@ -105,6 +106,8 @@ public class Filter extends EntityObject {
 			filterType = FIRST;			
 		}else if(LAST.startsWith(filterName)){
 			filterType = LAST;			
+		}else if(ODD.startsWith(filterName)){
+			filterType = ODD;
 		}
 		
 		return filterType;
@@ -142,6 +145,16 @@ public class Filter extends EntityObject {
 			int i = 0;
 			for(DomElement domElement : domElements){
 				if(i%2==0){
+					subList.add(domElement);
+				}
+				++i;
+			}
+			return subList;
+		}else if(ODD.startsWith(filterName)){
+			List<DomElement> subList = new ArrayList<DomElement>();
+			int i = 0;
+			for(DomElement domElement : domElements){
+				if(i%2!=0){
 					subList.add(domElement);
 				}
 				++i;

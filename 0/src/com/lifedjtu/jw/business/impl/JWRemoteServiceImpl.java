@@ -5,6 +5,8 @@ package com.lifedjtu.jw.business.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 
 import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.pojos.Course;
@@ -24,6 +26,7 @@ import com.lifedjtu.jw.util.FetchResponse;
 import com.lifedjtu.jw.util.extractor.DomElement;
 import com.lifedjtu.jw.util.extractor.Extractor;
 
+@Component("jwRemoteService")
 public class JWRemoteServiceImpl implements JWRemoteService {
 
 	private final String loginURL = "jw.djtu.edu.cn/academic/j_acegi_security_check";
