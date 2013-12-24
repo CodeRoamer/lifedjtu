@@ -1,50 +1,79 @@
 package com.lifedjtu.jw.ui.struts2.core;
 
-import static com.lifedjtu.jw.util.extractor.Extractor.$;
-
-import com.lifedjtu.jw.util.FetchResponse;
-import com.lifedjtu.jw.util.MapMaker;
-import com.lifedjtu.jw.util.URLFetcher;
+import com.lifedjtu.jw.business.JWRemotePatchService;
+import com.lifedjtu.jw.pojos.dto.EvaList;
 import com.opensymphony.xwork2.Action;
 
 public class MainWebServiceAction {
+	
+	
+	
+	public JWRemotePatchService getJwRemotePatchService() {
+		return jwRemotePatchService;
+	}
+	public void setJwRemotePatchService(JWRemotePatchService jwRemotePatchService) {
+		this.jwRemotePatchService = jwRemotePatchService;
+	}
 	public String getStudentId() {
 		return studentId;
 	}
-
 	public void setStudentId(String studentId) {
 		this.studentId = studentId;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public String getMessage() {
-		return message;
+	public String getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+	public EvaList getEvaList() {
+		return evaList;
+	}
+	public void setEvaList(EvaList evaList) {
+		this.evaList = evaList;
+	}
+	public String getCourseHref() {
+		return courseHref;
+	}
+	public void setCourseHref(String courseHref) {
+		this.courseHref = courseHref;
+	}
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
+	private JWRemotePatchService jwRemotePatchService;
+	
 	private String studentId;
 	private String password;
 	
-	private String message;
-	
+	private String sessionId;
 	public String signin(){
-		FetchResponse response = URLFetcher.fetchURLByPost("202.199.128.21/academic/j_acegi_security_check", null, MapMaker.instance("j_username", studentId).param("j_password", password).toMap());
-		FetchResponse response2 = URLFetcher.fetchURLByGet("202.199.128.21/academic/showHeader.do", response.getSessionId());
-		if(response2.getStatusCode()!=200){
-			message = "登陆失败或已经超时，重新登陆！";
-		}else {
-			message = $("#greeting", response2.getResponseBody()).get(0).getText();
-		}
+		sessionId = jwRemotePatchService.tempSignin(studentId, password);
+		return Action.SUCCESS;
+	}
+	
+	private EvaList evaList;
+	
+	public String evaList(){
+		evaList = jwRemotePatchService.getEvaList(sessionId);
+		return Action.SUCCESS;
+	}
+	
+	private String courseHref;
+	
+	private boolean status;
+	public String evaluateCourse(){
+		status = jwRemotePatchService.evaluateCourse(sessionId, courseHref);
 		return Action.SUCCESS;
 	}
 }

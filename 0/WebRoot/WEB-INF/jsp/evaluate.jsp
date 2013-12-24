@@ -54,11 +54,29 @@
         <div class="span2"></div>
         <div class="span8">
         	<h1>交大课程评估</h1>
-			<form action="./doEvaluate.action" method="post">
+			<form action="" method="post">
 				<input name="studentId" type="text" placeholder="输入学号">
 				<input name="password" type="password" placeholder="输入密码">
-				<input class="btn btn-primary" type="submit" value="一键评估">
+				<button class="btn btn-primary eva-button">一键评估</button>
 			</form>
+        </div>
+        <div class="span2"></div>
+      </div>
+
+	<div class="row-fluid">
+        <div class="span2"></div>
+        <div class="span8">
+			<div class="panel panel-danger">
+				<div class="panel-heading">
+					<h3>待评估课程</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table eva-table">
+						
+						
+					</table>
+				</div>
+			</div>
         </div>
         <div class="span2"></div>
       </div>
@@ -87,6 +105,6 @@
     <script src="./static/js/bootstrap-collapse.js"></script>
     <script src="./static/js/bootstrap-carousel.js"></script>
     <script src="./static/js/bootstrap-typeahead.js"></script>
-
+    <script src="./static/js/custom/evaluate.js"></script>
   </body>
 </html>

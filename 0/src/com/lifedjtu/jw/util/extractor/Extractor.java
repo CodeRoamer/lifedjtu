@@ -23,6 +23,9 @@ public class Extractor {
 	
 	private static Pattern allTagFindPattern = Pattern.compile("<(/)?(\\b\\w+)[^<>]*?>",Pattern.MULTILINE);
 	public static List<DomElement> $(String selector, String content){
+		
+		//System.out.println(content);
+		
 		String[] selectors = selector.split("\\s");
 		if(selectors.length==1){//单一的选择器模式
 			return singleSelector(selectors[0], content);
@@ -35,7 +38,11 @@ public class Extractor {
 			return domElements2;
 		}else if(selectors.length==3){//中间符号的选择器
 			if(selectors[1].equals(">")){ //亲孩子
+				
+				System.out.println(content.length());
+				
 				List<DomElement> domElements = singleSelector(selectors[0], content);
+				System.err.println(domElements.size());
 				List<DomElement> domElements2 = new ArrayList<DomElement>();
 				for(DomElement domElement : domElements){
 					domElements2.addAll(findAllDirectChildrenAndSelect(domElement.getHtml(), selectors[2]));

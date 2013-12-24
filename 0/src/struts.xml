@@ -14,8 +14,15 @@
 		</action>
 		
 		<action name="signin" method="signin" class="com.lifedjtu.jw.ui.struts2.core.MainWebServiceAction">
-			<result name="success" type="jsonResult">message</result>
+			<result name="success" type="jsonResult">sessionId</result>
 		</action>
+		<action name="evaList" method="evaList" class="com.lifedjtu.jw.ui.struts2.core.MainWebServiceAction">
+			<result name="success" type="jsonResult">evaList</result>
+		</action>
+		<action name="evaluateCourse" method="evaluateCourse" class="com.lifedjtu.jw.ui.struts2.core.MainWebServiceAction">
+			<result name="success" type="jsonResult">status</result>
+		</action>
+		
 		
 		<action name="evaluate">
 			<result name="success">/WEB-INF/jsp/evaluate.jsp</result>
