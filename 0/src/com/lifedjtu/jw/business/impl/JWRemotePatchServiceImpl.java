@@ -142,9 +142,9 @@ public class JWRemotePatchServiceImpl implements JWRemotePatchService{
 				params.put(name, value);
 			}
 		}
-		//System.out.println(params.toString());
+		System.out.println(params.toString());
 		
-		/*
+		
 		FetchResponse postResponse = URLFetcher.fetchURLByPost(baseURL+postAffix, session, params);
 		
 		if(postResponse.getStatusCode()==200){
@@ -152,8 +152,6 @@ public class JWRemotePatchServiceImpl implements JWRemotePatchService{
 		}else{
 			return false;
 		}
-		*/
-		return true;
 	}
 
 }
