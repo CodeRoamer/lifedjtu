@@ -4,25 +4,73 @@ import java.util.List;
 
 
 public class Building extends EntityObject{
-	private String name;
-	private String id;
+	private String buildingId;
+	private String buildingName;
+	private String areaId;
+	private int buildingRemoteId;
+	private double longitude;
+	private double latitude;
+	private double radius;
+	
 	
 	private List<Room> rooms;
 
-	public String getName() {
-		return name;
+	public Building() {}
+
+	public String getBuildingId() {
+		return buildingId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
 	}
 
-	public String getId() {
-		return id;
+	public String getBuildingName() {
+		return buildingName;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setBuildingName(String buildingName) {
+		this.buildingName = buildingName;
+	}
+
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+
+	public int getBuildingRemoteId() {
+		return buildingRemoteId;
+	}
+
+	public void setBuildingRemoteId(int buildingRemoteId) {
+		this.buildingRemoteId = buildingRemoteId;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getRadius() {
+		return radius;
+	}
+
+	public void setRadius(double radius) {
+		this.radius = radius;
 	}
 
 	public List<Room> getRooms() {

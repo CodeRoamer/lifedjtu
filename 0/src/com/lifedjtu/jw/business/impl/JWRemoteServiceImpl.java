@@ -7,37 +7,35 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-
 import com.lifedjtu.jw.business.JWRemoteService;
-import com.lifedjtu.jw.pojos.Course;
-import com.lifedjtu.jw.pojos.CourseTakenItem;
-import com.lifedjtu.jw.pojos.Exam;
+import com.lifedjtu.jw.pojos.Score;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
+import com.lifedjtu.jw.pojos.dto.CourseDto;
+import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
+import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDayInfo;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.RoomInfoDto;
 import com.lifedjtu.jw.pojos.dto.RoomWeekInfo;
-import com.lifedjtu.jw.pojos.Score;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
-
-import com.lifedjtu.jw.util.URLFetcher;
-import com.lifedjtu.jw.util.MapMaker;
 import com.lifedjtu.jw.util.FetchResponse;
+import com.lifedjtu.jw.util.MapMaker;
+import com.lifedjtu.jw.util.URLFetcher;
 import com.lifedjtu.jw.util.extractor.DomElement;
 import com.lifedjtu.jw.util.extractor.Extractor;
 
 @Component("jwRemoteService")
 public class JWRemoteServiceImpl implements JWRemoteService {
 
-	private final String loginURL = "jw.djtu.edu.cn/academic/j_acegi_security_check";
-	private final String studentMessageURL = "http://jw.djtu.edu.cn/academic/showHeader.do";
-	private final String studentRegistryURL = "http://jw.djtu.edu.cn/academic/student/studentinfo/studentInfoModifyIndex.do?frombase=0&wantTag=0";
-	private final String modifyPasswordURL = "http://jw.djtu.edu.cn/academic/sysmgr/modifypasswd_user.jsdo";
-	private final String queryBuildingOnDateURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedule_week.jsdo";
-	private final String queryRoomURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedule.jsdo";
-	private final String queryRemoteCourseTableURL = "http://jw.djtu.edu.cn/academic/student/currcourse/currcourse.jsdo";
-	private final String queryRemoteExamsURL = "http://jw.djtu.edu.cn/academic/student/exam/index.jsdo";
-	private final String queryRemoteScoresURL = "http://jw.djtu.edu.cn/academic/manager/score/studentOwnScore.do";
+	private final String loginURL = "202.199.128.21/academic/j_acegi_security_check";
+	private final String studentMessageURL = "http://202.199.128.21/academic/showHeader.do";
+	private final String studentRegistryURL = "http://202.199.128.21/academic/student/studentinfo/studentInfoModifyIndex.do?frombase=0&wantTag=0";
+	private final String modifyPasswordURL = "http://202.199.128.21/academic/sysmgr/modifypasswd_user.jsdo";
+	private final String queryBuildingOnDateURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedule_week.jsdo";
+	private final String queryRoomURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedule.jsdo";
+	private final String queryRemoteCourseTableURL = "http://202.199.128.21/academic/student/currcourse/currcourse.jsdo";
+	private final String queryRemoteExamsURL = "http://202.199.128.21/academic/student/exam/index.jsdo";
+	private final String queryRemoteScoresURL = "http://202.199.128.21/academic/manager/score/studentOwnScore.do";
 	
 	@Override
 	public String signinRemote(String studentId, String password) {
@@ -56,7 +54,7 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	public StudentRegistry fetchStudentRegistry(String sessionId) {
 		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(studentRegistryURL, sessionId);
-		System.out.println(fetchResponse.getResponseBody());
+		//System.out.println(fetchResponse.getResponseBody());
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;
 		}
@@ -95,14 +93,16 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 			int buildingId, int week, int weekday) {
 		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryBuildingOnDateURL, sessionId, MapMaker.instance("aid", new Integer(aid).toString())
-				.param("buildingid", new Integer(buildingId).toString())
-				.param("whichweek", new Integer(week).toString())
-				.param("week", new Integer(weekday).toString())
+				.param("buildingid", buildingId+"")
+				.param("whichweek", week+"")
+				.param("week", weekday+"")
+				.param("room", -1+"")
 				.toMap());
+		//System.out.println(fetchResponse.getResponseBody());
+
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;
 		}
-		//System.out.println(fetchResponse.getResponseBody());
 		List<DomElement> list = Extractor.$("tr[class=infolist_common]",fetchResponse.getResponseBody());
 		//System.out.println(list.size());
 		List<RoomInfoDto> roomInfoDtos = new ArrayList<RoomInfoDto>();
@@ -128,8 +128,7 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	}
 
 	@Override
-	public RoomDto queryRoom(String sessionId, int aid, int buildingId,
-			int roomId) {
+	public RoomDto queryRoom(String sessionId, int aid, int buildingId, int roomId) {
 		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryRoomURL, sessionId, MapMaker.instance("aid", new Integer(aid).toString())
 																					.param("buildingid", new Integer(buildingId).toString())
@@ -171,16 +170,16 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	}
 
 	@Override
-	public List<Course> queryRemoteCourseTable(String sessionId) {
+	public List<CourseDto> queryRemoteCourseTable(String sessionId) {
 		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryRemoteCourseTableURL, sessionId);
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;
 		}
 		//System.out.println(fetchResponse.getResponseBody());
-		List<DomElement> list = Extractor.$("table[class=infolist_tab]:first > tr",fetchResponse.getResponseBody());
-		List<Course> courses = new ArrayList<Course>();
-		for(int i=1;i<list.size()-3;i++){
+		List<DomElement> list = Extractor.$("table[class=infolist_tab]:first > tr[class=infolist_common]",fetchResponse.getResponseBody());
+		List<CourseDto> courses = new ArrayList<CourseDto>();
+		for(int i=0;i<list.size();i++){
 			List<DomElement> courseTemp = list.get(i).children("td");
 			List<DomElement> courseTakenItemTemp = courseTemp.get(9).find("tr");
 			List<CourseTakenItem> courseTakenItems = new ArrayList<CourseTakenItem>();
@@ -192,7 +191,11 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 						taken.get(3).getText().trim());
 				courseTakenItems.add(item);
 			}
-			Course course = new Course(courseTemp.get(0).getText().trim(),
+			
+			String epidIdHref = courseTemp.get(11).find("a").get(0).attr("href");
+			
+			
+			CourseDto course = new CourseDto(courseTemp.get(0).getText().trim(),
 					courseTemp.get(1).getText().trim(),
 					courseTemp.get(2).getText().trim(),
 					courseTemp.get(3).getText().trim(),
@@ -201,6 +204,7 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 					courseTemp.get(6).getText().trim(),
 					courseTemp.get(7).getText().trim(),
 					courseTemp.get(8).getText().trim(),
+					epidIdHref.substring(epidIdHref.lastIndexOf("=")+1),
 					courseTakenItems);
 			courses.add(course);
 		}
@@ -208,17 +212,17 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	}
 
 	@Override
-	public List<Exam> queryRemoteExams(String sessionId) {
+	public List<ExamDto> queryRemoteExams(String sessionId) {
 		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryRemoteExamsURL, sessionId);
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;
 		}
 		List<DomElement> list = Extractor.$("table[class=infolist_tab] > tr",fetchResponse.getResponseBody());
-		List<Exam> exams = new ArrayList<Exam>();
+		List<ExamDto> exams = new ArrayList<ExamDto>();
 		for(int i=1;i<list.size();i++){
 			List<DomElement> examTemp = list.get(i).children("td");
-			Exam exam = new Exam(examTemp.get(0).getText().trim(),
+			ExamDto exam = new ExamDto(examTemp.get(0).getText().trim(),
 					examTemp.get(1).getText().trim(),
 					examTemp.get(2).getText().trim(),
 					examTemp.get(3).getText().trim(),

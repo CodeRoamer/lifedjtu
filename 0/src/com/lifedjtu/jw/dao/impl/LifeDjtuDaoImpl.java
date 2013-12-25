@@ -76,7 +76,7 @@ public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 	@Override
 	public int updateFirstByParams(CriteriaWrapper criteriaWrapper,
 			UpdateWrapper UpdateWrapper) {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
@@ -313,25 +313,18 @@ public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 
 
 
+	
 	public Class<T> getCls() {
 		return cls;
 	}
-
-
-
 
 	public void setCls(Class<T> cls) {
 		this.cls = cls;
 	}
 
-
-
-
 	public HibernateTemplate getHibernateTemplate() {
 		return hibernateTemplate;
 	}
-
-
 
 	@Resource
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {

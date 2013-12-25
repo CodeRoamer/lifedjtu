@@ -1,4 +1,6 @@
-package com.lifedjtu.jw.pojos;
+package com.lifedjtu.jw.pojos.dto;
+
+import com.lifedjtu.jw.pojos.EntityObject;
 
 public class CourseTakenItem extends EntityObject{
 	private String week;

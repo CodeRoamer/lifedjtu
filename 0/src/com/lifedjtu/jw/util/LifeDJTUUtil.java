@@ -7,9 +7,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lifedjtu.jw.pojos.Course;
-import com.lifedjtu.jw.pojos.CourseTakenItem;
+import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.CourseRow;
+import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
 
 public class LifeDJTUUtil {
 	public static String fakePartialEvaList() {
@@ -91,7 +91,7 @@ public class LifeDJTUUtil {
 	/*
 	 * 转变Course集合为CourseRow的可表现形式
 	 */
-	public List<CourseRow> transformCourseList(List<Course> courses) {
+	public List<CourseRow> transformCourseList(List<CourseDto> courses) {
 		List<CourseRow> courseRows = new ArrayList<CourseRow>();
 		for (int i = 0; i < 10; ++i) {
 			CourseRow courseRow = new CourseRow();
@@ -99,7 +99,7 @@ public class LifeDJTUUtil {
 			courseRows.add(courseRow);
 		}
 
-		for (Course course : courses) {
+		for (CourseDto course : courses) {
 			String name = course.getCourseName();
 			List<CourseTakenItem> items = course.getCourseTakenItems();
 			for (CourseTakenItem item : items) {

@@ -1,27 +1,21 @@
 package com.lifedjtu.jw.pojos;
 
 public class User extends EntityObject{
-	private String id;
+	private String userId;
 	private String studentId;
 	private String password;
-	
 	private String username;
 	private String curSessionId;
 	
-	private String freeLoginHashCode;
+	private String faculty;
+	private String academy;
+	private String privateKey;
 	
-	
-	public String getFreeLoginHashCode() {
-		return freeLoginHashCode;
+	public String getUserId() {
+		return userId;
 	}
-	public void setFreeLoginHashCode(String freeLoginHashCode) {
-		this.freeLoginHashCode = freeLoginHashCode;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getStudentId() {
 		return studentId;
@@ -35,7 +29,6 @@ public class User extends EntityObject{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 	public String getUsername() {
 		return username;
 	}
@@ -47,6 +40,24 @@ public class User extends EntityObject{
 	}
 	public void setCurSessionId(String curSessionId) {
 		this.curSessionId = curSessionId;
+	}
+	public String getFaculty() {
+		return faculty;
+	}
+	public void setFaculty(String faculty) {
+		this.faculty = faculty;
+	}
+	public String getAcademy() {
+		return academy;
+	}
+	public void setAcademy(String academy) {
+		this.academy = academy;
+	}
+	public String getPrivateKey() {
+		return privateKey;
+	}
+	public void setPrivateKey(String privateKey) {
+		this.privateKey = privateKey;
 	}
 	public User(){}
 	public User(String studentId, String password){

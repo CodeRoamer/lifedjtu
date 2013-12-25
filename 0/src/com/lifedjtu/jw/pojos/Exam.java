@@ -1,29 +1,24 @@
 package com.lifedjtu.jw.pojos;
 
-public class Exam extends EntityObject{
-	private String courseAliasName;
-	private String courseName;
-	private String examDate;
-	private String roomName;
-	private String courseProperty;
-	
-	public Exam(String courseAliasName, String courseName, String examDate,
-			String roomName, String courseProperty) {
-		super();
-		this.courseAliasName = courseAliasName;
-		this.courseName = courseName;
-		this.examDate = examDate;
-		this.roomName = roomName;
-		this.courseProperty = courseProperty;
-	}
-	
-	
+import java.sql.Date;
 
-	public String getCourseAliasName() {
-		return courseAliasName;
+public class Exam extends EntityObject{
+	private String examId;
+	private String courseId;
+	private String courseName;
+	private String courseAlias;
+	private Date examDate;
+	public String getExamId() {
+		return examId;
 	}
-	public void setCourseAliasName(String courseAliasName) {
-		this.courseAliasName = courseAliasName;
+	public void setExamId(String examId) {
+		this.examId = examId;
+	}
+	public String getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
 	}
 	public String getCourseName() {
 		return courseName;
@@ -31,30 +26,27 @@ public class Exam extends EntityObject{
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}
-	public String getExamDate() {
+	public String getCourseAlias() {
+		return courseAlias;
+	}
+	public void setCourseAlias(String courseAlias) {
+		this.courseAlias = courseAlias;
+	}
+	public Date getExamDate() {
 		return examDate;
 	}
-	public void setExamDate(String examDate) {
+	public void setExamDate(Date examDate) {
 		this.examDate = examDate;
 	}
-	public String getRoomName() {
-		return roomName;
-	}
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
-	}
-	public String getCourseProperty() {
-		return courseProperty;
-	}
-	public void setCourseProperty(String courseProperty) {
-		this.courseProperty = courseProperty;
+	public Exam(String examId, String courseId, String courseName,
+			String courseAlias, Date examDate) {
+		super();
+		this.examId = examId;
+		this.courseId = courseId;
+		this.courseName = courseName;
+		this.courseAlias = courseAlias;
+		this.examDate = examDate;
 	}
 	
-	@Override
-	public String toString() {
-		return "Exam [courseAliasName=" + courseAliasName + ", courseName="
-				+ courseName + ", examDate=" + examDate + ", roomName="
-				+ roomName + ", courseProperty=" + courseProperty + "]\n";
-	}
-	
+	public Exam(){}
 }

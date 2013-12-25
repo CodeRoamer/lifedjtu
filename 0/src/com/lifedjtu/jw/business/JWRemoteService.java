@@ -4,10 +4,11 @@ package com.lifedjtu.jw.business;
 
 import java.util.List;
 
-import com.lifedjtu.jw.pojos.*;
-import com.lifedjtu.jw.pojos.dto.BuildingDto;
-import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.Score;
+import com.lifedjtu.jw.pojos.dto.BuildingDto;
+import com.lifedjtu.jw.pojos.dto.CourseDto;
+import com.lifedjtu.jw.pojos.dto.ExamDto;
+import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 
 public interface JWRemoteService {
@@ -21,9 +22,9 @@ public interface JWRemoteService {
 	
 	public RoomDto queryRoom(String sessionId, int aid, int buildingId, int roomId);
 	
-	public List<Course> queryRemoteCourseTable(String sessionId);
+	public List<CourseDto> queryRemoteCourseTable(String sessionId);
 	
-	public List<Exam> queryRemoteExams(String sessionId);
+	public List<ExamDto> queryRemoteExams(String sessionId);
 	
 	public List<Score> queryRemoteScores(String sessionId);
 }
