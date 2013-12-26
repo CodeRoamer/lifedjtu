@@ -1,6 +1,6 @@
 package com.lifedjtu.jw.pojos;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class ExamInstance extends EntityObject{
 	private String examInstanceId;
@@ -10,9 +10,19 @@ public class ExamInstance extends EntityObject{
 	private String courseName;
 	private String roomId; //可以通过这个外键连接教室表，获取教室的详细信息，例如位置和大小
 	private String roomName;
+	private boolean scoreOut;
 	
 	private Date examDate;
 	private String examStatus;
+	
+	
+	
+	public boolean isScoreOut() {
+		return scoreOut;
+	}
+	public void setScoreOut(boolean scoreOut) {
+		this.scoreOut = scoreOut;
+	}
 	public String getExamInstanceId() {
 		return examInstanceId;
 	}

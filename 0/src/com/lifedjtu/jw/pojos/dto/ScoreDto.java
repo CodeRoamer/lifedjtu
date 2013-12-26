@@ -1,6 +1,8 @@
-package com.lifedjtu.jw.pojos;
+package com.lifedjtu.jw.pojos.dto;
 
-public class Score extends EntityObject{
+import com.lifedjtu.jw.pojos.EntityObject;
+
+public class ScoreDto extends EntityObject{
 	private String year;
 	private String term;
 	private String courseAliasName;
@@ -18,7 +20,7 @@ public class Score extends EntityObject{
 	private String teacherName;
 	private String courseCategory;
 	
-	public Score(String year, String term, String courseAliasName,
+	public ScoreDto(String year, String term, String courseAliasName,
 			String courseSequence, String courseName, String courseAttr,
 			String courseGroup, String courseMarks, String normalScore,
 			String finalScore, String totalScore, String isPostponed,

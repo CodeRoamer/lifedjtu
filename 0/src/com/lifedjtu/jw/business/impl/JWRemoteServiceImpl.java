@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.lifedjtu.jw.business.JWRemoteService;
-import com.lifedjtu.jw.pojos.Score;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
@@ -17,6 +16,7 @@ import com.lifedjtu.jw.pojos.dto.RoomDayInfo;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.RoomInfoDto;
 import com.lifedjtu.jw.pojos.dto.RoomWeekInfo;
+import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 import com.lifedjtu.jw.util.FetchResponse;
 import com.lifedjtu.jw.util.MapMaker;
@@ -233,17 +233,17 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	}
 
 	@Override
-	public List<Score> queryRemoteScores(String sessionId) {
+	public List<ScoreDto> queryRemoteScores(String sessionId) {
 		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryRemoteScoresURL, sessionId);
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;
 		}
 		List<DomElement> list = Extractor.$("table[class=datalist] > tr",fetchResponse.getResponseBody());
-		List<Score> scores = new ArrayList<Score>();
+		List<ScoreDto> scores = new ArrayList<ScoreDto>();
 		for(int i=1;i<list.size();i++){
 			List<DomElement> scoreTemp = list.get(i).children("td");
-			Score score = new Score(scoreTemp.get(0).getText().trim(),
+			ScoreDto score = new ScoreDto(scoreTemp.get(0).getText().trim(),
 					scoreTemp.get(1).getText().trim(),
 					scoreTemp.get(2).getText().trim(),
 					scoreTemp.get(3).getText().trim(),

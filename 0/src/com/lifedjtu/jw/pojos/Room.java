@@ -6,6 +6,52 @@ public class Room extends EntityObject{
 	private String buildingId;
 	private int roomRemoteId;
 	
+	private int roomSeatNum;
+	private String roomSeatType;
+	private int courseCapacity;
+	private int examCapacity;
+	private String roomType;
+	
+	public int getRoomSeatNum() {
+		return roomSeatNum;
+	}
+
+	public void setRoomSeatNum(int roomSeatNum) {
+		this.roomSeatNum = roomSeatNum;
+	}
+
+	public String getRoomSeatType() {
+		return roomSeatType;
+	}
+
+	public void setRoomSeatType(String roomSeatType) {
+		this.roomSeatType = roomSeatType;
+	}
+
+	public int getCourseCapacity() {
+		return courseCapacity;
+	}
+
+	public void setCourseCapacity(int courseCapacity) {
+		this.courseCapacity = courseCapacity;
+	}
+
+	public int getExamCapacity() {
+		return examCapacity;
+	}
+
+	public void setExamCapacity(int examCapacity) {
+		this.examCapacity = examCapacity;
+	}
+
+	public String getRoomType() {
+		return roomType;
+	}
+
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
+	}
+
 	public String getRoomId() {
 		return roomId;
 	}
