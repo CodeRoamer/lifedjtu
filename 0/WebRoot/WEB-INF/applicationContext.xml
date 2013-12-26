@@ -10,18 +10,25 @@
            http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
            http://www.springframework.org/schema/tx   
            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+
+	<!-- properties文件来引入设置属性 -->
+	<context:property-placeholder  location="classpath:/lifedjtu.properties"/>
 	<!-- 用注解方式注入bean -->
 	<context:annotation-config />
 	<context:component-scan base-package="com.lifedjtu.jw.dao.impl" />
 	<context:component-scan base-package="com.lifedjtu.jw.business.impl" />
+	<!-- 转变JDBC异常 -->
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 	<!-- 数据库连接池 -->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		
-		<property name="url" value="jdbc:mysql://localhost:3306/lifedjtu" />
-		<property name="username" value="root" />
-		<property name="password" value="" />
-	</bean> 
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${driverClassName}" />
+
+		<property name="url" value="${url}" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
+	</bean>
 	<!-- hibernate sessionFactory 创建 -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -43,21 +50,13 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	<!-- 事物配置 -->
-	<!-- <bean id="transactionManager"
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory"></property>
-	</bean>
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="find*" read-only="true" />
-			<tx:method name="add*" propagation="REQUIRED" />
-			<tx:method name="save*" propagation="REQUIRED" />
-		</tx:attributes>
-	</tx:advice>
-	<aop:config>
-		<aop:pointcut expression="execution(public * com.lifedjtu.jw.business.impl..*.*(..))"
-			id="myPointcut" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut" />
-	</aop:config> -->
+	<!-- <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"> 
+		<property name="sessionFactory" ref="sessionFactory"></property> </bean> 
+		<tx:advice id="txAdvice" transaction-manager="transactionManager"> <tx:attributes> 
+		<tx:method name="find*" read-only="true" /> <tx:method name="add*" propagation="REQUIRED" 
+		/> <tx:method name="save*" propagation="REQUIRED" /> </tx:attributes> </tx:advice> 
+		<aop:config> <aop:pointcut expression="execution(public * com.lifedjtu.jw.business.impl..*.*(..))" 
+		id="myPointcut" /> <aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut" 
+		/> </aop:config> -->
 
 </beans>

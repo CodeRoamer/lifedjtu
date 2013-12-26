@@ -1,6 +1,20 @@
 package com.lifedjtu.jw.pojos;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+
+@Entity
+@Access(AccessType.FIELD)
 public class User extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3270505028982366472L;
+	
+	@Id
 	private String userId;
 	private String studentId;
 	private String password;

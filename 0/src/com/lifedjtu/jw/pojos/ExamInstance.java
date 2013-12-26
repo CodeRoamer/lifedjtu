@@ -3,6 +3,11 @@ package com.lifedjtu.jw.pojos;
 import java.util.Date;
 
 public class ExamInstance extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7828941619416271997L;
+
 	private String examInstanceId;
 	
 	private String examId;
@@ -13,10 +18,15 @@ public class ExamInstance extends EntityObject{
 	private boolean scoreOut;
 	
 	private Date examDate;
+	private int lastedMinutes;
 	private String examStatus;
 	
-	
-	
+	public int getLastedMinutes() {
+		return lastedMinutes;
+	}
+	public void setLastedMinutes(int lastedMinutes) {
+		this.lastedMinutes = lastedMinutes;
+	}
 	public boolean isScoreOut() {
 		return scoreOut;
 	}

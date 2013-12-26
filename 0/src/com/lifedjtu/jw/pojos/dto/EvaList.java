@@ -6,6 +6,10 @@ import java.util.List;
 import com.lifedjtu.jw.pojos.EntityObject;
 
 public class EvaList extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5028148300929709944L;
 	private List<EvaEntry> entries;
 
 	public List<EvaEntry> getEntries() {

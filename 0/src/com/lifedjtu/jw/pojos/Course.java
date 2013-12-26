@@ -1,6 +1,10 @@
 package com.lifedjtu.jw.pojos;
 
 public class Course extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5498423261074121186L;
 	private String courseId;
 	private String courseName;
 	private String courseAlias;

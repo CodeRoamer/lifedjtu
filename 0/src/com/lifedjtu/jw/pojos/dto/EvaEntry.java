@@ -3,6 +3,10 @@ package com.lifedjtu.jw.pojos.dto;
 import com.lifedjtu.jw.pojos.EntityObject;
 
 public class EvaEntry extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -211137091872163460L;
 	private String courseName;
 	private String courseTeacher;
 	private String courseHref;

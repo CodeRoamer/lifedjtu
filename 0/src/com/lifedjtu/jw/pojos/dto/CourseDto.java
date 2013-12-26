@@ -5,6 +5,10 @@ import java.util.List;
 import com.lifedjtu.jw.pojos.EntityObject;
 
 public class CourseDto extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2547400198845507410L;
 	private String aliasName;
 	private String courseNumber;
 	private String courseName;

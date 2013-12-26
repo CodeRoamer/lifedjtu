@@ -6,6 +6,10 @@ import com.lifedjtu.jw.pojos.EntityObject;
 
 
 public class StudentRegistry extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 806815179830239704L;
 	private List<String> titles;
 	private List<String> values;
 	public StudentRegistry(List<String> titles, List<String> values) {

@@ -5,6 +5,10 @@ import java.util.List;
 import com.lifedjtu.jw.pojos.EntityObject;
 
 public class RoomInfoDto extends EntityObject {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4208197401536692917L;
 	private String roomName;
 	private String siteNumber;
 	private String classNumber;

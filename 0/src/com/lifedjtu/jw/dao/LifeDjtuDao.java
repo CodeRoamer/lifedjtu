@@ -3,7 +3,9 @@ package com.lifedjtu.jw.dao;
 import java.util.Collection;
 import java.util.List;
 
-public interface LifeDjtuDao<T> {
+import com.lifedjtu.jw.pojos.EntityObject;
+
+public interface LifeDjtuDao<T extends EntityObject> {
 	/**
 	 * 添加一个entity
 	 */

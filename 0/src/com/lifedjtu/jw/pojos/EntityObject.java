@@ -1,12 +1,17 @@
 package com.lifedjtu.jw.pojos;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 
 import org.json.JSONObject;
 
-public class EntityObject {
+public class EntityObject implements Serializable{
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8495226126373394030L;
 public static final String GETTER_PREFIX = "get";
 	
 	

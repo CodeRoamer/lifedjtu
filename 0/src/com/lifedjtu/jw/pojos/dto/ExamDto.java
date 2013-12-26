@@ -3,6 +3,10 @@ package com.lifedjtu.jw.pojos.dto;
 import com.lifedjtu.jw.pojos.EntityObject;
 
 public class ExamDto extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3594352363523619003L;
 	private String courseAliasName;
 	private String courseName;
 	private String examDate;

@@ -3,6 +3,10 @@ package com.lifedjtu.jw.pojos.dto;
 import com.lifedjtu.jw.pojos.EntityObject;
 
 public class ScoreDto extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3356565167455893684L;
 	private String year;
 	private String term;
 	private String courseAliasName;

@@ -4,6 +4,10 @@ import java.util.List;
 
 
 public class Area extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1199454941218580378L;
 	private String areaId;
 	private String areaName;
 	private int areaRemoteId;

@@ -1,6 +1,10 @@
 package com.lifedjtu.jw.pojos;
 
 public class Room extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8448616113206422882L;
 	private String roomId;
 	private String roomName;
 	private String buildingId;

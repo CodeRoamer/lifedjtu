@@ -4,6 +4,10 @@ import java.util.List;
 
 
 public class Building extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2751780603601804234L;
 	private String buildingId;
 	private String buildingName;
 	private String areaId;

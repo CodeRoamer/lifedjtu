@@ -5,6 +5,10 @@ import java.util.List;
 import com.lifedjtu.jw.pojos.EntityObject;
 
 public class RoomDayInfo extends EntityObject {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3433230119840901809L;
 	private List<String> infos;
 
 	

@@ -3,6 +3,10 @@ package com.lifedjtu.jw.pojos.dto;
 import com.lifedjtu.jw.pojos.EntityObject;
 
 public class CourseTakenItem extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6539692743023484130L;
 	private String week;
 	private String day;
 	private String time;

@@ -3,11 +3,23 @@ package com.lifedjtu.jw.pojos;
 import java.util.Date;
 
 public class Exam extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2155939337330675743L;
 	private String examId;
 	private String courseId;
 	private String courseName;
 	private String courseAlias;
 	private Date examDate;
+	private int lastedMinutes;
+	
+	public int getLastedMinutes() {
+		return lastedMinutes;
+	}
+	public void setLastedMinutes(int lastedMinutes) {
+		this.lastedMinutes = lastedMinutes;
+	}
 	public String getExamId() {
 		return examId;
 	}

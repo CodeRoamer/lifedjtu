@@ -1,6 +1,10 @@
 package com.lifedjtu.jw.pojos;
 
 public class CourseInstance extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6529968217761140613L;
 	private String courseInstanceId;
 	private String courseName;
 	private String courseRemoteId;
@@ -8,7 +12,56 @@ public class CourseInstance extends EntityObject{
 	private String courseId;
 	private String teacherName;
 	
+	//startWeek, endWeek, weekDay, segments, roomName, roomId
+	//startWeek=7&endWeek=18&weekDay=4&segments=3|4&roomName=J219&roomId=fde123dk1;next item...
+	private String courseTakenInfo;
+	private int year;
+	private int term;
+	
+	private int goodEval;
+	private int badEval;
+	
 	public CourseInstance() {}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public int getTerm() {
+		return term;
+	}
+
+	public void setTerm(int term) {
+		this.term = term;
+	}
+
+	public int getGoodEval() {
+		return goodEval;
+	}
+
+	public void setGoodEval(int goodEval) {
+		this.goodEval = goodEval;
+	}
+
+	public int getBadEval() {
+		return badEval;
+	}
+
+	public void setBadEval(int badEval) {
+		this.badEval = badEval;
+	}
+
+	public String getCourseTakenInfo() {
+		return courseTakenInfo;
+	}
+
+	public void setCourseTakenInfo(String courseTakenInfo) {
+		this.courseTakenInfo = courseTakenInfo;
+	}
 
 	public String getCourseInstanceId() {
 		return courseInstanceId;

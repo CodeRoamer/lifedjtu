@@ -5,10 +5,8 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Resource;
-
+import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Component;
 
 import com.lifedjtu.jw.dao.CriteriaWrapper;
 import com.lifedjtu.jw.dao.FieldFilter;
@@ -16,12 +14,14 @@ import com.lifedjtu.jw.dao.LifeDjtuDao;
 import com.lifedjtu.jw.dao.Pageable;
 import com.lifedjtu.jw.dao.Sortable;
 import com.lifedjtu.jw.dao.UpdateWrapper;
+import com.lifedjtu.jw.pojos.EntityObject;
 
-@Component("lifeDjtuDao")
-public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
+public abstract class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	
 	private Class<T> cls;
-	private HibernateTemplate hibernateTemplate;
+	protected HibernateTemplate hibernateTemplate;
+	//请务必使用getSession()来获取Session
+	//private Session session;
 	/**
 	 * Default constructor. 构造函数不传参，但是很重要，为继承的子类抽出泛型的Class对象，以便于 传给DAO方法
 	 */
@@ -326,9 +326,12 @@ public class LifeDjtuDaoImpl<T> implements LifeDjtuDao<T> {
 		return hibernateTemplate;
 	}
 
-	@Resource
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
+	public abstract void setHibernateTemplate(HibernateTemplate hibernateTemplate);
+
+
+	public Session getSession() {
+		return hibernateTemplate.getSessionFactory().getCurrentSession();
 	}
+	
 	
 }
