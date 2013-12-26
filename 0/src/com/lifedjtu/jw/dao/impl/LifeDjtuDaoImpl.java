@@ -16,7 +16,8 @@ import com.lifedjtu.jw.dao.Sortable;
 import com.lifedjtu.jw.dao.UpdateWrapper;
 import com.lifedjtu.jw.pojos.EntityObject;
 
-public abstract class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
+@SuppressWarnings("unchecked")
+public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	
 	private Class<T> cls;
 	protected HibernateTemplate hibernateTemplate;
@@ -25,7 +26,6 @@ public abstract class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjt
 	/**
 	 * Default constructor. 构造函数不传参，但是很重要，为继承的子类抽出泛型的Class对象，以便于 传给DAO方法
 	 */
-	@SuppressWarnings("unchecked")
 	public LifeDjtuDaoImpl() {
 		@SuppressWarnings("rawtypes")
 		Class clazz = getClass();
@@ -35,7 +35,7 @@ public abstract class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjt
 			if (t instanceof ParameterizedType) {
 				Type[] args = ((ParameterizedType) t).getActualTypeArguments();
 				if (args[0] instanceof Class) {
-					this.setCls((Class<T>) args[0]);
+					cls = ((Class<T>) args[0]);
 					break;
 				}
 			}
@@ -76,7 +76,6 @@ public abstract class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjt
 	@Override
 	public int updateFirstByParams(CriteriaWrapper criteriaWrapper,
 			UpdateWrapper UpdateWrapper) {
-		
 		return 0;
 	}
 
@@ -138,7 +137,8 @@ public abstract class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjt
 
 	@Override
 	public T findOneProjectedById(String id, FieldFilter fieldFilter) {
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 
@@ -157,8 +157,7 @@ public abstract class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjt
 
 	@Override
 	public List<T> findByParams(CriteriaWrapper criteriaWrapper) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSession().createCriteria(cls).list();
 	}
 
 	@Override
@@ -301,7 +300,7 @@ public abstract class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjt
 	@Override
 	public Class<T> getParameterizedClass() {
 		// TODO Auto-generated method stub
-		return null;
+		return cls;
 	}
 
 	@Override
@@ -313,20 +312,14 @@ public abstract class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjt
 
 
 
-	
-	public Class<T> getCls() {
-		return cls;
-	}
-
-	public void setCls(Class<T> cls) {
-		this.cls = cls;
-	}
 
 	public HibernateTemplate getHibernateTemplate() {
 		return hibernateTemplate;
 	}
 
-	public abstract void setHibernateTemplate(HibernateTemplate hibernateTemplate);
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate){
+		this.hibernateTemplate = hibernateTemplate;
+	}
 
 
 	public Session getSession() {

@@ -1,7 +1,7 @@
 package com.lifedjtu.jw.test;
 
 import java.io.File;
-import java.util.UUID;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -17,15 +17,17 @@ public class DaoTest {
 		ApplicationContext ctx=new FileSystemXmlApplicationContext("WebRoot"+sep+"WEB-INF"+sep+"applicationContext.xml");
 
 		UserDao userDao = (UserDao)ctx.getBean("userDao");
-		User user = new User();
-		user.setUserId(UUID.randomUUID().toString());
-		user.setStudentId("1018110323");
-		user.setUsername("李赫");
-		user.setPassword("911119");
+//		User user = new User();
+//		user.setUserId(UUID.randomUUID().toString());
+//		user.setStudentId("1018110323");
+//		user.setUsername("李赫");
+//		user.setPassword("911119");
 		long start = System.currentTimeMillis();
-		userDao.add(user);
+		List<User> users = userDao.findByParams(null);
 		long end = System.currentTimeMillis();
 		System.err.println((end-start)/(double)1000+"s");
-		
+		for(User user : users){
+			System.out.println(user.toJSON());
+		}
 	}
 }

@@ -13,13 +13,14 @@
 
 
 	<!-- properties文件来引入设置属性 -->
-	<context:property-placeholder  location="classpath:/lifedjtu.properties"/>
+	<context:property-placeholder location="classpath:/lifedjtu.properties" />
 	<!-- 用注解方式注入bean -->
 	<context:annotation-config />
 	<context:component-scan base-package="com.lifedjtu.jw.dao.impl" />
 	<context:component-scan base-package="com.lifedjtu.jw.business.impl" />
 	<!-- 转变JDBC异常 -->
-	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+	<bean
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 	<!-- 数据库连接池 -->
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -49,14 +50,26 @@
 	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
 	<!-- 事物配置 -->
-	<!-- <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"> 
-		<property name="sessionFactory" ref="sessionFactory"></property> </bean> 
-		<tx:advice id="txAdvice" transaction-manager="transactionManager"> <tx:attributes> 
-		<tx:method name="find*" read-only="true" /> <tx:method name="add*" propagation="REQUIRED" 
-		/> <tx:method name="save*" propagation="REQUIRED" /> </tx:attributes> </tx:advice> 
-		<aop:config> <aop:pointcut expression="execution(public * com.lifedjtu.jw.business.impl..*.*(..))" 
-		id="myPointcut" /> <aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut" 
-		/> </aop:config> -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="upsert" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut
+			expression="execution(public * com.lifedjtu.jw.dao.impl..*.*(..))"
+			id="myPointcut" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut" />
+	</aop:config>
 
 </beans>
