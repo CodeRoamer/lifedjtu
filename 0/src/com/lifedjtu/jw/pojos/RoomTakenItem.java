@@ -2,11 +2,24 @@ package com.lifedjtu.jw.pojos;
 
 import java.util.Date;
 
-public class RoomTakenItem {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
+public class RoomTakenItem extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8280870762481766184L;
+	@Id
 	private String id;
 	private int roomRemoteId;
 	private String roomName;
-	private String buildingId;
+	@ManyToOne
+	@JoinColumn(name="buildingId")
+	private Building building;
 	private Date dataDate;
 	private String todayTakenCondition;
 	private String tomorrowTakenCondition;
@@ -29,12 +42,15 @@ public class RoomTakenItem {
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-	public String getBuildingId() {
-		return buildingId;
+	
+	public Building getBuilding() {
+		return building;
 	}
-	public void setBuildingId(String buildingId) {
-		this.buildingId = buildingId;
+
+	public void setBuilding(Building building) {
+		this.building = building;
 	}
+
 	public Date getDataDate() {
 		return dataDate;
 	}

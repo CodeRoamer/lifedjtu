@@ -2,14 +2,18 @@ package com.lifedjtu.jw.pojos;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-
+@Entity
 public class Area extends EntityObject{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1199454941218580378L;
+	@Id
 	private String id;
 	private String areaName;
 	private int areaRemoteId;
@@ -17,7 +21,7 @@ public class Area extends EntityObject{
 	private double latitude;
 	private double radius;
 	
-	@OneToMany(mappedBy="areaId")
+	@OneToMany(mappedBy="area", fetch=FetchType.LAZY)
 	private List<String> buildings;
 	
 	public Area() {}

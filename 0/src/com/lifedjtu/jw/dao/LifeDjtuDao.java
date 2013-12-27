@@ -2,6 +2,7 @@ package com.lifedjtu.jw.dao;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.lifedjtu.jw.pojos.EntityObject;
 
@@ -118,7 +119,11 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	List<T> findProjectedAllInPage(Pageable pageable, ProjectionWrapper projectionWrapper);
 	List<T> findProjectedAllInPageInOrder(Pageable pageable, ProjectionWrapper projectionWrapper, Sortable sortable);
 
-
+	/**
+	 * 表联接查询，利用jpa的注释
+	 */
+	List<T> findByJoinedParams(Map<String, String> propPair, CriteriaWrapper criteriaWrapper);
+	
 	/**
 	 * 获取泛型类，父类调用无效，子类可调
 	 */

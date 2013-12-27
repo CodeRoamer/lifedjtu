@@ -1,15 +1,28 @@
 package com.lifedjtu.jw.pojos;
 
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+@Entity
 public class CourseInstance extends EntityObject{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6529968217761140613L;
+	@Id
 	private String id;
 	private String courseName;
 	private String courseRemoteId;
 	private String courseAlias;
-	private String courseId;
+	@ManyToOne
+	@JoinColumn(name="courseId")
+	private Course course;
 	private String teacherName;
 	
 	//startWeek, endWeek, weekDay, segments, roomName, roomId
@@ -21,6 +34,9 @@ public class CourseInstance extends EntityObject{
 	private int goodEval;
 	private int badEval;
 	
+	@OneToMany(mappedBy="courseInstance", fetch=FetchType.LAZY)
+	private List<UserCourse> userCourses;
+	
 	public CourseInstance() {}
 
 	public int getYear() {
@@ -29,6 +45,14 @@ public class CourseInstance extends EntityObject{
 
 	public void setYear(int year) {
 		this.year = year;
+	}
+
+	public List<UserCourse> getUserCourses() {
+		return userCourses;
+	}
+
+	public void setUserCourses(List<UserCourse> userCourses) {
+		this.userCourses = userCourses;
 	}
 
 	public int getTerm() {
@@ -94,13 +118,13 @@ public class CourseInstance extends EntityObject{
 	public void setCourseAlias(String courseAlias) {
 		this.courseAlias = courseAlias;
 	}
-
-	public String getCourseId() {
-		return courseId;
+	
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 	public String getTeacherName() {

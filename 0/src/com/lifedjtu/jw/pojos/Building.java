@@ -2,21 +2,31 @@ package com.lifedjtu.jw.pojos;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+@Entity
 public class Building extends EntityObject{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2751780603601804234L;
+	@Id
 	private String id;
 	private String buildingName;
-	private String areaId;
+	@ManyToOne
+	@JoinColumn(name="areaId")
+	private Area area;
 	private int buildingRemoteId;
 	private double longitude;
 	private double latitude;
 	private double radius;
 	
-	
+	@OneToMany(mappedBy="room", fetch=FetchType.LAZY)
 	private List<Room> rooms;
 
 	public Building() {}
@@ -37,12 +47,13 @@ public class Building extends EntityObject{
 		this.buildingName = buildingName;
 	}
 
-	public String getAreaId() {
-		return areaId;
+
+	public Area getArea() {
+		return area;
 	}
 
-	public void setAreaId(String areaId) {
-		this.areaId = areaId;
+	public void setArea(Area area) {
+		this.area = area;
 	}
 
 	public int getBuildingRemoteId() {

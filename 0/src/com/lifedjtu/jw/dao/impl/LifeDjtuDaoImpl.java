@@ -4,6 +4,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -323,16 +324,23 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 	}
 
-
-
-
 	@Override
 	public List<T> findProjectedAllInPageInOrder(Pageable pageable,
 			ProjectionWrapper projectionWrapper, Sortable sortable) {
 		return wrapQueryList(null, projectionWrapper, sortable, pageable);
 	}
 	
-	
+
+	@Override
+	public List<T> findByJoinedParams(Map<String, String> propPair, CriteriaWrapper criteriaWrapper) {
+		QueryWrapper queryWrapper = QueryWrapper.from(cls);
+		for(Map.Entry<String, String> entry:propPair.entrySet()){
+			queryWrapper.join(entry.getKey(), entry.getValue());
+		}
+		queryWrapper.addCriteria(criteriaWrapper);
+		return hibernateTemplate.findByCriteria(queryWrapper.getCriteria());
+	}
+
 	
 	@Override
 	public Class<T> getParameterizedClass() {
@@ -380,6 +388,8 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	public Session getSession() {
 		return hibernateTemplate.getSessionFactory().getCurrentSession();
 	}
+
+
 
 
 	

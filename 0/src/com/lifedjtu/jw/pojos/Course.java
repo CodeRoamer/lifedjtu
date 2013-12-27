@@ -1,10 +1,15 @@
 package com.lifedjtu.jw.pojos;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Course extends EntityObject{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5498423261074121186L;
+	@Id
 	private String id;
 	private String courseName;
 	private String courseAlias;

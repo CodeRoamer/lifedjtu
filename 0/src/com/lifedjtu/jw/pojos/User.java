@@ -1,9 +1,13 @@
 package com.lifedjtu.jw.pojos;
 
+import java.util.List;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -24,6 +28,9 @@ public class User extends EntityObject{
 	private String faculty;
 	private String academy;
 	private String privateKey;
+	
+	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+	private List<UserCourse> userCourses;
 	
 	public String getId() {
 		return id;
@@ -74,6 +81,15 @@ public class User extends EntityObject{
 	public void setPrivateKey(String privateKey) {
 		this.privateKey = privateKey;
 	}
+	
+	public List<UserCourse> getUserCourses() {
+		return userCourses;
+	}
+
+	public void setUserCourses(List<UserCourse> userCourses) {
+		this.userCourses = userCourses;
+	}
+
 	public User(){}
 	public User(String studentId, String password){
 		this.studentId = studentId;

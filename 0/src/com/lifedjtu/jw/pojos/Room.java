@@ -1,13 +1,23 @@
 package com.lifedjtu.jw.pojos;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+
+@Entity
 public class Room extends EntityObject{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8448616113206422882L;
+	@Id
 	private String id;
 	private String roomName;
-	private String buildingId;
+	@ManyToOne
+	@JoinColumn(name="buildingId")
+	private Building building;
 	private int roomRemoteId;
 	
 	private int roomSeatNum;
@@ -72,12 +82,14 @@ public class Room extends EntityObject{
 		this.roomName = roomName;
 	}
 
-	public String getBuildingId() {
-		return buildingId;
+	
+
+	public Building getBuilding() {
+		return building;
 	}
 
-	public void setBuildingId(String buildingId) {
-		this.buildingId = buildingId;
+	public void setBuilding(Building building) {
+		this.building = building;
 	}
 
 	public int getRoomRemoteId() {
