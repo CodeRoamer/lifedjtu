@@ -4,6 +4,9 @@ package com.lifedjtu.jw.business;
 
 import java.util.List;
 
+import com.lifedjtu.jw.pojos.Area;
+import com.lifedjtu.jw.pojos.Building;
+import com.lifedjtu.jw.pojos.Room;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
@@ -27,4 +30,15 @@ public interface JWRemoteService {
 	public List<ExamDto> queryRemoteExams(String sessionId);
 	
 	public List<ScoreDto> queryRemoteScores(String sessionId);
+	
+	
+	
+	/**
+	 * 服务于内部的Remote方法
+	 */
+	public List<Area> queryRemoteAreas(String sessionId);
+	public List<Building> queryRemoteBuildings(String session, String areaRemoteId);
+	public List<Room> queryRemoteRooms(String sesion, String buildingRemoteId);
+	public Room queryRemoteRoom(String sessionId, String roomRemoteId);
+
 }

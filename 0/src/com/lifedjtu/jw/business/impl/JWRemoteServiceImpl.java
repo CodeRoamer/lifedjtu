@@ -8,6 +8,9 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.lifedjtu.jw.business.JWRemoteService;
+import com.lifedjtu.jw.pojos.Area;
+import com.lifedjtu.jw.pojos.Building;
+import com.lifedjtu.jw.pojos.Room;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
@@ -262,6 +265,31 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 			scores.add(score);
 		}
 		return scores;
+	}
+
+	@Override
+	public List<Area> queryRemoteAreas(String sessionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Building> queryRemoteBuildings(String session,
+			String areaRemoteId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Room> queryRemoteRooms(String sesion, String buildingRemoteId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Room queryRemoteRoom(String sessionId, String roomRemoteId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
