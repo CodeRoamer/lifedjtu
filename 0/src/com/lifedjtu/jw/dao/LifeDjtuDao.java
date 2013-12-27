@@ -25,10 +25,8 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	int updateFirstByParams(CriteriaWrapper criteriaWrapper, UpdateWrapper UpdateWrapper);
 	int updateFirstByParams(String id, UpdateWrapper UpdateWrapper); 
 	int updateMultiByParams(CriteriaWrapper criteriaWrapper, UpdateWrapper UpdateWrapper);
-	int updateMultiByParams(CriteriaWrapper criteriaWrapper, Pageable pageable, Sortable sortable, UpdateWrapper updateWrapper);
 	
-	int upsert(String id, UpdateWrapper UpdateWrapper);
-	int upsert(CriteriaWrapper criteriaWrapper, UpdateWrapper UpdateWrapper);
+	
 	/**
 	 * 删除一个entity
 	 */
@@ -45,7 +43,7 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	 * 根据ID来查一个entity
 	 */
 	T findOneById(String id);
-	T findOneProjectedById(String id, FieldFilter fieldFilter);
+	T findOneProjectedById(String id, ProjectionWrapper projectionWrapper);
 	
 	/**
 	 * 根据传递个命名参数来查找符合条件的表记录，只返回第一个符合条件的
@@ -53,7 +51,7 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	 * @param queryName JPQL语句名称   mapper 命名参数对象
 	 */
 	T findOneByParams(CriteriaWrapper criteriaWrapper);
-	T findOneProjectedByParams(CriteriaWrapper criteriaWrapper, FieldFilter filFieldFilter);
+	T findOneProjectedByParams(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper);
 
 	
 	/**
@@ -72,11 +70,11 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	/**
 	 * 投影查询，下同，返回一个DomainModel的集合
 	 */
-	List<T> findProjectedByParams(CriteriaWrapper criteriaWrapper, FieldFilter filter);
-	List<T> findProjectedByParamsInOrder(CriteriaWrapper criteriaWrapper, FieldFilter filter, Sortable sortable);
+	List<T> findProjectedByParams(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper);
+	List<T> findProjectedByParamsInOrder(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable);
 
-	List<T> findProjectedByParamsInPage(CriteriaWrapper criteriaWrapper, FieldFilter filter, Pageable pageable);
-	List<T> findProjectedByParamsInPageInOrder(CriteriaWrapper criteriaWrapper, FieldFilter filter, Pageable pageable, Sortable sortable);
+	List<T> findProjectedByParamsInPage(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Pageable pageable);
+	List<T> findProjectedByParamsInPageInOrder(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Pageable pageable, Sortable sortable);
 
 	
 	/**
@@ -107,8 +105,8 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	List<T> findProjectedAll(String... fields);
 	List<T> findProjectedAllInOrder(Sortable sortable, String... fields);
 
-	List<T> findProjectedAll(FieldFilter filter);
-	List<T> findProjectedAllInOrder(FieldFilter filter, Sortable sortable);
+	List<T> findProjectedAll(ProjectionWrapper projectionWrapper);
+	List<T> findProjectedAllInOrder(ProjectionWrapper projectionWrapper, Sortable sortable);
 
 	
 	/**
@@ -117,8 +115,8 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	List<T> findProjectedAllInPage(Pageable pageable,String... fields);
 	List<T> findProjectedAllInPageInOrder(Pageable pageable,Sortable sortable, String... fields);
 
-	List<T> findProjectedAllInPage(Pageable pageable, FieldFilter filter);
-	List<T> findProjectedAllInPageInOrder(Pageable pageable, FieldFilter filter, Sortable sortable);
+	List<T> findProjectedAllInPage(Pageable pageable, ProjectionWrapper projectionWrapper);
+	List<T> findProjectedAllInPageInOrder(Pageable pageable, ProjectionWrapper projectionWrapper, Sortable sortable);
 
 
 	/**

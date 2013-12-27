@@ -6,12 +6,15 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.lifedjtu.jw.dao.CriteriaWrapper;
-import com.lifedjtu.jw.dao.FieldFilter;
 import com.lifedjtu.jw.dao.LifeDjtuDao;
 import com.lifedjtu.jw.dao.Pageable;
+import com.lifedjtu.jw.dao.ProjectionWrapper;
+import com.lifedjtu.jw.dao.QueryWrapper;
 import com.lifedjtu.jw.dao.Sortable;
 import com.lifedjtu.jw.dao.UpdateWrapper;
 import com.lifedjtu.jw.pojos.EntityObject;
@@ -46,22 +49,19 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	
 	
 	
-	
+	//OK!!!
 	@Override
 	public void add(T paramT) {
-		// TODO Auto-generated method stub
 		hibernateTemplate.save(paramT);
 	}
 
 	@Override
 	public void addMulti(Collection<T> paramTs) {
-		// TODO Auto-generated method stub
 		hibernateTemplate.saveOrUpdateAll(paramTs);
 	}
 
 	@Override
 	public void addMultiOneByOne(Collection<T> paramTs) {
-		// TODO Auto-generated method stub
 		for(T paraT : paramTs){
 			hibernateTemplate.save(paraT);
 		}
@@ -69,7 +69,6 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 	@Override
 	public void update(T paramT) {
-		// TODO Auto-generated method stub
 		hibernateTemplate.update(paramT);
 	}
 
@@ -81,225 +80,262 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 	@Override
 	public int updateFirstByParams(String id, UpdateWrapper UpdateWrapper) {
-		// TODO Auto-generated method stub
-		return 0;
+		CriteriaWrapper criteriaWrapper = CriteriaWrapper.instance().and(Restrictions.eq("id", id));
+		return wrapBatchUpdate(criteriaWrapper, UpdateWrapper);
 	}
 
 	@Override
 	public int updateMultiByParams(CriteriaWrapper criteriaWrapper,
 			UpdateWrapper UpdateWrapper) {
-		// TODO Auto-generated method stub
-		return 0;
+		return wrapBatchUpdate(criteriaWrapper, UpdateWrapper);
+
 	}
 
-	@Override
-	public int updateMultiByParams(CriteriaWrapper criteriaWrapper,
-			Pageable pageable, Sortable sortable, UpdateWrapper updateWrapper) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int upsert(String id, UpdateWrapper UpdateWrapper) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int upsert(CriteriaWrapper criteriaWrapper,
-			UpdateWrapper UpdateWrapper) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-//	@Override
-//	public void delete(String id) {
-//		// TODO Auto-generated method stub
-//	}
 
 	@Override
 	public void delete(T paramT) {
-		// TODO Auto-generated method stub
 		hibernateTemplate.delete(paramT);
 	}
 
+	//OK!!!
 	@Override
 	public void deleteByParams(CriteriaWrapper criteriaWrapper) {
-		// TODO Auto-generated method stub
-		
+		getSession().createQuery("delete from "+cls.getSimpleName()+" where "+criteriaWrapper.getCriteria().toString()).executeUpdate();
 	}
 
 	@Override
 	public T findOneById(String id) {
-		// TODO Auto-generated method stub
 		return hibernateTemplate.get(cls, id);
 	}
 
+	
 	@Override
-	public T findOneProjectedById(String id, FieldFilter fieldFilter) {
-		
-		
-		return null;
+	public List<T> findAll() {
+		return hibernateTemplate.loadAll(cls);
 	}
+
+
+	@Override
+	public T findOneProjectedById(String id, ProjectionWrapper projectionWrapper) {
+		return wrapQueryOne(CriteriaWrapper.instance().and(Restrictions.eq("id", id)), projectionWrapper, null);
+	}
+
+
+
 
 	@Override
 	public T findOneByParams(CriteriaWrapper criteriaWrapper) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryOne(criteriaWrapper, null, null);
 	}
+
+
+
 
 	@Override
 	public T findOneProjectedByParams(CriteriaWrapper criteriaWrapper,
-			FieldFilter filFieldFilter) {
-		// TODO Auto-generated method stub
-		return null;
+			ProjectionWrapper projectionWrapper) {
+		return wrapQueryOne(criteriaWrapper, projectionWrapper, null);
+
 	}
+
+
+
 
 	@Override
 	public List<T> findByParams(CriteriaWrapper criteriaWrapper) {
-		return getSession().createCriteria(cls).list();
+		return wrapQueryList(criteriaWrapper, null, null, null);
+
 	}
+
+
+
 
 	@Override
 	public List<T> findByParamsInOrder(CriteriaWrapper criteriaWrapper,
 			Sortable sortable) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(criteriaWrapper, null, sortable, null);
+
 	}
+
+
+
 
 	@Override
 	public List<T> findByParamsInPage(CriteriaWrapper criteriaWrapper,
 			Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(criteriaWrapper, null, null, pageable);
+
 	}
+
+
+
 
 	@Override
 	public List<T> findByParamsInPageInOrder(CriteriaWrapper criteriaWrapper,
 			Pageable pageable, Sortable sortable) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(criteriaWrapper, null, sortable, pageable);
 	}
+
+
+
 
 	@Override
 	public List<T> findProjectedByParams(CriteriaWrapper criteriaWrapper,
-			FieldFilter filter) {
-		// TODO Auto-generated method stub
-		return null;
+			ProjectionWrapper projectionWrapper) {
+		return wrapQueryList(criteriaWrapper, projectionWrapper, null, null);
+
 	}
+
+
+
 
 	@Override
 	public List<T> findProjectedByParamsInOrder(
-			CriteriaWrapper criteriaWrapper, FieldFilter filter,
-			Sortable sortable) {
-		// TODO Auto-generated method stub
-		return null;
+			CriteriaWrapper criteriaWrapper,
+			ProjectionWrapper projectionWrapper, Sortable sortable) {
+		return wrapQueryList(criteriaWrapper, projectionWrapper, sortable, null);
+
 	}
+
+
+
 
 	@Override
 	public List<T> findProjectedByParamsInPage(CriteriaWrapper criteriaWrapper,
-			FieldFilter filter, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+			ProjectionWrapper projectionWrapper, Pageable pageable) {
+		return wrapQueryList(criteriaWrapper, projectionWrapper, null, pageable);
+
 	}
+
+
+
 
 	@Override
 	public List<T> findProjectedByParamsInPageInOrder(
-			CriteriaWrapper criteriaWrapper, FieldFilter filter,
-			Pageable pageable, Sortable sortable) {
-		// TODO Auto-generated method stub
-		return null;
+			CriteriaWrapper criteriaWrapper,
+			ProjectionWrapper projectionWrapper, Pageable pageable,
+			Sortable sortable) {
+		return wrapQueryList(criteriaWrapper, projectionWrapper, sortable, pageable);
 	}
+
+
+
 
 	@Override
 	public List<T> findMultiByIds(String... ids) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(CriteriaWrapper.instance().and(Restrictions.in("id", ids)), null, null, null);
 	}
+
+
+
 
 	@Override
 	public List<T> findMultiByIdsInOrder(Sortable sortable, String... ids) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(CriteriaWrapper.instance().and(Restrictions.in("id", ids)), null, sortable, null);
 	}
 
-	@Override
-	public List<T> findAll() {
-		// TODO Auto-generated method stub
-		return hibernateTemplate.loadAll(cls);
-	}
+
+
 
 	@Override
 	public List<T> findAllInOrder(Sortable sortable) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(null, null, sortable, null);
 	}
+
+
+
 
 	@Override
 	public List<T> findAllInPage(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(null, null, null, pageable);
+
 	}
+
+
+
 
 	@Override
 	public List<T> findAllInPageInOrder(Pageable pageable, Sortable sortable) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(null, null, sortable, pageable);
+
 	}
+
+
+
 
 	@Override
 	public List<T> findProjectedAll(String... fields) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(null, ProjectionWrapper.instance().fields(fields), null, null);
 	}
+
+
+
 
 	@Override
 	public List<T> findProjectedAllInOrder(Sortable sortable, String... fields) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(null, ProjectionWrapper.instance().fields(fields), sortable, null);
+
 	}
 
-	@Override
-	public List<T> findProjectedAll(FieldFilter filter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+
 
 	@Override
-	public List<T> findProjectedAllInOrder(FieldFilter filter, Sortable sortable) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<T> findProjectedAll(ProjectionWrapper projectionWrapper) {
+		return wrapQueryList(null, projectionWrapper, null, null);
+
 	}
+
+
+
+
+	@Override
+	public List<T> findProjectedAllInOrder(ProjectionWrapper projectionWrapper,
+			Sortable sortable) {
+		return wrapQueryList(null, projectionWrapper, sortable, null);
+
+	}
+
+
+
 
 	@Override
 	public List<T> findProjectedAllInPage(Pageable pageable, String... fields) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(null, ProjectionWrapper.instance().fields(fields), null, pageable);
 	}
+
+
+
 
 	@Override
 	public List<T> findProjectedAllInPageInOrder(Pageable pageable,
 			Sortable sortable, String... fields) {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapQueryList(null, ProjectionWrapper.instance().fields(fields), sortable, pageable);
 	}
 
+
+
+
 	@Override
-	public List<T> findProjectedAllInPage(Pageable pageable, FieldFilter filter) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<T> findProjectedAllInPage(Pageable pageable,
+			ProjectionWrapper projectionWrapper) {
+		return wrapQueryList(null, projectionWrapper, null, pageable);
+
 	}
+
+
+
 
 	@Override
 	public List<T> findProjectedAllInPageInOrder(Pageable pageable,
-			FieldFilter filter, Sortable sortable) {
-		// TODO Auto-generated method stub
-		return null;
+			ProjectionWrapper projectionWrapper, Sortable sortable) {
+		return wrapQueryList(null, projectionWrapper, sortable, pageable);
 	}
-
+	
+	
+	
 	@Override
 	public Class<T> getParameterizedClass() {
-		// TODO Auto-generated method stub
 		return cls;
 	}
 
@@ -310,8 +346,27 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	}
 
 
+	private int wrapBatchUpdate(CriteriaWrapper criteriaWrapper, UpdateWrapper updateWrapper){
+		return getSession().createQuery(updateWrapper.getUpdate(cls, criteriaWrapper)).executeUpdate();
+	}
+	
+	private List<T> wrapQueryList(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable, Pageable pageable){
+		DetachedCriteria detachedCriteria = QueryWrapper.from(cls).addCriteria(criteriaWrapper).addProjection(projectionWrapper).addOrder(sortable).getCriteria();
+		if(pageable==null){
+			return hibernateTemplate.findByCriteria(detachedCriteria); 
+		}else{
+			return hibernateTemplate.findByCriteria(detachedCriteria, pageable.getOffset(), pageable.getPageSize());
+		}
+	}
 
-
+	private T wrapQueryOne(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable){
+		List<T> list =  wrapQueryList(criteriaWrapper, projectionWrapper, sortable, Pageable.inPage(0,1));
+		if(list!=null&&list.size()!=0){
+			return list.get(0);
+		}else{
+			return null;
+		}
+	}
 
 	public HibernateTemplate getHibernateTemplate() {
 		return hibernateTemplate;
@@ -325,6 +380,9 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	public Session getSession() {
 		return hibernateTemplate.getSessionFactory().getCurrentSession();
 	}
-	
+
+
 	
 }
+
+

@@ -5,7 +5,7 @@ public class CourseInstance extends EntityObject{
 	 * 
 	 */
 	private static final long serialVersionUID = 6529968217761140613L;
-	private String courseInstanceId;
+	private String id;
 	private String courseName;
 	private String courseRemoteId;
 	private String courseAlias;
@@ -63,12 +63,12 @@ public class CourseInstance extends EntityObject{
 		this.courseTakenInfo = courseTakenInfo;
 	}
 
-	public String getCourseInstanceId() {
-		return courseInstanceId;
+	public String getId() {
+		return id;
 	}
 
-	public void setCourseInstanceId(String courseInstanceId) {
-		this.courseInstanceId = courseInstanceId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getCourseName() {

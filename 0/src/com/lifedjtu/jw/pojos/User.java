@@ -15,7 +15,7 @@ public class User extends EntityObject{
 	private static final long serialVersionUID = -3270505028982366472L;
 	
 	@Id
-	private String userId;
+	private String id;
 	private String studentId;
 	private String password;
 	private String username;
@@ -25,11 +25,12 @@ public class User extends EntityObject{
 	private String academy;
 	private String privateKey;
 	
-	public String getUserId() {
-		return userId;
+	public String getId() {
+		return id;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getStudentId() {
 		return studentId;

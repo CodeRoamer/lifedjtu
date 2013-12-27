@@ -8,7 +8,7 @@ public class Building extends EntityObject{
 	 * 
 	 */
 	private static final long serialVersionUID = 2751780603601804234L;
-	private String buildingId;
+	private String id;
 	private String buildingName;
 	private String areaId;
 	private int buildingRemoteId;
@@ -21,12 +21,12 @@ public class Building extends EntityObject{
 
 	public Building() {}
 
-	public String getBuildingId() {
-		return buildingId;
+	public String getId() {
+		return id;
 	}
 
-	public void setBuildingId(String buildingId) {
-		this.buildingId = buildingId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getBuildingName() {

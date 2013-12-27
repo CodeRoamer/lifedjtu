@@ -3,18 +3,19 @@ package com.lifedjtu.jw.pojos;
 import java.util.Date;
 
 public class RoomTakenItem {
-	private String roomId;
+	private String id;
 	private int roomRemoteId;
 	private String roomName;
 	private String buildingId;
 	private Date dataDate;
 	private String todayTakenCondition;
 	private String tomorrowTakenCondition;
-	public String getRoomId() {
-		return roomId;
+	public String getId() {
+		return id;
 	}
-	public void setRoomId(String roomId) {
-		this.roomId = roomId;
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	public int getRoomRemoteId() {
 		return roomRemoteId;

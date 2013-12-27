@@ -5,20 +5,19 @@ public class Course extends EntityObject{
 	 * 
 	 */
 	private static final long serialVersionUID = 5498423261074121186L;
-	private String courseId;
+	private String id;
 	private String courseName;
 	private String courseAlias;
 	
 	public Course() {}
 
-	public String getCourseId() {
-		return courseId;
+	public String getId() {
+		return id;
 	}
 
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
+	public void setId(String id) {
+		this.id = id;
 	}
-
 	public String getCourseName() {
 		return courseName;
 	}

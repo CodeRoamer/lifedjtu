@@ -5,9 +5,17 @@ public class UserCourse extends EntityObject{
 	 * 
 	 */
 	private static final long serialVersionUID = 3690794133607720170L;
+	private String id;
 	private String userId;
 	private String courseInstanceId;
 	private String examInstanceId;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getUserId() {
 		return userId;
 	}

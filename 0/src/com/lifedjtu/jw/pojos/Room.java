@@ -5,7 +5,7 @@ public class Room extends EntityObject{
 	 * 
 	 */
 	private static final long serialVersionUID = -8448616113206422882L;
-	private String roomId;
+	private String id;
 	private String roomName;
 	private String buildingId;
 	private int roomRemoteId;
@@ -56,12 +56,12 @@ public class Room extends EntityObject{
 		this.roomType = roomType;
 	}
 
-	public String getRoomId() {
-		return roomId;
+	public String getId() {
+		return id;
 	}
 
-	public void setRoomId(String roomId) {
-		this.roomId = roomId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getRoomName() {

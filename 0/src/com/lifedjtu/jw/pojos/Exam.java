@@ -7,7 +7,7 @@ public class Exam extends EntityObject{
 	 * 
 	 */
 	private static final long serialVersionUID = 2155939337330675743L;
-	private String examId;
+	private String id;
 	private String courseId;
 	private String courseName;
 	private String courseAlias;
@@ -20,11 +20,12 @@ public class Exam extends EntityObject{
 	public void setLastedMinutes(int lastedMinutes) {
 		this.lastedMinutes = lastedMinutes;
 	}
-	public String getExamId() {
-		return examId;
+	public String getId() {
+		return id;
 	}
-	public void setExamId(String examId) {
-		this.examId = examId;
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getCourseId() {
 		return courseId;
@@ -53,7 +54,7 @@ public class Exam extends EntityObject{
 	public Exam(String examId, String courseId, String courseName,
 			String courseAlias, Date examDate) {
 		super();
-		this.examId = examId;
+		this.id = examId;
 		this.courseId = courseId;
 		this.courseName = courseName;
 		this.courseAlias = courseAlias;

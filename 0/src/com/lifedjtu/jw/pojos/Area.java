@@ -2,30 +2,34 @@ package com.lifedjtu.jw.pojos;
 
 import java.util.List;
 
+import javax.persistence.OneToMany;
+
 
 public class Area extends EntityObject{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1199454941218580378L;
-	private String areaId;
+	private String id;
 	private String areaName;
 	private int areaRemoteId;
 	private double longitude;
 	private double latitude;
 	private double radius;
 	
+	@OneToMany(mappedBy="areaId")
 	private List<String> buildings;
 	
 	public Area() {}
 	
-	
-	public String getAreaId() {
-		return areaId;
+	public String getId() {
+		return id;
 	}
-	public void setAreaId(String areaId) {
-		this.areaId = areaId;
+
+	public void setId(String id) {
+		this.id = id;
 	}
+
 	public String getAreaName() {
 		return areaName;
 	}

@@ -10,7 +10,7 @@ public class ExamInstance extends EntityObject{
 
 	private String examInstanceId;
 	
-	private String examId;
+	private String id;
 	private String courseInstanceId;
 	private String courseName;
 	private String roomId; //可以通过这个外键连接教室表，获取教室的详细信息，例如位置和大小
@@ -39,11 +39,12 @@ public class ExamInstance extends EntityObject{
 	public void setExamInstanceId(String examInstanceId) {
 		this.examInstanceId = examInstanceId;
 	}
-	public String getExamId() {
-		return examId;
+	public String getId() {
+		return id;
 	}
-	public void setExamId(String examId) {
-		this.examId = examId;
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getCourseInstanceId() {
 		return courseInstanceId;
