@@ -9,6 +9,9 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.business.impl.JWRemoteServiceImpl;
+import com.lifedjtu.jw.pojos.Area;
+import com.lifedjtu.jw.pojos.Building;
+import com.lifedjtu.jw.pojos.Room;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 
 public class RemoteServiceUnitTest {
@@ -33,5 +36,35 @@ public class RemoteServiceUnitTest {
 			System.out.println(course.toJSON());
 		}
 		//System.out.println(roomDto);
+	}
+	
+	@Test
+	public void testQueryRemoteAreas(){
+		JWRemoteService jwRemoteService = new JWRemoteServiceImpl();
+		String sessionId = jwRemoteService.signinRemote("1018110201", "357159");
+		List<Area> list = jwRemoteService.queryRemoteAreas(sessionId);
+		for(Area area : list){
+			System.out.println(area.toJSON());
+		}
+	}
+	
+	@Test
+	public void testQueryRemoteBuildings(){
+		JWRemoteService jwRemoteService = new JWRemoteServiceImpl();
+		String sessionId = jwRemoteService.signinRemote("1018110201", "357159");
+		List<Building> list = jwRemoteService.queryRemoteBuildings(sessionId, "1");
+		for(Building building : list){
+			System.out.println(building.toJSON());
+		}
+	}
+	
+	@Test
+	public void testQueryRemoteRooms(){
+		JWRemoteService jwRemoteService = new JWRemoteServiceImpl();
+		String sessionId = jwRemoteService.signinRemote("1018110201", "357159");
+		List<Room> list = jwRemoteService.queryRemoteRooms(sessionId, "80");
+		for(Room room : list){
+			System.out.println(room.toJSON());
+		}
 	}
 }
