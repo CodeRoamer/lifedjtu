@@ -3,7 +3,7 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
 "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>	
-	<package name="struts2" extends="struts-default" namespace="/">
+	<package name="main" extends="struts-default" namespace="/">
 	
 		<result-types>
 			<result-type name="jsonResult" class="com.lifedjtu.jw.ui.struts2.result.JsonResult"></result-type>
@@ -34,4 +34,14 @@
 		</action>
 		
 	</package>
+	
+	<package name="task" extends="main" namespace="/task">
+		
+		<action name="updateRoomInfo" method="updateRoomInfo" class="com.lifedjtu.jw.ui.struts2.core.MainUpdateCacheAction">
+			<result name="success" type="jsonResult">status</result>
+		</action>
+		
+	</package>
+	
+	
 </struts>

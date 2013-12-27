@@ -26,7 +26,7 @@ public class Building extends EntityObject{
 	private double latitude;
 	private double radius;
 	
-	@OneToMany(mappedBy="room", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="building", fetch=FetchType.LAZY)
 	private List<Room> rooms;
 
 	public Building() {}

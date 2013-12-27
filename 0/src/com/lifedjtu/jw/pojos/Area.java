@@ -22,7 +22,7 @@ public class Area extends EntityObject{
 	private double radius;
 	
 	@OneToMany(mappedBy="area", fetch=FetchType.LAZY)
-	private List<String> buildings;
+	private List<Building> buildings;
 	
 	public Area() {}
 	
@@ -64,11 +64,14 @@ public class Area extends EntityObject{
 	public void setRadius(double radius) {
 		this.radius = radius;
 	}
-	public List<String> getBuildings() {
+
+	public List<Building> getBuildings() {
 		return buildings;
 	}
-	public void setBuildings(List<String> buildings) {
+
+	public void setBuildings(List<Building> buildings) {
 		this.buildings = buildings;
 	}
+	
 	
 }
