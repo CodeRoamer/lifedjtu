@@ -22,7 +22,7 @@ public class Crypto {
 	}
 	
 	public static boolean validateCronKey(String remoteKey){
-		if(remoteKey.equals("1234")){
+		if(remoteKey!=null&&remoteKey.equals("1234")){
 			return true;
 		}else{
 			return false;
