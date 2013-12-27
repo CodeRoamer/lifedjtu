@@ -39,7 +39,7 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	private final String queryRemoteCourseTableURL = "http://202.199.128.21/academic/student/currcourse/currcourse.jsdo";
 	private final String queryRemoteExamsURL = "http://202.199.128.21/academic/student/exam/index.jsdo";
 	private final String queryRemoteScoresURL = "http://202.199.128.21/academic/manager/score/studentOwnScore.do";
-	
+	private final String queryAreaURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedulequery.jsdo";
 	@Override
 	public String signinRemote(String studentId, String password) {
 		// TODO Auto-generated method stub
@@ -270,26 +270,76 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	@Override
 	public List<Area> queryRemoteAreas(String sessionId) {
 		// TODO Auto-generated method stub
-		return null;
+		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryAreaURL, sessionId);
+		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
+		List<DomElement> list = Extractor.$("table[class=broken_tab] > tr",fetchResponse.getResponseBody());
+		List<DomElement> area = list.get(0).children("td").get(1).children("select").get(0).children("option");
+		System.out.println(area.size());
+		List<Area> areas = new ArrayList<Area>();
+		for(int i=1;i<area.size();i++){
+			Area tempArea = new Area();
+			tempArea.setAreaRemoteId(new Integer(area.get(i).getAttributes().get("value")));
+			tempArea.setAreaName(area.get(i).getText().trim());
+			areas.add(tempArea);
+		}
+		return areas;
 	}
 
 	@Override
-	public List<Building> queryRemoteBuildings(String session,
+	public List<Building> queryRemoteBuildings(String sessionId,
 			String areaRemoteId) {
 		// TODO Auto-generated method stub
-		return null;
+		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryAreaURL, sessionId, MapMaker.instance("aid", areaRemoteId).toMap());
+		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
+		List<DomElement> list = Extractor.$("table[class=broken_tab] > tr",fetchResponse.getResponseBody());
+		List<DomElement> building = list.get(0).children("td").get(3).children("select").get(0).children("option");
+		List<Building> buildings = new ArrayList<Building>();
+		for(int i=1;i<building.size();i++){
+			Building tempBuilding = new Building();
+			tempBuilding.setBuildingRemoteId(new Integer(building.get(i).getAttributes().get("value")));
+			tempBuilding.setBuildingName(building.get(i).getText().trim());
+			buildings.add(tempBuilding);
+		}
+		return buildings;
 	}
 
 	@Override
-	public List<Room> queryRemoteRooms(String sesion, String buildingRemoteId) {
+	public List<Room> queryRemoteRooms(String sessionId, String buildingRemoteId) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Room queryRemoteRoom(String sessionId, String roomRemoteId) {
-		// TODO Auto-generated method stub
-		return null;
+		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryAreaURL, sessionId, MapMaker.instance("buildingid", buildingRemoteId).toMap());
+		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
+		List<DomElement> list = Extractor.$("table[class=broken_tab] > tr",fetchResponse.getResponseBody());
+		List<DomElement> room = list.get(1).children("td").get(1).children("select").get(0).children("option");
+		List<Room> rooms = new ArrayList<Room>();
+		for(int i=1;i<room.size();i++){
+			Room tempRoom = new Room();
+			tempRoom.setRoomRemoteId(new Integer(room.get(i).getAttributes().get("value")));
+			tempRoom.setRoomName(room.get(i).getText().trim());
+			rooms.add(tempRoom);
+		}
+		//System.out.println(rooms.size());
+		fetchResponse = URLFetcher.fetchURLByPost(queryBuildingOnDateURL, sessionId, MapMaker.instance("buildingid", buildingRemoteId)
+																					.param("whichweek", "1")
+																					.param("week", "1").toMap());
+		list = Extractor.$("tr[class=infolist_common]",fetchResponse.getResponseBody());
+		//room = list.get(0).children("tr");
+		//System.out.println(fetchResponse.getResponseBody());
+		//System.out.println(list.size());
+		for(int i=0;i<list.size();i++){
+			room = list.get(i).children("td");
+			rooms.get(i).setRoomSeatNum(new Integer(room.get(1).getText().trim()));
+			rooms.get(i).setCourseCapacity(new Integer(room.get(2).getText().trim()));
+			rooms.get(i).setExamCapacity(new Integer(room.get(3).getText().trim()));
+			rooms.get(i).setRoomSeatType(room.get(4).getText().trim());
+			rooms.get(i).setRoomType(room.get(5).getText().trim());
+		}
+		return rooms;
 	}
 
 }

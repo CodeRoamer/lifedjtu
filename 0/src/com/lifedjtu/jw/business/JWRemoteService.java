@@ -39,6 +39,5 @@ public interface JWRemoteService {
 	public List<Area> queryRemoteAreas(String sessionId);
 	public List<Building> queryRemoteBuildings(String session, String areaRemoteId);
 	public List<Room> queryRemoteRooms(String sesion, String buildingRemoteId);
-	public Room queryRemoteRoom(String sessionId, String roomRemoteId);
 
 }
