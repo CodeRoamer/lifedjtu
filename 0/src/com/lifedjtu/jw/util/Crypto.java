@@ -4,20 +4,28 @@ import java.util.UUID;
 
 
 public class Crypto {
-	public String encodeAES(String password) throws Exception{
+	public static String encodeAES(String password) throws Exception{
 		return EncryptAES.encode(password);
 	}
 	
-	public String decodeAES(String encodedPass) throws Exception{
+	public static String decodeAES(String encodedPass) throws Exception{
 		return EncryptAES.decode(encodedPass);
 	}
 	
-	public String randomPrivateKey(){
+	public static String randomPrivateKey(){
 		return EncryptMD5.MD5Encode(UUID.randomUUID().toString());
 	}
 	
-	public String cypherDynamicPassword(String privateKey,long time){
+	public static String cypherDynamicPassword(String privateKey,long time){
 		
 		return privateKey;
+	}
+	
+	public static boolean validateCronKey(String remoteKey){
+		if(remoteKey.equals("1234")){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }
