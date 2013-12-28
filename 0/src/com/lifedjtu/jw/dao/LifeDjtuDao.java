@@ -123,7 +123,7 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	 * 表联接查询，利用jpa的注释
 	 */
 	List<T> findByJoinedParams(Map<String, String> propPair, CriteriaWrapper criteriaWrapper);
-	
+	T findOneByJoinedParams(Map<String, String> propPair, CriteriaWrapper criteriaWrapper);
 	/**
 	 * 获取泛型类，父类调用无效，子类可调
 	 */

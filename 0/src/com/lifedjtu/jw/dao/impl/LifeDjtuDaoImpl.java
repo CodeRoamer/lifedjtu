@@ -341,6 +341,22 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 		return hibernateTemplate.findByCriteria(queryWrapper.getCriteria());
 	}
 
+	@Override
+	public T findOneByJoinedParams(Map<String, String> propPair, CriteriaWrapper criteriaWrapper) {
+		QueryWrapper queryWrapper = QueryWrapper.from(cls);
+		for(Map.Entry<String, String> entry:propPair.entrySet()){
+			queryWrapper.join(entry.getKey(), entry.getValue());
+		}
+		queryWrapper.addCriteria(criteriaWrapper);
+		List<T> list = hibernateTemplate.findByCriteria(queryWrapper.getCriteria(),0,1);
+		if(list==null||list.size()==0){
+			return null;
+		}else{
+			return list.get(0);
+		}
+	}
+
+
 	
 	@Override
 	public Class<T> getParameterizedClass() {
@@ -388,6 +404,7 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	public Session getSession() {
 		return hibernateTemplate.getSessionFactory().getCurrentSession();
 	}
+
 
 
 

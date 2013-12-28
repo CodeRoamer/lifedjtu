@@ -13,7 +13,7 @@ public class MainUpdateCacheAction {
 	public String updateRoomInfo(){
 		if(Crypto.validateCronKey(remoteKey)){
 			status = true;
-			jwUpdateCacheScheduler.updateRoomInfo();
+			jwUpdateCacheScheduler.updateRoomInfo("");
 		}else{
 			status = false;
 		}

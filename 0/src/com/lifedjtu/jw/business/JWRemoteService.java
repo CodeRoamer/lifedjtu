@@ -9,6 +9,7 @@ import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.Room;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
+import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
@@ -31,7 +32,7 @@ public interface JWRemoteService {
 	
 	public List<ScoreDto> queryRemoteScores(String sessionId);
 	
-	
+	public DjtuDate queryDjtuDate(String sessionId);
 	
 	/**
 	 * 服务于内部的Remote方法
@@ -39,5 +40,5 @@ public interface JWRemoteService {
 	public List<Area> queryRemoteAreas(String sessionId);
 	public List<Building> queryRemoteBuildings(String session, String areaRemoteId);
 	public List<Room> queryRemoteRooms(String sesion, String buildingRemoteId);
-
+	public String randomSessionId();
 }

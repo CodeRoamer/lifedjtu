@@ -22,6 +22,7 @@ public static final String GETTER_PREFIX = "get";
 			ArrayList<String> fieldNameList = new ArrayList<String>();
 			for(Method method : methods){
 				if(method.getName().startsWith(GETTER_PREFIX)){
+					//System.out.println(method.getName());
 					methodList.add(method);
 					String fieldName = Character.toLowerCase(method.getName().charAt(GETTER_PREFIX.length()))+method.getName().substring(GETTER_PREFIX.length()+1);
 					fieldNameList.add(fieldName);
@@ -44,6 +45,7 @@ public static final String GETTER_PREFIX = "get";
 			return json;
 			
 		}catch(Exception exception){
+			//System.err.println("Error Occurs!");
 			exception.printStackTrace();
 			return null;
 		}

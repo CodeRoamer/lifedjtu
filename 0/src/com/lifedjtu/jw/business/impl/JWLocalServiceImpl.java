@@ -2,9 +2,12 @@ package com.lifedjtu.jw.business.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lifedjtu.jw.business.JWLocalService;
+import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.ExamInstance;
 import com.lifedjtu.jw.pojos.Room;
@@ -15,8 +18,13 @@ import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 
 @Component("jwLocalService")
+@Transactional
 public class JWLocalServiceImpl implements JWLocalService{
-
+	@Autowired
+	private JWRemoteService jwRemoteService;
+	
+	
+	
 	@Override
 	public boolean isUserExist(String studentId) {
 		// TODO Auto-generated method stub
@@ -33,12 +41,6 @@ public class JWLocalServiceImpl implements JWLocalService{
 	public User signinLocal(String studentId, String password) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public boolean checkPrivateKey(String studentId, String dynamicPass) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -70,6 +72,24 @@ public class JWLocalServiceImpl implements JWLocalService{
 	}
 
 	@Override
+	public User fetchUserDetailInfo(String studentId, String dynamicPass) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean fetchUserCourseInfo(String studentId, String dynamicPass) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean fetchUserExamInfo(String studentId, String dynamicPass) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public StudentRegistry fetchStudentRegistry(String studentId,
 			String dynamicPass) {
 		// TODO Auto-generated method stub
@@ -95,5 +115,25 @@ public class JWLocalServiceImpl implements JWLocalService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public boolean checkPrivateKey(String studentId, String dynamicPass) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	
+	
+	public JWRemoteService getJwRemoteService() {
+		return jwRemoteService;
+	}
+
+	public void setJwRemoteService(JWRemoteService jwRemoteService) {
+		this.jwRemoteService = jwRemoteService;
+	}
+	
+	
+	
 	
 }

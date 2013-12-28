@@ -72,6 +72,4 @@ public class Area extends EntityObject{
 	public void setBuildings(List<Building> buildings) {
 		this.buildings = buildings;
 	}
-	
-	
 }

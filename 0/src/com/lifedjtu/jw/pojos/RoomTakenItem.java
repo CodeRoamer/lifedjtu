@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class RoomTakenItem extends EntityObject{
@@ -15,7 +16,9 @@ public class RoomTakenItem extends EntityObject{
 	private static final long serialVersionUID = -8280870762481766184L;
 	@Id
 	private String id;
-	private int roomRemoteId;
+	@OneToOne
+	@JoinColumn(name="roomId")
+	private Room room;
 	private String roomName;
 	@ManyToOne
 	@JoinColumn(name="buildingId")
@@ -30,12 +33,15 @@ public class RoomTakenItem extends EntityObject{
 	public void setId(String id) {
 		this.id = id;
 	}
-	public int getRoomRemoteId() {
-		return roomRemoteId;
+	
+	public Room getRoom() {
+		return room;
 	}
-	public void setRoomRemoteId(int roomRemoteId) {
-		this.roomRemoteId = roomRemoteId;
+
+	public void setRoom(Room room) {
+		this.room = room;
 	}
+
 	public String getRoomName() {
 		return roomName;
 	}

@@ -62,9 +62,10 @@
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	<tx:annotation-driven/>
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="find*" read-only="true" />
+			<tx:method name="find*"  read-only="true" />
 			<tx:method name="add*" propagation="REQUIRED" />
 			<tx:method name="update*" propagation="REQUIRED" />
 			<tx:method name="upsert" propagation="REQUIRED" />
@@ -74,9 +75,10 @@
 	<aop:config>
 		<aop:pointcut
 			expression="execution(public * com.lifedjtu.jw.dao.impl..*.*(..))"
-			id="myPointcut" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut" />
+			id="dao-transaction" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="dao-transaction" />
 	</aop:config>
+	
 	
 	
 </beans>

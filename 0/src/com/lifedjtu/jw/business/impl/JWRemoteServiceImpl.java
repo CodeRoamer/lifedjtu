@@ -3,17 +3,22 @@ package com.lifedjtu.jw.business.impl;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.lifedjtu.jw.business.JWRemoteService;
+import com.lifedjtu.jw.config.LifeDjtuConfig;
 import com.lifedjtu.jw.pojos.Area;
 import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.Room;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
+import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDayInfo;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
@@ -39,7 +44,8 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	private final String queryRemoteCourseTableURL = "http://202.199.128.21/academic/student/currcourse/currcourse.jsdo";
 	private final String queryRemoteExamsURL = "http://202.199.128.21/academic/student/exam/index.jsdo";
 	private final String queryRemoteScoresURL = "http://202.199.128.21/academic/manager/score/studentOwnScore.do";
-	private final String queryAreaURL = "http://jw.djtu.edu.cn/academic/teacher/teachresource/roomschedulequery.jsdo";
+	private final String queryAreaURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedulequery.jsdo";
+	private final String queryDateURL = "http://202.199.128.21/academic/listLeft.do";
 	@Override
 	public String signinRemote(String studentId, String password) {
 		// TODO Auto-generated method stub
@@ -340,6 +346,59 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 			rooms.get(i).setRoomType(room.get(5).getText().trim());
 		}
 		return rooms;
+	}
+
+	public DjtuDate queryDjtuDate(String sessionId) {
+		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryDateURL, sessionId);
+		if(fetchResponse.getStatusCode()!=200||!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
+		List<DomElement> domElements = Extractor.$("#date:first", fetchResponse.getResponseBody());
+		if(domElements==null||domElements.size()==0){
+			return null;
+		}
+		DomElement domElement = domElements.get(0);
+		String text = domElement.getText().trim();
+		
+		String[] parts = text.split("\\s+");
+		//System.out.println(Arrays.toString(parts));
+		
+		Date date = new Date();
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH)+1;
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		int term;
+		String termStr = parts[2].charAt(parts[2].length()-1)+"";
+		if(termStr.equals("秋")){
+			term = 2;
+		}else if(termStr.equals("春")){
+			term = 1;
+		}else {
+			term = 0;
+		}
+		int week = 0;
+		String weekStr = parts[3].substring(1);
+		week = Integer.parseInt(weekStr.substring(0, weekStr.length()-1));
+		int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+		if(weekDay==1){
+			weekDay=7;
+		}else{
+			--weekDay;
+		}
+		
+		DjtuDate djtuDate = new DjtuDate(year, month, day, term, week, weekDay);
+		
+		//System.out.println(djtuDate.toJSON());
+		
+		return djtuDate;
+	}
+	
+	@Override
+	public String randomSessionId() {
+		return signinRemote(LifeDjtuConfig.getProperty("remote.studentId"), LifeDjtuConfig.getProperty("remote.password"));
 	}
 
 }
