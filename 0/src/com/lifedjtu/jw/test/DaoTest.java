@@ -35,13 +35,15 @@ public class DaoTest {
 		//Building building = buildingDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("buildingName", "老年之家"),Restrictions.eq("area.id", "4fbe7848-5911-47c9-a7c5-a874f0c49754")));
 		//Building building = buildingDao.findOneById("1bc89513-4c93-4d42-b5d4-9a199772884c");
 		
+		List<Tuple> tuples = buildingDao.findProjectedAll(ProjectionWrapper.instance().fields("id","buildingName","area"));
+		
 		//此NamedQuery的名字来自于Area实体中的NamedQuery注释，请去Area类查看
-		List<Area> object = buildingDao.findByNamedQuery("area.findOneById", ParamMapper.param("areaId", "4fbe7848-5911-47c9-a7c5-a874f0c49754"));
+		//List<Area> object = buildingDao.findByNamedQuery("area.findOneById", ParamMapper.param("areaId", "4fbe7848-5911-47c9-a7c5-a874f0c49754"));
 		
 		long end = System.currentTimeMillis();
 		System.err.println((end-start)/(double)1000+"s");
-		for(Area area : object){
-			System.out.println(area.getAreaName()+" "+area.getAreaRemoteId());
+		for(Tuple tuple : tuples){
+			System.out.println(tuple);
 		}
 		//System.out.println(object);
 	}
