@@ -171,27 +171,7 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 		return true;
 	}
 	
-	@Override
-	public boolean updateCourseInfo(String sessionId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean updateCourseInstanceInfo(String sessionId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean updateExamInfo(String sessionId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean updateExamInstanceInfo(String sessionId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
+
 	
 	
 	public AreaDao getAreaDao() {

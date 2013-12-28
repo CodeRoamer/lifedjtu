@@ -5,7 +5,14 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+
+@NamedQueries({
+	@NamedQuery(name="area.findAll", query="select area from Area area"),
+	@NamedQuery(name="area.findOneById", query="select area from Area area where area.id=:areaId")
+})
 
 @Entity
 public class Area extends EntityObject{

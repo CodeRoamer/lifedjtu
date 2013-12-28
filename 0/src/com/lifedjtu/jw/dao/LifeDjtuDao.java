@@ -44,7 +44,7 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	 * 根据ID来查一个entity
 	 */
 	T findOneById(String id);
-	T findOneProjectedById(String id, ProjectionWrapper projectionWrapper);
+	Tuple findOneProjectedById(String id, ProjectionWrapper projectionWrapper);
 	
 	/**
 	 * 根据传递个命名参数来查找符合条件的表记录，只返回第一个符合条件的
@@ -52,7 +52,7 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	 * @param queryName JPQL语句名称   mapper 命名参数对象
 	 */
 	T findOneByParams(CriteriaWrapper criteriaWrapper);
-	T findOneProjectedByParams(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper);
+	Tuple findOneProjectedByParams(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper);
 
 	
 	/**
@@ -71,11 +71,11 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	/**
 	 * 投影查询，下同，返回一个DomainModel的集合
 	 */
-	List<T> findProjectedByParams(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper);
-	List<T> findProjectedByParamsInOrder(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable);
+	List<Tuple> findProjectedByParams(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper);
+	List<Tuple> findProjectedByParamsInOrder(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable);
 
-	List<T> findProjectedByParamsInPage(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Pageable pageable);
-	List<T> findProjectedByParamsInPageInOrder(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Pageable pageable, Sortable sortable);
+	List<Tuple> findProjectedByParamsInPage(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Pageable pageable);
+	List<Tuple> findProjectedByParamsInPageInOrder(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Pageable pageable, Sortable sortable);
 
 	
 	/**
@@ -103,27 +103,34 @@ public interface LifeDjtuDao<T extends EntityObject> {
 	 * 采用Criteria API，返回Tuple对象，通过调用tuple.get("field_name", Class<field_type> cls);来获取对应的字段值
 	 * String不定参在这里指定需要投射的字段，
 	 */
-	List<T> findProjectedAll(String... fields);
-	List<T> findProjectedAllInOrder(Sortable sortable, String... fields);
+	List<Tuple> findProjectedAll(String... fields);
+	List<Tuple> findProjectedAllInOrder(Sortable sortable, String... fields);
 
-	List<T> findProjectedAll(ProjectionWrapper projectionWrapper);
-	List<T> findProjectedAllInOrder(ProjectionWrapper projectionWrapper, Sortable sortable);
+	List<Tuple> findProjectedAll(ProjectionWrapper projectionWrapper);
+	List<Tuple> findProjectedAllInOrder(ProjectionWrapper projectionWrapper, Sortable sortable);
 
 	
 	/**
 	 * 同上，添加分页机制
 	 */
-	List<T> findProjectedAllInPage(Pageable pageable,String... fields);
-	List<T> findProjectedAllInPageInOrder(Pageable pageable,Sortable sortable, String... fields);
+	List<Tuple> findProjectedAllInPage(Pageable pageable,String... fields);
+	List<Tuple> findProjectedAllInPageInOrder(Pageable pageable,Sortable sortable, String... fields);
 
-	List<T> findProjectedAllInPage(Pageable pageable, ProjectionWrapper projectionWrapper);
-	List<T> findProjectedAllInPageInOrder(Pageable pageable, ProjectionWrapper projectionWrapper, Sortable sortable);
+	List<Tuple> findProjectedAllInPage(Pageable pageable, ProjectionWrapper projectionWrapper);
+	List<Tuple> findProjectedAllInPageInOrder(Pageable pageable, ProjectionWrapper projectionWrapper, Sortable sortable);
 
 	/**
 	 * 表联接查询，利用jpa的注释
 	 */
 	List<T> findByJoinedParams(Map<String, String> propPair, CriteriaWrapper criteriaWrapper);
 	T findOneByJoinedParams(Map<String, String> propPair, CriteriaWrapper criteriaWrapper);
+	
+	/**
+	 * 利用HQL执行命名查询，传入的参数为命名查询名称以及命名参数的键值对，高效率！
+	 */
+	@SuppressWarnings("rawtypes")
+	List findByNamedQuery(String queryName, ParamMapper paramMapper);
+	
 	/**
 	 * 获取泛型类，父类调用无效，子类可调
 	 */

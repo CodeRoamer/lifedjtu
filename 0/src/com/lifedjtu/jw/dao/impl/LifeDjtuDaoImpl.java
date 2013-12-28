@@ -2,6 +2,7 @@ package com.lifedjtu.jw.dao.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -14,13 +15,15 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import com.lifedjtu.jw.dao.CriteriaWrapper;
 import com.lifedjtu.jw.dao.LifeDjtuDao;
 import com.lifedjtu.jw.dao.Pageable;
+import com.lifedjtu.jw.dao.ParamMapper;
 import com.lifedjtu.jw.dao.ProjectionWrapper;
 import com.lifedjtu.jw.dao.QueryWrapper;
 import com.lifedjtu.jw.dao.Sortable;
+import com.lifedjtu.jw.dao.Tuple;
 import com.lifedjtu.jw.dao.UpdateWrapper;
 import com.lifedjtu.jw.pojos.EntityObject;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	
 	private Class<T> cls;
@@ -31,7 +34,6 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	 * Default constructor. 构造函数不传参，但是很重要，为继承的子类抽出泛型的Class对象，以便于 传给DAO方法
 	 */
 	public LifeDjtuDaoImpl() {
-		@SuppressWarnings("rawtypes")
 		Class clazz = getClass();
 
 		while (clazz != Object.class) {
@@ -117,8 +119,8 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public T findOneProjectedById(String id, ProjectionWrapper projectionWrapper) {
-		return wrapQueryOne(CriteriaWrapper.instance().and(Restrictions.eq("id", id)), projectionWrapper, null);
+	public Tuple findOneProjectedById(String id, ProjectionWrapper projectionWrapper) {
+		return wrapQueryProjectedOne(CriteriaWrapper.instance().and(Restrictions.eq("id", id)), projectionWrapper, null);
 	}
 
 
@@ -133,9 +135,9 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public T findOneProjectedByParams(CriteriaWrapper criteriaWrapper,
+	public Tuple findOneProjectedByParams(CriteriaWrapper criteriaWrapper,
 			ProjectionWrapper projectionWrapper) {
-		return wrapQueryOne(criteriaWrapper, projectionWrapper, null);
+		return wrapQueryProjectedOne(criteriaWrapper, projectionWrapper, null);
 
 	}
 
@@ -181,9 +183,9 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public List<T> findProjectedByParams(CriteriaWrapper criteriaWrapper,
+	public List<Tuple> findProjectedByParams(CriteriaWrapper criteriaWrapper,
 			ProjectionWrapper projectionWrapper) {
-		return wrapQueryList(criteriaWrapper, projectionWrapper, null, null);
+		return wrapTuple(wrapQueryList(criteriaWrapper, projectionWrapper, null, null));
 
 	}
 
@@ -191,10 +193,10 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public List<T> findProjectedByParamsInOrder(
+	public List<Tuple> findProjectedByParamsInOrder(
 			CriteriaWrapper criteriaWrapper,
 			ProjectionWrapper projectionWrapper, Sortable sortable) {
-		return wrapQueryList(criteriaWrapper, projectionWrapper, sortable, null);
+		return wrapTuple(wrapQueryList(criteriaWrapper, projectionWrapper, sortable, null));
 
 	}
 
@@ -202,9 +204,9 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public List<T> findProjectedByParamsInPage(CriteriaWrapper criteriaWrapper,
+	public List<Tuple> findProjectedByParamsInPage(CriteriaWrapper criteriaWrapper,
 			ProjectionWrapper projectionWrapper, Pageable pageable) {
-		return wrapQueryList(criteriaWrapper, projectionWrapper, null, pageable);
+		return wrapTuple(wrapQueryList(criteriaWrapper, projectionWrapper, null, pageable));
 
 	}
 
@@ -212,11 +214,11 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public List<T> findProjectedByParamsInPageInOrder(
+	public List<Tuple> findProjectedByParamsInPageInOrder(
 			CriteriaWrapper criteriaWrapper,
 			ProjectionWrapper projectionWrapper, Pageable pageable,
 			Sortable sortable) {
-		return wrapQueryList(criteriaWrapper, projectionWrapper, sortable, pageable);
+		return wrapTuple(wrapQueryList(criteriaWrapper, projectionWrapper, sortable, pageable));
 	}
 
 
@@ -265,25 +267,16 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public List<T> findProjectedAll(String... fields) {
-		return wrapQueryList(null, ProjectionWrapper.instance().fields(fields), null, null);
+	public List<Tuple> findProjectedAll(String... fields) {
+		return wrapTuple(wrapQueryList(null, ProjectionWrapper.instance().fields(fields), null, null));
 	}
 
 
 
 
 	@Override
-	public List<T> findProjectedAllInOrder(Sortable sortable, String... fields) {
-		return wrapQueryList(null, ProjectionWrapper.instance().fields(fields), sortable, null);
-
-	}
-
-
-
-
-	@Override
-	public List<T> findProjectedAll(ProjectionWrapper projectionWrapper) {
-		return wrapQueryList(null, projectionWrapper, null, null);
+	public List<Tuple> findProjectedAllInOrder(Sortable sortable, String... fields) {
+		return wrapTuple(wrapQueryList(null, ProjectionWrapper.instance().fields(fields), sortable, null));
 
 	}
 
@@ -291,9 +284,18 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public List<T> findProjectedAllInOrder(ProjectionWrapper projectionWrapper,
+	public List<Tuple> findProjectedAll(ProjectionWrapper projectionWrapper) {
+		return wrapTuple(wrapQueryList(null, projectionWrapper, null, null));
+
+	}
+
+
+
+
+	@Override
+	public List<Tuple> findProjectedAllInOrder(ProjectionWrapper projectionWrapper,
 			Sortable sortable) {
-		return wrapQueryList(null, projectionWrapper, sortable, null);
+		return wrapTuple(wrapQueryList(null, projectionWrapper, sortable, null));
 
 	}
 
@@ -301,33 +303,33 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public List<T> findProjectedAllInPage(Pageable pageable, String... fields) {
-		return wrapQueryList(null, ProjectionWrapper.instance().fields(fields), null, pageable);
+	public List<Tuple> findProjectedAllInPage(Pageable pageable, String... fields) {
+		return wrapTuple(wrapQueryList(null, ProjectionWrapper.instance().fields(fields), null, pageable));
 	}
 
 
 
 
 	@Override
-	public List<T> findProjectedAllInPageInOrder(Pageable pageable,
+	public List<Tuple> findProjectedAllInPageInOrder(Pageable pageable,
 			Sortable sortable, String... fields) {
-		return wrapQueryList(null, ProjectionWrapper.instance().fields(fields), sortable, pageable);
+		return wrapTuple(wrapQueryList(null, ProjectionWrapper.instance().fields(fields), sortable, pageable));
 	}
 
 
 
 
 	@Override
-	public List<T> findProjectedAllInPage(Pageable pageable,
+	public List<Tuple> findProjectedAllInPage(Pageable pageable,
 			ProjectionWrapper projectionWrapper) {
-		return wrapQueryList(null, projectionWrapper, null, pageable);
+		return wrapTuple(wrapQueryList(null, projectionWrapper, null, pageable));
 
 	}
 
 	@Override
-	public List<T> findProjectedAllInPageInOrder(Pageable pageable,
+	public List<Tuple> findProjectedAllInPageInOrder(Pageable pageable,
 			ProjectionWrapper projectionWrapper, Sortable sortable) {
-		return wrapQueryList(null, projectionWrapper, sortable, pageable);
+		return wrapTuple(wrapQueryList(null, projectionWrapper, sortable, pageable));
 	}
 	
 
@@ -355,9 +357,10 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 			return list.get(0);
 		}
 	}
-
-
-	
+	@Override
+	public List findByNamedQuery(String queryName, ParamMapper paramMapper) {
+		return hibernateTemplate.findByNamedQueryAndNamedParam(queryName, paramMapper.getKeyArray(), paramMapper.getValueArray());
+	}
 	@Override
 	public Class<T> getParameterizedClass() {
 		return cls;
@@ -374,7 +377,7 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 		return getSession().createQuery(updateWrapper.getUpdate(cls, criteriaWrapper)).executeUpdate();
 	}
 	
-	private List<T> wrapQueryList(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable, Pageable pageable){
+	private List wrapQueryList(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable, Pageable pageable){
 		DetachedCriteria detachedCriteria = QueryWrapper.from(cls).addCriteria(criteriaWrapper).addProjection(projectionWrapper).addOrder(sortable).getCriteria();
 		if(pageable==null){
 			return hibernateTemplate.findByCriteria(detachedCriteria); 
@@ -382,11 +385,28 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 			return hibernateTemplate.findByCriteria(detachedCriteria, pageable.getOffset(), pageable.getPageSize());
 		}
 	}
+	
+	private List<Tuple> wrapTuple(List rawList){
+		List<Tuple> tuples = new ArrayList<Tuple>();
+		for(Object object : rawList){
+			tuples.add(new Tuple(object));
+		}
+		return tuples;
+	}
 
 	private T wrapQueryOne(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable){
 		List<T> list =  wrapQueryList(criteriaWrapper, projectionWrapper, sortable, Pageable.inPage(0,1));
 		if(list!=null&&list.size()!=0){
 			return list.get(0);
+		}else{
+			return null;
+		}
+	}
+	
+	private Tuple wrapQueryProjectedOne(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable){
+		List list =  wrapQueryList(criteriaWrapper, projectionWrapper, sortable, Pageable.inPage(0,1));
+		if(list!=null&&list.size()!=0){
+			return new Tuple((Object[])list.get(0));
 		}else{
 			return null;
 		}
@@ -404,6 +424,7 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	public Session getSession() {
 		return hibernateTemplate.getSessionFactory().getCurrentSession();
 	}
+
 
 
 
