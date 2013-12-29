@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lifedjtu.jw.business.JWLocalService;
 import com.lifedjtu.jw.business.JWRemoteService;
+import com.lifedjtu.jw.dao.impl.UserDao;
 import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.ExamInstance;
 import com.lifedjtu.jw.pojos.Room;
@@ -22,7 +23,8 @@ import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 public class JWLocalServiceImpl implements JWLocalService{
 	@Autowired
 	private JWRemoteService jwRemoteService;
-	
+	@Autowired
+	private UserDao userDao;
 	
 	
 	@Override
@@ -131,6 +133,14 @@ public class JWLocalServiceImpl implements JWLocalService{
 
 	public void setJwRemoteService(JWRemoteService jwRemoteService) {
 		this.jwRemoteService = jwRemoteService;
+	}
+
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 	
 	

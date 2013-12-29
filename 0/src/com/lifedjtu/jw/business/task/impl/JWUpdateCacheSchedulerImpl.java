@@ -51,31 +51,40 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 			Building temp = buildingDao.findOneByParams(CriteriaWrapper.instance().or(Restrictions.eq("buildingRemoteId", building.getBuildingRemoteId()),Restrictions.eq("buildingName", building.getBuildingName())));
 			if(temp==null){
 				building.setId(UUIDGenerator.randomUUID());
+				building.setArea(area);
+				buildingDao.add(building);
 			}else{
-				building.setId(temp.getId());
+				temp.setBuildingName(building.getBuildingName());
+				temp.setBuildingRemoteId(building.getBuildingRemoteId());
+				buildingDao.update(temp);
 			}			
-			building.setArea(area);
 		}
-		buildingDao.addMulti(buildings);
 		
 		return true;
 	}
 	@Override
 	public boolean updateRoomEntryInfo(String sessionId, String buildingId) {
 		Building building = buildingDao.findOneById(buildingId);
-		//System.out.println(building.getBuildingName()+" 开始处理...");
+		System.out.println(building.getBuildingName()+" 开始处理...");
 		List<Room> rooms = jwRemoteService.queryRemoteRooms(sessionId, building.getBuildingRemoteId()+"");
 		for(Room room : rooms){
 			Room temp = roomDao.findOneByParams(CriteriaWrapper.instance().or(Restrictions.eq("roomRemoteId", room.getRoomRemoteId()),Restrictions.eq("roomName", room.getRoomName())));
 			if(temp==null){
 				room.setId(UUIDGenerator.randomUUID());
+				room.setBuilding(building);
+				roomDao.add(room);
 			}else{
-				room.setId(temp.getId());
+				temp.setRoomName(room.getRoomName());
+				temp.setCourseCapacity(room.getCourseCapacity());
+				temp.setExamCapacity(room.getExamCapacity());
+				temp.setRoomRemoteId(room.getRoomRemoteId());
+				temp.setRoomSeatNum(room.getRoomSeatNum());
+				temp.setRoomSeatType(room.getRoomSeatType());
+				temp.setRoomType(room.getRoomType());
+				roomDao.update(temp);
 			}	
-			room.setBuilding(building);
 		}
-		roomDao.addMulti(rooms);
-		//System.out.println(building.getBuildingName()+" 已经处理完毕！");
+		System.out.println(building.getBuildingName()+" 已经处理完毕！");
 		return true;
 	}
 
@@ -84,14 +93,19 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 	public boolean updateAreaInfo(String sessionId) {
 		List<Area> areas = jwRemoteService.queryRemoteAreas(sessionId);
 		for(Area area : areas){
+			System.out.println(area.getAreaName()+"开始寻找...");
 			Area temp = areaDao.findOneByParams(CriteriaWrapper.instance().or(Restrictions.eq("areaRemoteId", area.getAreaRemoteId()),Restrictions.eq("areaName", area.getAreaName())));
 			if(temp==null){
+				System.out.println(area.getAreaName()+"不存在，设置新的主键ID...");
 				area.setId(UUIDGenerator.randomUUID());
+				areaDao.add(area);
 			}else{
-				area.setId(temp.getId());
+				System.out.println(area.getAreaName()+"已存在，更新实体...");
+				temp.setAreaName(area.getAreaName());
+				temp.setAreaRemoteId(area.getAreaRemoteId());
+				areaDao.update(temp);
 			}
 		}
-		areaDao.addMulti(areas);
 		return true;
 	}
 	@Override

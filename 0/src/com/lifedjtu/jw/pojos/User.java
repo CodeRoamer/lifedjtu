@@ -23,6 +23,7 @@ public class User extends EntityObject{
 	private String studentId;
 	private String password;
 	private String username;
+	private String nickname;
 	private String curSessionId;
 	
 	private String faculty;
@@ -88,6 +89,14 @@ public class User extends EntityObject{
 
 	public void setUserCourses(List<UserCourse> userCourses) {
 		this.userCourses = userCourses;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public User(){}
