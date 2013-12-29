@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lifedjtu.jw.business.JWLocalService;
 import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.dao.impl.UserDao;
-import com.lifedjtu.jw.pojos.CourseInstance;
-import com.lifedjtu.jw.pojos.ExamInstance;
-import com.lifedjtu.jw.pojos.Room;
+import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
+import com.lifedjtu.jw.pojos.dto.CourseDto;
+import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
@@ -27,6 +27,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	private UserDao userDao;
 	
 	
+
 	@Override
 	public boolean isUserExist(String studentId) {
 		// TODO Auto-generated method stub
@@ -53,22 +54,21 @@ public class JWLocalServiceImpl implements JWLocalService{
 	}
 
 	@Override
-	public List<Room> queryFreeRooms(String studentId, String dynamicPass,
-			double longitude, double latitude) {
+	public List<RoomTakenItem> queryFreeRooms(String studentId,
+			String dynamicPass, double longitude, double latitude) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CourseInstance> queryLocalCourseTabel(String studentId,
+	public List<CourseDto> queryLocalCourseTabel(String studentId,
 			String dynamicPass) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<ExamInstance> queryLocalExams(String studentId,
-			String dynamicPass) {
+	public List<ExamDto> queryLocalExams(String studentId, String dynamicPass) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -123,8 +123,8 @@ public class JWLocalServiceImpl implements JWLocalService{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 	
+		
 	
 	
 	public JWRemoteService getJwRemoteService() {
@@ -142,8 +142,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-	
-	
+
 	
 	
 }
