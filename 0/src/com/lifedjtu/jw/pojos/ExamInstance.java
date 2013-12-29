@@ -17,7 +17,6 @@ public class ExamInstance extends EntityObject{
 	 */
 	private static final long serialVersionUID = -7828941619416271997L;
 
-	private String examInstanceId;
 	@Id
 	private String id;
 	@OneToOne
@@ -25,8 +24,8 @@ public class ExamInstance extends EntityObject{
 	private CourseInstance courseInstance;
 	private String courseName;
 	@OneToOne
-	@JoinColumn(name="roomId")
-	private Room room; //可以通过这个外键连接教室表，获取教室的详细信息，例如位置和大小
+	@JoinColumn(name="examId")
+	private Exam exam; 
 	private String roomName;
 	private boolean scoreOut;
 	
@@ -52,12 +51,7 @@ public class ExamInstance extends EntityObject{
 	public void setScoreOut(boolean scoreOut) {
 		this.scoreOut = scoreOut;
 	}
-	public String getExamInstanceId() {
-		return examInstanceId;
-	}
-	public void setExamInstanceId(String examInstanceId) {
-		this.examInstanceId = examInstanceId;
-	}
+	
 	public String getId() {
 		return id;
 	}
@@ -79,11 +73,12 @@ public class ExamInstance extends EntityObject{
 		this.courseName = courseName;
 	}
 	
-	public Room getRoom() {
-		return room;
+	
+	public Exam getExam() {
+		return exam;
 	}
-	public void setRoom(Room room) {
-		this.room = room;
+	public void setExam(Exam exam) {
+		this.exam = exam;
 	}
 	public String getRoomName() {
 		return roomName;

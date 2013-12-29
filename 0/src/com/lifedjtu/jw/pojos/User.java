@@ -91,6 +91,11 @@ public class User extends EntityObject{
 	}
 
 	public User(){}
+	
+	public User(String id){
+		this.id = id;
+	}
+	
 	public User(String studentId, String password){
 		this.studentId = studentId;
 		this.password = password;

@@ -12,8 +12,7 @@ import com.lifedjtu.jw.business.impl.JWRemoteServiceImpl;
 import com.lifedjtu.jw.pojos.Area;
 import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.Room;
-import com.lifedjtu.jw.pojos.dto.CourseDto;
-import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
+import com.lifedjtu.jw.pojos.dto.ExamDto;
 
 public class RemoteServiceUnitTest {
 	@Test
@@ -24,17 +23,17 @@ public class RemoteServiceUnitTest {
 		JWRemoteService remoteService = (JWRemoteServiceImpl)ctx.getBean("jwRemoteService");
 		String sessionId = remoteService.signinRemote("1018110323", "lh911119");
 		long start = System.currentTimeMillis();
-		List<CourseDto> courses = remoteService.queryRemoteCourseTable(sessionId);//OK!!!
+		//List<CourseDto> courses = remoteService.queryRemoteCourseTable(sessionId);//OK!!!
 		//StudentRegistry studentRegistry = remoteService.fetchStudentRegistry(sessionId);//OK!!!
 		//boolean result = remoteService.changeRemotePassword(sessionId, "1234", "lh911119", "lh911119");//OK!!!
 		//BuildingDto buildingDto = remoteService.queryBuildingOnDate(sessionId, 78, 1061, 17, 6);//OK!!!
 		//RoomDto roomDto = remoteService.queryRoom(sessionId, 78, 1061, 1065);//OK!!!
-		//List<Exam> exams = remoteService.queryRemoteExams(sessionId); //OK!!!
+		List<ExamDto> exams = remoteService.queryRemoteExams(sessionId); //OK!!!
 		//List<Score> scores = remoteService.queryRemoteScores(sessionId);//OK!!!
 		long end = System.currentTimeMillis();
 		System.err.println((end-start)/(double)1000+"s");
-		for(CourseTakenItem course : courses.get(0).getCourseTakenItems()){
-			System.out.println(course.toJSON());
+		for(ExamDto exam : exams){
+			System.out.println(exam.toJSON());
 		}
 		//System.out.println(roomDto);
 	}

@@ -1,6 +1,9 @@
 package com.lifedjtu.jw.business.task.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,13 +20,20 @@ import com.lifedjtu.jw.dao.impl.CourseDao;
 import com.lifedjtu.jw.dao.impl.CourseInstanceDao;
 import com.lifedjtu.jw.dao.impl.ExamDao;
 import com.lifedjtu.jw.dao.impl.ExamInstanceDao;
+import com.lifedjtu.jw.dao.impl.UserCourseDao;
 import com.lifedjtu.jw.dao.support.UUIDGenerator;
 import com.lifedjtu.jw.pojos.Course;
 import com.lifedjtu.jw.pojos.CourseInstance;
+import com.lifedjtu.jw.pojos.Exam;
+import com.lifedjtu.jw.pojos.ExamInstance;
+import com.lifedjtu.jw.pojos.User;
+import com.lifedjtu.jw.pojos.UserCourse;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
+import com.lifedjtu.jw.pojos.dto.ExamTimeEntry;
+import com.lifedjtu.jw.util.MapMaker;
 
 @Component("jwUpdateCacheAsyncer")
 @Transactional
@@ -37,12 +47,15 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	@Autowired
 	private ExamInstanceDao examInstanceDao;
 	@Autowired
+	private UserCourseDao userCourseDao;
+	@Autowired
 	private JWRemoteService jwRemoteService;
 	
 	@Override
-	public boolean updateCourseInfo(List<CourseDto> courseDtos, DjtuDate djtuDate) {
+	public boolean updateCourseInfo(String userId, List<CourseDto> courseDtos, DjtuDate djtuDate) {
 		List<Course> courses = new ArrayList<Course>();
 		List<CourseInstance> courseInstances = new ArrayList<CourseInstance>();
+		List<UserCourse> userCourses = new ArrayList<UserCourse>();
 		for(CourseDto courseDto : courseDtos){
 			Course course = courseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseAlias", courseDto.getAliasName()),Restrictions.eq("courseName", courseDto.getCourseName())));
 			if(course==null){
@@ -52,10 +65,21 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 				course.setId(UUIDGenerator.randomUUID());
 				courses.add(course);
 			}
-			courseInstances.add(updateCourseInstanceInfo(course, courseDto, djtuDate.getYear(), djtuDate.getTerm()));
+			CourseInstance courseInstance = updateCourseInstanceInfo(course, courseDto, djtuDate.getYear(), djtuDate.getTerm());
+			courseInstances.add(courseInstance);
+			UserCourse userCourse = userCourseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId),Restrictions.eq("courseInstance.id", courseInstance.getId())));
+			if(userCourse==null){
+				userCourse = new UserCourse();
+				userCourse.setId(UUIDGenerator.randomUUID());
+				userCourse.setUser(new User(userId));
+				userCourse.setCourseInstance(courseInstance);
+				userCourses.add(userCourse);
+			}
+			
 		}
 		courseDao.addMulti(courses);
 		courseInstanceDao.addMulti(courseInstances);
+		userCourseDao.addMulti(userCourses);
 		return true;
 	}
 
@@ -73,6 +97,8 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			courseInstance.setCourse(course);
 		}
 		
+
+		
 		StringBuilder takenBuilder = new StringBuilder();
 		List<CourseTakenItem> courseTakenItems = courseDto.getCourseTakenItems();
 		for(CourseTakenItem courseTakenItem : courseTakenItems){
@@ -88,15 +114,91 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	}
 
 	@Override
-	public boolean updateExamInfo(List<ExamDto> examDtos) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateExamInfo(String userId, List<ExamDto> examDtos){
+		
+		
+		for(ExamDto examDto : examDtos){
+			Course course = courseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseName", examDto.getCourseName()),Restrictions.eq("courseAlias", examDto.getCourseAliasName())));
+			Exam exam = examDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("course.id", course.getId())));
+			if(exam==null){
+				exam = new Exam();
+				exam.setCourse(course);
+				exam.setCourseAlias(examDto.getCourseAliasName());
+				exam.setCourseName(examDto.getCourseName());
+				exam.setId(UUIDGenerator.randomUUID());
+			}
+			ExamTimeEntry timeEntry;
+			try {
+				timeEntry = transferExamDate(examDto.getExamDate());
+				exam.setExamDate(timeEntry.getDate());
+				exam.setLastedMinutes(timeEntry.getLastedMinutes());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			examDao.add(exam);
+			
+			
+			//开始两种更新！第一种更新和第二种更新均需要跟此用户与此考试的科目关联的CourseInstance
+			UserCourse userCourse = userCourseDao.findOneByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(),CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId),Restrictions.eq("courseInstance.courseAlias", course.getCourseAlias())));
+			CourseInstance courseInstance = userCourse.getCourseInstance();
+			//1. 直接用户更新
+			List<UserCourse> userCourses = userCourseDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.id", courseInstance.getId())));
+			ExamInstance examInstance = updateExamInstanceInfo(exam, examDto, courseInstance);
+			for(UserCourse uc : userCourses){
+				uc.setExamInstance(examInstance);
+			}
+			userCourseDao.addMulti(userCourses);
+			
+			//2. 间接用户更新
+			List<UserCourse> userCourses2 = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(),CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.getCourseAlias()),Restrictions.ne("courseInstance.id", courseInstance.getId())));
+			List<ExamInstance> examInstances = new ArrayList<ExamInstance>();
+			for(UserCourse uc : userCourses2){
+				ExamInstance tempInstance = uc.getExamInstance();
+				if(tempInstance==null){
+					tempInstance = new ExamInstance();
+					tempInstance.setCourseInstance(uc.getCourseInstance());
+					tempInstance.setCourseName(uc.getCourseInstance().getCourseName());
+					tempInstance.setExam(exam);
+					tempInstance.setId(UUIDGenerator.randomUUID());
+					tempInstance.setScoreOut(false);
+					tempInstance.setExamDate(exam.getExamDate());
+					tempInstance.setLastedMinutes(exam.getLastedMinutes());
+					tempInstance.setRoomName(null);
+					examInstances.add(tempInstance);
+				}else if(tempInstance.getRoomName()==null||tempInstance.getRoomName().equals("")){
+					tempInstance.setRoomName(null);
+					tempInstance.setExamDate(exam.getExamDate());
+					tempInstance.setLastedMinutes(exam.getLastedMinutes());
+					examInstances.add(tempInstance);
+				}else{
+					continue;
+				}
+			}
+			examInstanceDao.addMulti(examInstances);
+			userCourseDao.addMulti(userCourses2);
+		}
+	
+		
+		return true;
 	}
 
 	@Override
-	public boolean updateExamInstanceInfo(List<ExamDto> examDtos) {
-		// TODO Auto-generated method stub
-		return false;
+	public ExamInstance updateExamInstanceInfo(Exam exam, ExamDto examDto, CourseInstance courseInstance){
+		ExamInstance examInstance = examInstanceDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.id", courseInstance.getId())));
+		if(examInstance==null){
+			examInstance = new ExamInstance();
+			examInstance.setCourseInstance(courseInstance);
+			examInstance.setCourseName(courseInstance.getCourseName());
+			examInstance.setExam(exam);
+			examInstance.setId(UUIDGenerator.randomUUID());
+			examInstance.setScoreOut(false);
+		}
+		examInstance.setExamDate(exam.getExamDate());
+		examInstance.setExamStatus(examDto.getCourseProperty());
+		examInstance.setLastedMinutes(exam.getLastedMinutes());
+		examInstance.setRoomName(examDto.getRoomName());
+		examInstanceDao.add(examInstance);
+		return examInstance;
 	}
 
 	
@@ -140,6 +242,14 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 
 	public void setJwRemoteService(JWRemoteService jwRemoteService) {
 		this.jwRemoteService = jwRemoteService;
+	}
+
+	public UserCourseDao getUserCourseDao() {
+		return userCourseDao;
+	}
+
+	public void setUserCourseDao(UserCourseDao userCourseDao) {
+		this.userCourseDao = userCourseDao;
 	}
 
 	private String transferCourseTakenItem(CourseTakenItem courseTakenItem){
@@ -191,4 +301,26 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 		return builder.toString();
 	}
 	
+	private ExamTimeEntry transferExamDate(String examDate) throws ParseException{
+		Pattern pattern = Pattern.compile("([0-9]+-[0-9]+-[0-9]+)[^0-9]+([0-9]+:[0-9]+)[^0-9]+([0-9]+:[0-9]+)");
+		Matcher matcher = pattern.matcher(examDate);
+		if(matcher.find()){
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			ExamTimeEntry entry = new ExamTimeEntry();
+			String date = matcher.group(1);
+			//System.err.println(date);
+			String startTime = matcher.group(2);
+			//System.err.println(startTime);
+			String endTime = matcher.group(3);
+			//System.err.println(endTime);
+			
+			Date startDate = dateFormat.parse(date+" "+startTime);
+			Date endDate = dateFormat.parse(date+" "+endTime);
+			
+			entry.setDate(startDate);
+			entry.setLastedMinutes((int)((endDate.getTime()-startDate.getTime())/1000/60));
+			return entry;
+		}
+		return null;
+	}
 }
