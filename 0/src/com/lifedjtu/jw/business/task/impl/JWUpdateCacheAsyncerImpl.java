@@ -173,6 +173,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 				}else{
 					continue;
 				}
+				uc.setExamInstance(tempInstance);
 			}
 			examInstanceDao.addMulti(examInstances);
 			userCourseDao.addMulti(userCourses2);
