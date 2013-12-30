@@ -3,9 +3,6 @@ package com.lifedjtu.jw.business.impl;
 
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -31,6 +28,7 @@ import com.lifedjtu.jw.util.MapMaker;
 import com.lifedjtu.jw.util.URLFetcher;
 import com.lifedjtu.jw.util.extractor.DomElement;
 import com.lifedjtu.jw.util.extractor.Extractor;
+import com.lifedjtu.jw.util.pattern.InfoProcessHub;
 
 @Component("jwRemoteService")
 public class JWRemoteServiceImpl implements JWRemoteService {
@@ -194,6 +192,7 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 			List<CourseTakenItem> courseTakenItems = new ArrayList<CourseTakenItem>();
 			for(int j=0;j<courseTakenItemTemp.size();j++){
 				List<DomElement> taken = courseTakenItemTemp.get(j).children("td");
+				//System.out.println(taken.get(0).getText()+"  "+taken.get(1).getText());
 				CourseTakenItem item = new CourseTakenItem(taken.get(0).getText().trim(),
 						taken.get(1).getText().trim(),
 						taken.get(2).getText().trim(),
@@ -360,40 +359,8 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 		DomElement domElement = domElements.get(0);
 		String text = domElement.getText().trim();
 		
-		String[] parts = text.split("\\s+");
-		//System.out.println(Arrays.toString(parts));
-		
-		Date date = new Date();
-		GregorianCalendar calendar = new GregorianCalendar();
-		calendar.setTime(date);
-		
-		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH)+1;
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		int term;
-		String termStr = parts[2].charAt(parts[2].length()-1)+"";
-		if(termStr.equals("秋")){
-			term = 2;
-		}else if(termStr.equals("春")){
-			term = 1;
-		}else {
-			term = 0;
-		}
-		int week = 0;
-		String weekStr = parts[3].substring(1);
-		week = Integer.parseInt(weekStr.substring(0, weekStr.length()-1));
-		int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
-		if(weekDay==1){
-			weekDay=7;
-		}else{
-			--weekDay;
-		}
-		
-		DjtuDate djtuDate = new DjtuDate(year, month, day, term, week, weekDay);
-		
-		//System.out.println(djtuDate.toJSON());
-		
-		return djtuDate;
+				
+		return InfoProcessHub.analyseDjtuDate(text);
 	}
 	
 	@Override

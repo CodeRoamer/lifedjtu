@@ -1,12 +1,8 @@
 package com.lifedjtu.jw.business.task.impl;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +30,7 @@ import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.ExamTimeEntry;
 import com.lifedjtu.jw.util.MapMaker;
+import com.lifedjtu.jw.util.pattern.InfoProcessHub;
 
 @Component("jwUpdateCacheAsyncer")
 @Transactional
@@ -63,6 +60,8 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 				course.setCourseAlias(courseDto.getAliasName());
 				course.setCourseName(courseDto.getCourseName());
 				course.setId(UUIDGenerator.randomUUID());
+				course.setCourseCredits(Double.parseDouble(courseDto.getCourseMarks().trim()));
+				course.setCourseProperty(courseDto.getCourseAttr());
 				courses.add(course);
 			}
 			CourseInstance courseInstance = updateCourseInstanceInfo(course, courseDto, djtuDate.getYear(), djtuDate.getTerm());
@@ -101,8 +100,12 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 		
 		StringBuilder takenBuilder = new StringBuilder();
 		List<CourseTakenItem> courseTakenItems = courseDto.getCourseTakenItems();
-		for(CourseTakenItem courseTakenItem : courseTakenItems){
-			takenBuilder.append(transferCourseTakenItem(courseTakenItem)+";");
+		if(courseTakenItems==null||courseTakenItems.size()==0){
+			takenBuilder.append("时间地点均不占");
+		}else{
+			for(CourseTakenItem courseTakenItem : courseTakenItems){
+				takenBuilder.append(InfoProcessHub.transferCourseTakenItem(courseTakenItem)+";");
+			}
 		}
 		
 		courseInstance.setCourseTakenInfo(takenBuilder.toString());
@@ -129,7 +132,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			}
 			ExamTimeEntry timeEntry;
 			try {
-				timeEntry = transferExamDate(examDto.getExamDate());
+				timeEntry = InfoProcessHub.transferExamDate(examDto.getExamDate());
 				exam.setExamDate(timeEntry.getDate());
 				exam.setLastedMinutes(timeEntry.getLastedMinutes());
 			} catch (ParseException e) {
@@ -253,75 +256,6 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 		this.userCourseDao = userCourseDao;
 	}
 
-	private String transferCourseTakenItem(CourseTakenItem courseTakenItem){
-		StringBuilder builder = new StringBuilder();
-		
-		String week = courseTakenItem.getWeek();	
-		week = week.substring(0, week.length()-1);
-		String[] parts = week.split("-");
-		builder.append("startWeek="+parts[0]+"&endWeek="+parts[1]+"&");
-		
-		String weekDayStr = courseTakenItem.getDay().substring(1);
-		int weekDay = 0;
-		if(weekDayStr.equals("一")){
-			weekDay = 1;
-		}else if(weekDayStr.equals("二")){
-			weekDay = 2;
-		}else if(weekDayStr.equals("三")){
-			weekDay = 3;
-		}else if(weekDayStr.equals("四")){
-			weekDay = 4;
-		}else if(weekDayStr.equals("五")){
-			weekDay = 5;
-		}else if(weekDayStr.equals("六")){
-			weekDay = 6;
-		}else if(weekDayStr.equals("日")){
-			weekDay = 7;
-		}
-		builder.append("weekDay="+weekDay+"&");
-		
-		builder.append("roomName="+courseTakenItem.getRoomName()+"&");
-		
-		String segments = courseTakenItem.getTime();
-		Pattern pattern = Pattern.compile("[^0-9]*([0-9]+)([^0-9]+)([0-9]+)[^0-9]*");
-		Matcher matcher = pattern.matcher(segments);
-		if(matcher.find()){
-			int first = Integer.parseInt(matcher.group(1));
-			int second = Integer.parseInt(matcher.group(3));
-			String action = matcher.group(2);
-			
-			if(action.equals("、")){
-				builder.append("segments="+first+"|"+second);
-			}else if(action.equals("-")){
-				builder.append("segments="+first++);
-				for(; first <= second; ++first){
-					builder.append("|"+first);
-				}
-			}
-		}
-		return builder.toString();
-	}
 	
-	private ExamTimeEntry transferExamDate(String examDate) throws ParseException{
-		Pattern pattern = Pattern.compile("([0-9]+-[0-9]+-[0-9]+)[^0-9]+([0-9]+:[0-9]+)[^0-9]+([0-9]+:[0-9]+)");
-		Matcher matcher = pattern.matcher(examDate);
-		if(matcher.find()){
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-			ExamTimeEntry entry = new ExamTimeEntry();
-			String date = matcher.group(1);
-			//System.err.println(date);
-			String startTime = matcher.group(2);
-			//System.err.println(startTime);
-			String endTime = matcher.group(3);
-			//System.err.println(endTime);
-			
-			Date startDate = dateFormat.parse(date+" "+startTime);
-			Date endDate = dateFormat.parse(date+" "+endTime);
-			
-			entry.setDate(startDate);
-			entry.setLastedMinutes((int)((endDate.getTime()-startDate.getTime())/1000/60));
-			return entry;
-		}
-		return null;
-	}
+	
 }

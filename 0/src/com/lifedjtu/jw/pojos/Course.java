@@ -14,10 +14,58 @@ public class Course extends EntityObject{
 	private String courseName;
 	private String courseAlias;
 	
+	//新加入属性
+	private String areaName;
+	private String hostedAcademy;
+	private double courseClasses;  //学时
+	private double courseCredits;  //学分
+	private String courseProperty;  //选课属性：任选，限选，必修
+	
+	
 	public Course() {}
 
 	public String getId() {
 		return id;
+	}
+
+	public String getAreaName() {
+		return areaName;
+	}
+
+	public void setAreaName(String areaName) {
+		this.areaName = areaName;
+	}
+
+	public String getHostedAcademy() {
+		return hostedAcademy;
+	}
+
+	public void setHostedAcademy(String hostedAcademy) {
+		this.hostedAcademy = hostedAcademy;
+	}
+
+	public double getCourseClasses() {
+		return courseClasses;
+	}
+
+	public void setCourseClasses(double courseClasses) {
+		this.courseClasses = courseClasses;
+	}
+
+	public double getCourseCredits() {
+		return courseCredits;
+	}
+
+	public void setCourseCredits(double courseCredits) {
+		this.courseCredits = courseCredits;
+	}
+
+	public String getCourseProperty() {
+		return courseProperty;
+	}
+
+	public void setCourseProperty(String courseProperty) {
+		this.courseProperty = courseProperty;
 	}
 
 	public void setId(String id) {

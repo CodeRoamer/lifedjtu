@@ -11,7 +11,7 @@ import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.CourseRow;
 import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
 
-public class LifeDJTUUtil {
+public class LifeDjtuUtil {
 	public static String fakePartialEvaList() {
 		String userDir = System.getProperty("user.dir");
 		char sep = File.separatorChar;
@@ -69,6 +69,31 @@ public class LifeDJTUUtil {
 
 		String htmlsRoot = userDir + sep + "WebRoot" + sep + "static" + sep
 				+ "html" + sep + "evaItem.html";
+
+		String content = "";
+
+		try {
+
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					new FileInputStream(htmlsRoot)));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				content += line;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return content;
+	}
+	
+	public static String fakeCurrentCourse(){
+		String userDir = System.getProperty("user.dir");
+		char sep = File.separatorChar;
+
+		String htmlsRoot = userDir + sep + "WebRoot" + sep + "static" + sep
+				+ "html" + sep + "currcourse.html";
 
 		String content = "";
 
