@@ -63,20 +63,20 @@ public class ProjectInitializer {
 		user.setUsername("李赫");
 		user.setAcademy("外国语学院");
 		
-//		User user2 = new User();
-//		user2.setId(UUIDGenerator.randomUUID());
-//		user2.setStudentId("1018110207");
-//		user2.setPassword("");
-//		user2.setUsername("李辛洋");
-//		user2.setAcademy("外国语学院");
-//		
-//		User user3 = new User();
-//		user3.setId(UUIDGenerator.randomUUID());
-//		user3.setStudentId("1018110328");
-//		user3.setPassword("");
-//		user3.setUsername("杨东");
-//		user3.setAcademy("外国语学院");	
+		User user2 = new User();
+		user2.setId(UUIDGenerator.randomUUID());
+		user2.setStudentId("1018110207");
+		user2.setPassword("1991080213");
+		user2.setUsername("李辛洋");
+		user2.setAcademy("外国语学院");
 		
-		return Arrays.asList(user/*,user2, user3*/);
+		User user3 = new User();
+		user3.setId(UUIDGenerator.randomUUID());
+		user3.setStudentId("1018110328");
+		user3.setPassword("1018110328");
+		user3.setUsername("杨东");
+		user3.setAcademy("外国语学院");	
+		
+		return Arrays.asList(user,user2, user3);
 	}
 }
