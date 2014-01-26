@@ -49,7 +49,7 @@ public class URLFetcher {
 			fetchResponse.setSessionId(sessionId);
 		}
 		
-		System.err.println("GET OUT session:"+fetchResponse.getSessionId());
+		//System.err.println("GET OUT session:"+fetchResponse.getSessionId());
 		//System.err.println(fetchResponse.getResponseHeader().toString());
 		
 		return fetchResponse;
@@ -95,7 +95,7 @@ public class URLFetcher {
 		}
 		
 		
-		System.err.println("POST OUT session:"+fetchResponse.getSessionId());
+		//System.err.println("POST OUT session:"+fetchResponse.getSessionId());
 		//System.err.println(fetchResponse.getResponseHeader().toString());
 		
 		return fetchResponse;
