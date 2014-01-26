@@ -27,14 +27,16 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.params.ClientPNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpParams;
 import org.mozilla.intl.chardet.nsDetector;
 import org.mozilla.intl.chardet.nsICharsetDetectionObserver;
 import org.mozilla.intl.chardet.nsPSMDetector;
 
 public class LifeDjtuFetchUrl {
-	private static DefaultHttpClient httpClient = new DefaultHttpClient();
+	private DefaultHttpClient httpClient;
 	//request part below
 	
 	//get and post
@@ -228,6 +230,9 @@ public class LifeDjtuFetchUrl {
 		if(setCookies!=null&&setCookies.size()!=0){
 			StringBuilder builder = new StringBuilder();
 			for(Cookie cookie : setCookies){
+				if(cookie.getValue()==null||cookie.getValue().equals("")){
+					continue;
+				}
 				builder.append(cookie.getName()+"="+cookie.getValue()+";");
 			}
 			return builder.toString();
@@ -238,6 +243,11 @@ public class LifeDjtuFetchUrl {
 	public String connect(HttpUriRequest httpRequest){
 		BufferedReader reader = null;
 		try {
+			httpClient = new DefaultHttpClient();
+			HttpParams params = httpClient.getParams();  
+			params.setParameter(ClientPNames.HANDLE_REDIRECTS, allowRedirect);
+			params.setParameter(ClientPNames.MAX_REDIRECTS, redirectNum);
+			httpClient.setParams(params);
 			HttpResponse response = httpClient.execute(httpRequest);
 			Header cookieHeader = response.getFirstHeader("Set-Cookie");
 			responseCookies = (cookieHeader==null)?"":cookieHeader.getValue();
@@ -267,7 +277,7 @@ public class LifeDjtuFetchUrl {
 			}else{
 				encoding = "UTF-8";
 			}
-			System.out.println(encoding);
+			//System.out.println(encoding);
 			reader = new BufferedReader(new InputStreamReader(inputStream,encoding));
 			String line = "";
 			StringBuilder builder = new StringBuilder();
@@ -276,6 +286,8 @@ public class LifeDjtuFetchUrl {
 			}
 			reader.close();
 			responseBody = builder.toString();
+			System.err.println(statusCode);
+			//System.out.println(responseBody);
 			reset();
 			
 			return responseBody;

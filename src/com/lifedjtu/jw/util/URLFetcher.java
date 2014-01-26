@@ -12,6 +12,9 @@ import com.lifedjtu.jw.config.LifeDjtuConfig;
 //请使用IP地址，节约DNS查询时间
 public class URLFetcher {	
 	public static FetchResponse fetchURLByGet(String url, String sessionId){
+		//System.err.println("GET in session:"+sessionId);
+		
+		
 		FetchResponse fetchResponse = new FetchResponse();
 		
 		
@@ -40,15 +43,23 @@ public class URLFetcher {
 			if(matcher.find()){
 				fetchResponse.setSessionId(matcher.group(1));
 			}
-		}else{
+		}
+		
+		if(fetchResponse.getSessionId()==null||fetchResponse.getSessionId().equals("")){
 			fetchResponse.setSessionId(sessionId);
 		}
+		
+		System.err.println("GET OUT session:"+fetchResponse.getSessionId());
+		//System.err.println(fetchResponse.getResponseHeader().toString());
 		
 		return fetchResponse;
 	}
 	
 	//推荐使用MapMaker一行搞定初始化一个map，示例  MapMaker.instance("j_username", "1018110323").param("j_password", "******").toMap()
 	public static FetchResponse fetchURLByPost(String url, String sessionId, Map<String, String> params){
+		//System.err.println("POST in session:"+sessionId);
+
+		
 		FetchResponse fetchResponse = new FetchResponse();
 		
 		url = repairURL(url);
@@ -62,7 +73,7 @@ public class URLFetcher {
 		//设置cookie
 		fetch.setCookie(LifeDjtuConfig.getProperty("sessionIdKey"), sessionId);		
 		//设置post参数，实际post的内容
-		fetch.setPostData(params);
+		fetch.setPostData(params);		
 		//发起一次post请求
 		fetchResponse.setResponseBody(fetch.post(url));
 		//获取头部信息
@@ -77,9 +88,15 @@ public class URLFetcher {
 			if(matcher.find()){
 				fetchResponse.setSessionId(matcher.group(1));
 			}
-		}else{
+		}
+		
+		if(fetchResponse.getSessionId()==null||fetchResponse.getSessionId().equals("")){
 			fetchResponse.setSessionId(sessionId);
 		}
+		
+		
+		System.err.println("POST OUT session:"+fetchResponse.getSessionId());
+		//System.err.println(fetchResponse.getResponseHeader().toString());
 		
 		return fetchResponse;
 	}
