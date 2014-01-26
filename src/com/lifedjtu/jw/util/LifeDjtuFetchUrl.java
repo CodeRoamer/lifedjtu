@@ -286,7 +286,7 @@ public class LifeDjtuFetchUrl {
 			}
 			reader.close();
 			responseBody = builder.toString();
-			System.err.println(statusCode);
+			//System.err.println(statusCode);
 			//System.out.println(responseBody);
 			reset();
 			
