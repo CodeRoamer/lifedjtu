@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -247,6 +248,19 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 		//System.out.println(roomTakenList.toString());
 		//System.out.println(builder.toString());
 		return builder.toString();
+	}
+	
+	@Override
+	@Scheduled(cron="0 0 1 * * ?")
+	//@Scheduled(fixedDelay=300000)
+	public void updateSchoolInfo() {
+		System.err.println("Daily updated info start!");
+		String sessionId = jwRemoteService.randomSessionId();
+		updateAreaInfo(sessionId);
+		updateBuildingInfo(sessionId);
+		updateRoomInfo(sessionId);
+		updateRoomTakenItem(sessionId);
+		System.err.println("Daily updated info complete!!");
 	}
 	
 }

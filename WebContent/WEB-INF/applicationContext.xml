@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop" 
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans  
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
@@ -62,10 +60,10 @@
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
-	<tx:annotation-driven/>
+	<tx:annotation-driven />
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="find*"  read-only="true" />
+			<tx:method name="find*" read-only="true" />
 			<tx:method name="add*" propagation="REQUIRED" />
 			<tx:method name="update*" propagation="REQUIRED" />
 			<tx:method name="upsert" propagation="REQUIRED" />
@@ -73,12 +71,15 @@
 		</tx:attributes>
 	</tx:advice>
 	<aop:config>
-		<aop:pointcut
-			expression="execution(public * com.lifedjtu.jw.dao.impl..*.*(..))"
+		<aop:pointcut expression="execution(public * com.lifedjtu.jw.dao.impl..*.*(..))"
 			id="dao-transaction" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="dao-transaction" />
 	</aop:config>
-	
-	
-	
+
+	<task:annotation-driven executor="lifeDjtuExecutor"
+		scheduler="lifeDjtuScheduler" />
+	<task:executor id="lifeDjtuExecutor" pool-size="5" />
+	<task:scheduler id="lifeDjtuScheduler" pool-size="10" />
+
+
 </beans>

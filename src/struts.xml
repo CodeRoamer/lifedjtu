@@ -3,16 +3,37 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
 "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>	
-	<package name="main" extends="struts-default" namespace="/">
+	<package name="main" extends="struts-default" namespace="/">		
 	
 		<result-types>
 			<result-type name="jsonResult" class="com.lifedjtu.jw.ui.struts2.result.JsonResult"></result-type>
 		</result-types>
 	
+		<interceptors>
+			<interceptor name="userValidateInterceptor" class="com.lifedjtu.jw.ui.struts2.interceptor.UserValidateInterceptor"></interceptor>
+			<interceptor-stack name="lifedjtuStack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="userValidateInterceptor"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="lifedjtuStack"></default-interceptor-ref>
+		
+		<global-results>
+			<result type="chain" name="needLogin">
+				<param name="actionName">needLogin</param>
+       			<param name="namespace">/webservice</param>
+			</result>
+			<result type="chain" name="fail">
+				<param name="actionName">fail</param>
+       			<param name="namespace">/webservice</param>
+			</result>
+		</global-results>
+	
+		<!-- history -->
 		<action name="index">
 			<result name="success">/WEB-INF/jsp/index.jsp</result>
 		</action>
-		
 		<action name="signin" method="signin" class="com.lifedjtu.jw.ui.struts2.core.MainWebServiceAction">
 			<result name="success" type="jsonResult">sessionId</result>
 		</action>
@@ -32,15 +53,51 @@
 			<result name="success">/WEB-INF/jsp/result.jsp</result>
 			<result name="input">/WEB-INF/jsp/evaluate.jsp</result>
 		</action>
+		<!-- end of history -->
 		
 	</package>
 	
-	<package name="task" extends="main" namespace="/task">
-		
-		<action name="updateRoomInfo" method="updateRoomInfo" class="com.lifedjtu.jw.ui.struts2.core.MainUpdateCacheAction">
-			<result name="success" type="jsonResult">status</result>
+	<package name="webservice" extends="main" namespace="/webservice">
+		<action name="needLogin" method="needLogin" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag</result>
+		</action>
+		<action name="fail" method="fail" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag</result>
 		</action>
 		
+		<action name="checkUser" method="checkUser" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag,exist</result>
+		</action>
+		
+		<action name="signin" method="signin" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag,privateKey</result>
+		</action>
+		
+		<action name="signup" method="signup" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag,privateKey</result>
+		</action>
+		
+	</package>
+	
+	<package name="webservice_secure" extends="main" namespace="/webservice/secure">
+		<action name="getUserInfo" method="getUserInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,user</result>
+		</action>
+		 
+		<action name="getCourseInfo" method="getCourseInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,courseDtos</result>
+		</action>
+		<action name="getExamInfo" method="getExamInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,examDtos</result>
+		</action>
+		<action name="getScoreInfo" method="getScoreInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,scoreDtos</result>
+		</action>
+		 
+		<action name="changePassword" method="changePassword" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag</result>
+		</action> 
+		 
 	</package>
 	
 	

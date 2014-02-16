@@ -15,11 +15,11 @@ public interface JWUpdateCacheAsyncer {
 	/**
 	 * 以下方法行为需再考虑
 	 */
-	public boolean updateCourseInfo(String userId, List<CourseDto> courseDtos, DjtuDate djtuDate);//主调方法
+	public void updateCourseInfo(String userId, List<CourseDto> courseDtos, DjtuDate djtuDate);//主调方法
 	
 	public CourseInstance updateCourseInstanceInfo(Course course, CourseDto courseDto,int year, int term);
 	
-	public boolean updateExamInfo(String userId, List<ExamDto> examDtos);//主调方法
+	public void updateExamInfo(String userId, List<ExamDto> examDtos);//主调方法
 	
 	public ExamInstance updateExamInstanceInfo(Exam exam, ExamDto examDto, CourseInstance courseInstance);
 }

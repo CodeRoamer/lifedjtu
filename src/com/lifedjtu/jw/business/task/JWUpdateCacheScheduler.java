@@ -13,4 +13,5 @@ public interface JWUpdateCacheScheduler {
 	public boolean updateRoomTakenItem(String sessionId);//主调方法
 	public boolean updateRoomTakenItemByBuilding(String session, String buildingId,int week, int weekday);
 	
+	public void updateSchoolInfo(); //scheduler方法的入口
 }

@@ -1,5 +1,6 @@
 package com.lifedjtu.jw.pojos;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Access;
@@ -22,13 +23,24 @@ public class User extends EntityObject{
 	private String id;
 	private String studentId;
 	private String password;
-	private String username;
-	private String nickname;
-	private String curSessionId;
-	
-	private String faculty;
-	private String academy;
 	private String privateKey;
+
+	private String curSessionId;
+	private Date curSessionDate;
+	
+	private String username;
+	private String gender;
+	private Date birthDate;
+	private String province;
+	
+	private int grade;
+	private String academy;
+	private String major;
+	private String cls;
+	private String area;
+	
+	private String nickname;
+	private boolean userReady = false;
 	
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private List<UserCourse> userCourses;
@@ -64,18 +76,15 @@ public class User extends EntityObject{
 	public void setCurSessionId(String curSessionId) {
 		this.curSessionId = curSessionId;
 	}
-	public String getFaculty() {
-		return faculty;
-	}
-	public void setFaculty(String faculty) {
-		this.faculty = faculty;
-	}
+	
 	public String getAcademy() {
 		return academy;
 	}
+
 	public void setAcademy(String academy) {
 		this.academy = academy;
 	}
+
 	public String getPrivateKey() {
 		return privateKey;
 	}
@@ -97,6 +106,78 @@ public class User extends EntityObject{
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public Date getCurSessionDate() {
+		return curSessionDate;
+	}
+
+	public void setCurSessionDate(Date curSessionDate) {
+		this.curSessionDate = curSessionDate;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public int getGrade() {
+		return grade;
+	}
+
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+
+	public String getMajor() {
+		return major;
+	}
+
+	public void setMajor(String major) {
+		this.major = major;
+	}
+
+	public String getCls() {
+		return cls;
+	}
+
+	public void setCls(String cls) {
+		this.cls = cls;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public boolean isUserReady() {
+		return userReady;
+	}
+
+	public void setUserReady(boolean userReady) {
+		this.userReady = userReady;
 	}
 
 	public User(){}

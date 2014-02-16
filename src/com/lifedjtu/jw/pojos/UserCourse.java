@@ -23,7 +23,31 @@ public class UserCourse extends EntityObject{
 	@JoinColumn(name="examInstanceId")
 	private ExamInstance examInstance;
 	
+	private boolean scoreNoted;
+	private boolean examNoted;
 	
+	
+	
+	public boolean isScoreNoted() {
+		return scoreNoted;
+	}
+
+
+	public void setScoreNoted(boolean scoreNoted) {
+		this.scoreNoted = scoreNoted;
+	}
+
+
+	public boolean isExamNoted() {
+		return examNoted;
+	}
+
+
+	public void setExamNoted(boolean examNoted) {
+		this.examNoted = examNoted;
+	}
+
+
 	public String getId() {
 		return id;
 	}

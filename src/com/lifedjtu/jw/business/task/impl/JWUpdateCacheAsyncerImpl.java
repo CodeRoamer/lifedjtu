@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +50,8 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	private JWRemoteService jwRemoteService;
 	
 	@Override
-	public boolean updateCourseInfo(String userId, List<CourseDto> courseDtos, DjtuDate djtuDate) {
+	@Async
+	public void updateCourseInfo(String userId, List<CourseDto> courseDtos, DjtuDate djtuDate) {
 		List<Course> courses = new ArrayList<Course>();
 		List<CourseInstance> courseInstances = new ArrayList<CourseInstance>();
 		List<UserCourse> userCourses = new ArrayList<UserCourse>();
@@ -79,7 +81,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 		courseDao.addMulti(courses);
 		courseInstanceDao.addMulti(courseInstances);
 		userCourseDao.addMulti(userCourses);
-		return true;
+		
 	}
 
 	@Override
@@ -117,7 +119,8 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	}
 
 	@Override
-	public boolean updateExamInfo(String userId, List<ExamDto> examDtos){
+	@Async
+	public void updateExamInfo(String userId, List<ExamDto> examDtos){
 		
 		
 		for(ExamDto examDto : examDtos){
@@ -183,7 +186,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 		}
 	
 		
-		return true;
+		
 	}
 
 	@Override

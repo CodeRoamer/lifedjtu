@@ -70,13 +70,13 @@ public class ProjectInitializer {
 		user2.setUsername("李辛洋");
 		user2.setAcademy("外国语学院");
 		
-		User user3 = new User();
-		user3.setId(UUIDGenerator.randomUUID());
-		user3.setStudentId("1018110328");
-		user3.setPassword("1018110328");
-		user3.setUsername("杨东");
-		user3.setAcademy("外国语学院");	
+//		User user3 = new User();
+//		user3.setId(UUIDGenerator.randomUUID());
+//		user3.setStudentId("1018110328");
+//		user3.setPassword("1018110328");
+//		user3.setUsername("杨东");
+//		user3.setAcademy("外国语学院");	
 		
-		return Arrays.asList(user,user2, user3);
+		return Arrays.asList(user,user2/*, user3*/);
 	}
 }

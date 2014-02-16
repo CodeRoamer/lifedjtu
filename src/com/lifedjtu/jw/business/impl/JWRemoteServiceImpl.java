@@ -88,6 +88,8 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 																						.param("newpasswd", newPass)
 																						.param("confirmedpasswd", newPassAgain)
 																						.toMap());
+		//System.err.println(fetchResponse.getResponseBody());
+		
 		List<DomElement> list = Extractor.$("td[id=content_margin]",fetchResponse.getResponseBody());
 		if(list.isEmpty()){
 			return true;

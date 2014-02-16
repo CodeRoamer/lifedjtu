@@ -5,12 +5,22 @@ import java.util.UUID;
 
 public class Crypto {
 	//用于加密密码
-	public static String encodeAES(String password) throws Exception{
-		return EncryptAES.encode(password);
+	public static String encodeAES(String password){
+		try {
+			return EncryptAES.encode(password);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	//用于解密密码
-	public static String decodeAES(String encodedPass) throws Exception{
-		return EncryptAES.decode(encodedPass);
+	public static String decodeAES(String encodedPass){
+		try {
+			return EncryptAES.decode(encodedPass);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	//用于生成用户密钥
 	public static String randomPrivateKey(){
