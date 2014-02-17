@@ -41,7 +41,7 @@ public class AsyncerServiceTest {
 		
 		long start = System.currentTimeMillis();
 		jwUpdateCacheAsyncer.updateCourseInfo(user.getId(), courseDtos, djtuDate);
-		jwUpdateCacheAsyncer.updateExamInfo(user.getId(), examDtos);
+		jwUpdateCacheAsyncer.updateExamInfo(user.getId(), examDtos, djtuDate);
 		long end = System.currentTimeMillis();
 		System.err.println((end-start)/(double)1000+"s");
 //		for(CourseDto course : courses){

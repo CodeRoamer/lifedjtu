@@ -1,7 +1,5 @@
 package com.lifedjtu.jw.pojos;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,15 +18,8 @@ public class Exam extends EntityObject{
 	private Course course;
 	private String courseName;
 	private String courseAlias;
-	private Date examDate;
-	private int lastedMinutes;
 	
-	public int getLastedMinutes() {
-		return lastedMinutes;
-	}
-	public void setLastedMinutes(int lastedMinutes) {
-		this.lastedMinutes = lastedMinutes;
-	}
+	
 	public String getId() {
 		return id;
 	}
@@ -55,13 +46,7 @@ public class Exam extends EntityObject{
 	public void setCourseAlias(String courseAlias) {
 		this.courseAlias = courseAlias;
 	}
-	public Date getExamDate() {
-		return examDate;
-	}
-	public void setExamDate(Date examDate) {
-		this.examDate = examDate;
-	}
-	
+
 	
 	public Exam(){}
 }

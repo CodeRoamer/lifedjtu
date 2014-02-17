@@ -19,7 +19,10 @@ public class CourseInstance extends EntityObject{
 	private String id;
 	private String courseName;
 	private String courseRemoteId;
+	private String courseSequence;
 	private String courseAlias;
+	private String examStatus;
+	private String postponed;
 	@ManyToOne
 	@JoinColumn(name="courseId")
 	private Course course;
@@ -38,6 +41,30 @@ public class CourseInstance extends EntityObject{
 	private List<UserCourse> userCourses;
 	
 	public CourseInstance() {}
+
+	public String getPostponed() {
+		return postponed;
+	}
+
+	public void setPostponed(String postponed) {
+		this.postponed = postponed;
+	}
+
+	public String getCourseSequence() {
+		return courseSequence;
+	}
+
+	public void setCourseSequence(String courseSequence) {
+		this.courseSequence = courseSequence;
+	}
+
+	public String getExamStatus() {
+		return examStatus;
+	}
+
+	public void setExamStatus(String examStatus) {
+		this.examStatus = examStatus;
+	}
 
 	public int getYear() {
 		return year;

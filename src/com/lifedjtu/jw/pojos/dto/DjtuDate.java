@@ -10,6 +10,7 @@ public class DjtuDate extends EntityObject{
 	private int year;
 	private int month;
 	private int day;
+	private int schoolYear;
 	private int term;
 	private int week;
 	private int weekDay;
@@ -52,12 +53,19 @@ public class DjtuDate extends EntityObject{
 	}
 	
 	
-	public DjtuDate(int year, int month, int day, int term, int week,
+	public int getSchoolYear() {
+		return schoolYear;
+	}
+	public void setSchoolYear(int schoolYear) {
+		this.schoolYear = schoolYear;
+	}
+	public DjtuDate(int year, int month, int day, int schoolYear, int term, int week,
 			int weekDay) {
 		super();
 		this.year = year;
 		this.month = month;
 		this.day = day;
+		this.schoolYear = schoolYear;
 		this.term = term;
 		this.week = week;
 		this.weekDay = weekDay;

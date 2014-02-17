@@ -3,6 +3,8 @@ package com.lifedjtu.jw.business.impl;
 
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -24,6 +26,7 @@ import com.lifedjtu.jw.pojos.dto.RoomWeekInfo;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 import com.lifedjtu.jw.util.FetchResponse;
+import com.lifedjtu.jw.util.LifeDjtuUtil;
 import com.lifedjtu.jw.util.MapMaker;
 import com.lifedjtu.jw.util.URLFetcher;
 import com.lifedjtu.jw.util.extractor.DomElement;
@@ -40,7 +43,7 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	private final String queryBuildingOnDateURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedule_week.jsdo";
 	private final String queryRoomURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedule.jsdo";
 	private final String queryRemoteCourseTableURL = "http://202.199.128.21/academic/student/currcourse/currcourse.jsdo";
-	private final String queryRemoteExamsURL = "http://202.199.128.21/academic/student/exam/index.jsdo";
+	private final String queryRemoteExamsURL = "http://202.199.128.21/academic/manager/examstu/studentQueryAllExam.do?pagingPageVLID=1&sortDirectionVLID=-1&pagingNumberPerVLID=30&sortColumnVLID=examRoom.exam.endTime";
 	private final String queryRemoteScoresURL = "http://202.199.128.21/academic/manager/score/studentOwnScore.do";
 	private final String queryAreaURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedulequery.jsdo";
 	private final String queryDateURL = "http://202.199.128.21/academic/listLeft.do";
@@ -223,20 +226,47 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 
 	@Override
 	public List<ExamDto> queryRemoteExams(String sessionId) {
-		// TODO Auto-generated method stub
+		DjtuDate djtuDate = queryDjtuDate(sessionId);
+		
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryRemoteExamsURL, sessionId);
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;
 		}
-		List<DomElement> list = Extractor.$("table[class=infolist_tab] > tr",fetchResponse.getResponseBody());
+		List<DomElement> list = Extractor.$("table[class=datalist] tr",fetchResponse.getResponseBody());
 		List<ExamDto> exams = new ArrayList<ExamDto>();
 		for(int i=1;i<list.size();i++){
 			List<DomElement> examTemp = list.get(i).children("td");
+			
+			//filter date
+			String dateStr = examTemp.get(2).getText().trim().split("\\s")[0];
+			Date date = LifeDjtuUtil.parseDate(dateStr);
+			GregorianCalendar calendar = new GregorianCalendar();
+			calendar.setTime(date);
+			
+//			int examYear = calendar.get(Calendar.YEAR);
+//			int examMonth = calendar.get(Calendar.MONTH)+1;
+//			int examDay = calendar.get(Calendar.DAY_OF_MONTH);
+			
+			Date curStart = LifeDjtuUtil.getStartDateOfTerm(djtuDate.getSchoolYear(), djtuDate.getTerm());
+			Date nextStart = null;
+			if(djtuDate.getTerm()==1){
+				nextStart = LifeDjtuUtil.getStartDateOfTerm(djtuDate.getSchoolYear(), djtuDate.getTerm()+1);
+			}else{
+				nextStart = LifeDjtuUtil.getStartDateOfTerm(djtuDate.getSchoolYear()+1, djtuDate.getTerm());
+			}
+			
+			//2 and 8
+			if(date.getTime() < curStart.getTime() || date.getTime() >= nextStart.getTime()){
+				continue;
+			}
+			
+			
+			
 			ExamDto exam = new ExamDto(examTemp.get(0).getText().trim(),
 					examTemp.get(1).getText().trim(),
 					examTemp.get(2).getText().trim(),
 					examTemp.get(3).getText().trim(),
-					examTemp.get(5).getText().trim());
+					examTemp.get(4).getText().trim());
 			exams.add(exam);
 		}
 		return exams;

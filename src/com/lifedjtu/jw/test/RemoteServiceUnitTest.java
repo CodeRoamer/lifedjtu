@@ -1,6 +1,7 @@
 package com.lifedjtu.jw.test;
 
 import java.io.File;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -8,6 +9,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.business.impl.JWRemoteServiceImpl;
+import com.lifedjtu.jw.pojos.dto.ExamDto;
 
 public class RemoteServiceUnitTest {
 	@Test
@@ -20,14 +22,18 @@ public class RemoteServiceUnitTest {
 		long start = System.currentTimeMillis();
 		//List<CourseDto> courses = remoteService.queryRemoteCourseTable(sessionId);//OK!!!
 		//StudentRegistry studentRegistry = remoteService.fetchStudentRegistry(sessionId);//OK!!!
-		boolean result = remoteService.changeRemotePassword(sessionId, "lh911119", "1234", "1234");//OK!!!
+		//boolean result = remoteService.changeRemotePassword(sessionId, "lh911119", "1234", "1234");//OK!!!
 		//BuildingDto buildingDto = remoteService.queryBuildingOnDate(sessionId, 78, 1061, 17, 6);//OK!!!
 		//RoomDto roomDto = remoteService.queryRoom(sessionId, 78, 1061, 1065);//OK!!!
-		//List<ExamDto> exams = remoteService.queryRemoteExams(sessionId); //OK!!!
+		List<ExamDto> exams = remoteService.queryRemoteExams(sessionId); //OK!!!
 		//List<Score> scores = remoteService.queryRemoteScores(sessionId);//OK!!!
 		long end = System.currentTimeMillis();
 		System.err.println((end-start)/(double)1000+"s");
-		System.err.println(result);
+		//System.err.println(result);
+		
+		for(ExamDto examDto : exams){
+			System.err.println(examDto.toJSON());
+		}
 		
 //		for(CourseDto course : courses){
 //			System.out.println(course.toJSON());

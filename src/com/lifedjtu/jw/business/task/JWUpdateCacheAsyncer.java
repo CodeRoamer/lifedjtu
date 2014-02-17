@@ -9,6 +9,7 @@ import com.lifedjtu.jw.pojos.ExamInstance;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
+import com.lifedjtu.jw.pojos.dto.ScoreDto;
 
 public interface JWUpdateCacheAsyncer {
 
@@ -19,7 +20,9 @@ public interface JWUpdateCacheAsyncer {
 	
 	public CourseInstance updateCourseInstanceInfo(Course course, CourseDto courseDto,int year, int term);
 	
-	public void updateExamInfo(String userId, List<ExamDto> examDtos);//主调方法
+	public void updateExamInfo(String userId, List<ExamDto> examDtos, DjtuDate djtuDate);//主调方法
 	
 	public ExamInstance updateExamInstanceInfo(Exam exam, ExamDto examDto, CourseInstance courseInstance);
+	
+	public void updateScoreOutInfo(String studentId, List<ScoreDto> scoreDtos, DjtuDate djtuDate); //主调方法
 }

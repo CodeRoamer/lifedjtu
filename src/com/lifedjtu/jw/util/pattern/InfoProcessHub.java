@@ -26,6 +26,8 @@ public class InfoProcessHub {
 		int month = calendar.get(Calendar.MONTH)+1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		int term;
+		String schoolYearStr = parts[2].substring(0, parts[2].length()-1);
+		int schoolYear = Integer.parseInt(schoolYearStr);
 		String termStr = parts[2].charAt(parts[2].length()-1)+"";
 		if(termStr.equals("秋")){
 			term = 2;
@@ -44,7 +46,7 @@ public class InfoProcessHub {
 			--weekDay;
 		}
 		
-		DjtuDate djtuDate = new DjtuDate(year, month, day, term, week, weekDay);
+		DjtuDate djtuDate = new DjtuDate(year, month, day, schoolYear, term, week, weekDay);
 		
 		return djtuDate;
 	}
@@ -78,67 +80,88 @@ public class InfoProcessHub {
 		StringBuilder builder = new StringBuilder();
 		
 		String week = courseTakenItem.getWeek();
-		
-		Pattern pattern = Pattern.compile("[^0-9]*([0-9]+)(([-|、])([0-9]+))?");
-		Matcher matcher = pattern.matcher(week);
-		String startWeekStr = "startWeek=";
-		String endWeekStr = "endWeek=";
-		int index = 0;
-		while(matcher.find(index)){
-			if(index!=0){
-				startWeekStr+="|";
-				endWeekStr+="|";
-			}
-			startWeekStr+=matcher.group(1);
-			if(matcher.group(2)==null){
-				endWeekStr+=matcher.group(1);
-			}else if(matcher.group(3).equals("-")){
-				endWeekStr+=matcher.group(4);
-			}
+
+		//没有周数
+		if(week!=null&&!week.equals("")){
+			Pattern pattern = Pattern.compile("[^0-9]*([0-9]+)(([-|、])([0-9]+))?");
+			Matcher matcher = pattern.matcher(week);
+			String startWeekStr = "startWeek=";
+			String endWeekStr = "endWeek=";
+			int index = 0;
+			while(matcher.find(index)){
+				if(index!=0){
+					startWeekStr+="|";
+					endWeekStr+="|";
+				}
+				startWeekStr+=matcher.group(1);
+				if(matcher.group(2)==null){
+					endWeekStr+=matcher.group(1);
+				}else if(matcher.group(3).equals("-")){
+					endWeekStr+=matcher.group(4);
+				}
+				
+				index = matcher.end(0);
+			}		
 			
-			index = matcher.end(0);
-		}		
-		
-		builder.append(startWeekStr+"&"+endWeekStr+"&");
-		
-		String weekDayStr = courseTakenItem.getDay().substring(1);
-		int weekDay = 0;
-		if(weekDayStr.equals("一")){
-			weekDay = 1;
-		}else if(weekDayStr.equals("二")){
-			weekDay = 2;
-		}else if(weekDayStr.equals("三")){
-			weekDay = 3;
-		}else if(weekDayStr.equals("四")){
-			weekDay = 4;
-		}else if(weekDayStr.equals("五")){
-			weekDay = 5;
-		}else if(weekDayStr.equals("六")){
-			weekDay = 6;
-		}else if(weekDayStr.equals("日")){
-			weekDay = 7;
+			builder.append(startWeekStr+"&"+endWeekStr+"&");
+			
 		}
-		builder.append("weekDay="+weekDay+"&");
+
 		
-		builder.append("roomName="+courseTakenItem.getRoomName()+"&");
+		
+		//没有天数，不合理，直接返回占用周
+		if(courseTakenItem.getDay()!=null&&!courseTakenItem.getDay().equals("")){
+			String weekDayStr = courseTakenItem.getDay().substring(1);
+			int weekDay = 0;
+			if(weekDayStr.equals("一")){
+				weekDay = 1;
+			}else if(weekDayStr.equals("二")){
+				weekDay = 2;
+			}else if(weekDayStr.equals("三")){
+				weekDay = 3;
+			}else if(weekDayStr.equals("四")){
+				weekDay = 4;
+			}else if(weekDayStr.equals("五")){
+				weekDay = 5;
+			}else if(weekDayStr.equals("六")){
+				weekDay = 6;
+			}else if(weekDayStr.equals("日")){
+				weekDay = 7;
+			}
+			builder.append("weekDay="+weekDay+"&");
+			
+		}
+		
+		
+		//没有房间号
+		if(courseTakenItem.getRoomName()!=null&&!courseTakenItem.getRoomName().equals("")){
+			builder.append("roomName="+courseTakenItem.getRoomName()+"&");
+		}
+		
 		
 		String segments = courseTakenItem.getTime();
-		pattern = Pattern.compile("[^0-9]*([0-9]+)([^0-9]+)([0-9]+)[^0-9]*");
-		matcher = pattern.matcher(segments);
-		if(matcher.find()){
-			int first = Integer.parseInt(matcher.group(1));
-			int second = Integer.parseInt(matcher.group(3));
-			String action = matcher.group(2);
-			
-			if(action.equals("、")){
-				builder.append("segments="+first+"|"+second);
-			}else if(action.equals("-")){
-				builder.append("segments="+first++);
-				for(; first <= second; ++first){
-					builder.append("|"+first);
+		
+		//没有上课节数
+		if(segments!=null&&!segments.equals("")){
+			Pattern pattern = Pattern.compile("[^0-9]*([0-9]+)([^0-9]+)([0-9]+)[^0-9]*");
+			Matcher matcher = pattern.matcher(segments);
+			if(matcher.find()){
+				int first = Integer.parseInt(matcher.group(1));
+				int second = Integer.parseInt(matcher.group(3));
+				String action = matcher.group(2);
+				
+				if(action.equals("、")){
+					builder.append("segments="+first+"|"+second);
+				}else if(action.equals("-")){
+					builder.append("segments="+first++);
+					for(; first <= second; ++first){
+						builder.append("|"+first);
+					}
 				}
 			}
 		}
+		
+		
 		return builder.toString();
 	}
 	

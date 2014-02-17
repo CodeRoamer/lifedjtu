@@ -48,7 +48,7 @@ public class ProjectInitializer {
 			List<CourseDto> courseDtos = remoteService.queryRemoteCourseTable(innerSession);
 			List<ExamDto> examDtos = remoteService.queryRemoteExams(innerSession);
 			jwUpdateCacheAsyncer.updateCourseInfo(user.getId(), courseDtos, djtuDate);
-			jwUpdateCacheAsyncer.updateExamInfo(user.getId(), examDtos);
+			jwUpdateCacheAsyncer.updateExamInfo(user.getId(), examDtos, djtuDate);
 		}
 		end = System.currentTimeMillis();
 		System.err.println((end-start)/(double)1000+"s");

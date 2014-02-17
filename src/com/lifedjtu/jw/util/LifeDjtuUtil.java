@@ -5,7 +5,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.lifedjtu.jw.pojos.dto.CourseDto;
@@ -13,6 +18,39 @@ import com.lifedjtu.jw.pojos.dto.CourseRow;
 import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
 
 public class LifeDjtuUtil {
+	private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	
+	public static Date parseDate(String dateStr){
+		try {
+			return format.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return new Date();
+		}
+	}
+	
+	public static Date getStartDateOfTerm(int schoolYear, int term){
+		GregorianCalendar calendar = new GregorianCalendar();
+//		calendar.setFirstDayOfWeek(Calendar.MONDAY);
+		if(term==1){
+			calendar.set(schoolYear, 2, 1);
+			int i = 2;
+			while(calendar.get(Calendar.DAY_OF_WEEK)!=Calendar.MONDAY){
+				calendar.set(schoolYear, 2, i);
+				i++;
+			}
+		}else{
+			calendar.set(schoolYear, 8, 1);
+			int i = 2;
+			while(calendar.get(Calendar.DAY_OF_WEEK)!=Calendar.MONDAY){
+				calendar.set(schoolYear, 8, i);
+				i++;
+			}
+		}
+		
+		return calendar.getTime();
+	}
+	
 	public static String fakePartialEvaList() {
 		String userDir = System.getProperty("user.dir");
 		char sep = File.separatorChar;

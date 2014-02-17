@@ -19,12 +19,14 @@ import com.lifedjtu.jw.dao.Tuple;
 import com.lifedjtu.jw.dao.impl.AreaDao;
 import com.lifedjtu.jw.dao.impl.BuildingDao;
 import com.lifedjtu.jw.dao.impl.RoomTakenItemDao;
+import com.lifedjtu.jw.dao.impl.UserCourseDao;
 import com.lifedjtu.jw.dao.impl.UserDao;
 import com.lifedjtu.jw.dao.support.UUIDGenerator;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
+import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
@@ -47,7 +49,25 @@ public class JWLocalServiceImpl implements JWLocalService{
 	private BuildingDao buildingDao;
 	@Autowired
 	private RoomTakenItemDao roomTakenItemDao;
+	@Autowired
+	private UserCourseDao userCourseDao;
 	
+	public JWUpdateCacheAsyncer getJwUpdateCacheAsyncer() {
+		return jwUpdateCacheAsyncer;
+	}
+
+	public void setJwUpdateCacheAsyncer(JWUpdateCacheAsyncer jwUpdateCacheAsyncer) {
+		this.jwUpdateCacheAsyncer = jwUpdateCacheAsyncer;
+	}
+
+	public UserCourseDao getUserCourseDao() {
+		return userCourseDao;
+	}
+
+	public void setUserCourseDao(UserCourseDao userCourseDao) {
+		this.userCourseDao = userCourseDao;
+	}
+
 	public AreaDao getAreaDao() {
 		return areaDao;
 	}
@@ -242,7 +262,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		Tuple tuple = userDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)), ProjectionWrapper.instance().fields("id","studentId"));
 		
-		jwUpdateCacheAsyncer.updateExamInfo((String)tuple.get(0), examDtos);
+		jwUpdateCacheAsyncer.updateExamInfo((String)tuple.get(0), examDtos,jwRemoteService.queryDjtuDate(sessionId));
 		
 		return localResult;
 	}
@@ -304,7 +324,11 @@ public class JWLocalServiceImpl implements JWLocalService{
 	public LocalResult<List<ScoreDto>> queryLocalScores(String studentId, String sessionId) {
 		List<ScoreDto> scoreDtos = jwRemoteService.queryRemoteScores(sessionId);
 		
+		DjtuDate djtuDate = jwRemoteService.queryDjtuDate(sessionId);
+		
 		LocalResult<List<ScoreDto>> localResult = new LocalResult<List<ScoreDto>>();
+		
+		jwUpdateCacheAsyncer.updateScoreOutInfo(studentId, scoreDtos, djtuDate);
 		
 		localResult.autoFill(scoreDtos);
 		return localResult;
