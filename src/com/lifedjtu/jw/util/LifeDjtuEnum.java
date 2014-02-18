@@ -30,4 +30,38 @@ public class LifeDjtuEnum {
 			}
 		}
 	}
+	
+	public static enum ExamStatus{
+		CHONG_XIU("重修考试"), BU_HUAN("补缓考试"), ZHENG_CHANG("正常考试"), ER_CI("二次考试");
+		
+		private String description;
+		
+		private ExamStatus(String description){
+			this.description = description;
+		}
+		
+		
+		public static ExamStatus fromString(String description){
+			if(description.equals(CHONG_XIU.toString())){
+				return CHONG_XIU;
+			}else if(description.equals(BU_HUAN.toString())){
+				return BU_HUAN;
+			}else if(description.equals(ZHENG_CHANG.toString())){
+				return ZHENG_CHANG;
+			}else if(description.equals(ER_CI.description)){
+				return ER_CI;
+			}else {
+				System.err.println("exam status cannot find right mappings for the givin string!");
+				return ZHENG_CHANG;
+			}
+		}
+		
+		@Override
+		public String toString(){
+			return description;
+		}
+		
+	}
+	
+	
 }

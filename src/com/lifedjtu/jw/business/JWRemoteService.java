@@ -7,6 +7,7 @@ import java.util.List;
 import com.lifedjtu.jw.pojos.Area;
 import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.Room;
+import com.lifedjtu.jw.pojos.dto.ArticleDto;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
@@ -31,8 +32,22 @@ public interface JWRemoteService {
 	public List<ExamDto> queryRemoteExams(String sessionId);
 	
 	public List<ScoreDto> queryRemoteScores(String sessionId);
+	public List<ScoreDto> queryRemoteScores(String sessionId, int schoolYear, int term);
 	
 	public DjtuDate queryDjtuDate(String sessionId);
+	
+	
+	/*
+	 * 教务在线的新闻信息
+	 * 	columnId=259
+	 *	pagingNumberPer=30
+	 *	pagingPage=1
+	 *	sortColumn=publicationDate
+	 *	sortDirection=-1
+	 */
+	
+	public List<ArticleDto> queryRemoteNotes(int pagingPage);
+	public ArticleDto queryRemoteNote(ArticleDto articleDto);
 	
 	/**
 	 * 服务于内部的Remote方法

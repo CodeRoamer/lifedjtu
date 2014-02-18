@@ -5,6 +5,7 @@ package com.lifedjtu.jw.business.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import com.lifedjtu.jw.config.LifeDjtuConfig;
 import com.lifedjtu.jw.pojos.Area;
 import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.Room;
+import com.lifedjtu.jw.pojos.dto.ArticleDto;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
@@ -47,6 +49,9 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	private final String queryRemoteScoresURL = "http://202.199.128.21/academic/manager/score/studentOwnScore.do";
 	private final String queryAreaURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedulequery.jsdo";
 	private final String queryDateURL = "http://202.199.128.21/academic/listLeft.do";
+	
+	private final String queryNoteURL = "http://202.199.128.21/jwzx/infoArticleList.do?columnId=259&sortColumn=publicationDate&sortDirection=-1&pagingNumberPer=15";
+
 	@Override
 	public String signinRemote(String studentId, String password) {
 		// TODO Auto-generated method stub
@@ -274,7 +279,6 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 
 	@Override
 	public List<ScoreDto> queryRemoteScores(String sessionId) {
-		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryRemoteScoresURL, sessionId);
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;
@@ -398,6 +402,94 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	@Override
 	public String randomSessionId() {
 		return signinRemote(LifeDjtuConfig.getProperty("remote.studentId"), LifeDjtuConfig.getProperty("remote.password"));
+	}
+
+	@Override
+	public List<ScoreDto> queryRemoteScores(String sessionId, int schoolYear,
+			int term) {
+		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryRemoteScoresURL, sessionId, MapMaker.instance("maxStatus", 1+"").param("para", 0+"").param("term", term+"").param("year", (schoolYear-1980)+"").toMap());
+
+		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
+		List<DomElement> list = Extractor.$("table[class=datalist] > tr",fetchResponse.getResponseBody());
+		List<ScoreDto> scores = new ArrayList<ScoreDto>();
+		for(int i=1;i<list.size();i++){
+			List<DomElement> scoreTemp = list.get(i).children("td");
+			ScoreDto score = new ScoreDto(scoreTemp.get(0).getText().trim(),
+					scoreTemp.get(1).getText().trim(),
+					scoreTemp.get(2).getText().trim(),
+					scoreTemp.get(3).getText().trim(),
+					scoreTemp.get(4).getText().trim(),
+					scoreTemp.get(5).getText().trim(),
+					scoreTemp.get(6).getText().trim(),
+					scoreTemp.get(7).getText().trim(),
+					scoreTemp.get(8).getText().trim(),
+					scoreTemp.get(9).getText().trim(),
+					scoreTemp.get(10).getText().trim(),
+					scoreTemp.get(11).getText().trim(),
+					scoreTemp.get(12).getText().trim(),
+					scoreTemp.get(13).getText().trim(),
+					scoreTemp.get(14).getText().trim(),
+					scoreTemp.get(15).getText().trim());
+			scores.add(score);
+		}
+		return scores;
+	}
+
+	@Override
+	public List<ArticleDto> queryRemoteNotes(int pagingPage) {
+		
+		if(pagingPage<1){
+			pagingPage = 1;
+		}
+		
+		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryNoteURL+"&pagingPage="+pagingPage, null);
+		
+		List<DomElement> list = Extractor.$("ul[class=articleList] div", fetchResponse.getResponseBody());
+		
+		List<ArticleDto> articleDtos = new ArrayList<ArticleDto>();
+		
+		Iterator<DomElement> iter = list.iterator();
+		
+		while(iter.hasNext()){
+			ArticleDto articleDto = new ArticleDto();
+			
+			DomElement domElement = iter.next();
+			
+			DomElement aDom = domElement.children("a").get(0);
+			articleDto.setHref("http://202.199.128.21/jwzx/"+aDom.attr("href"));
+			articleDto.setTitle(aDom.getText().trim());
+			
+			//System.err.println("strong:"+aDom.find("strong").size());
+			
+			if(aDom.find("strong").size()!=0){
+				articleDto.setImportant(true);
+			}
+			
+			DomElement spanDom = domElement.find("span").get(0);
+			articleDto.setReleaseDate(spanDom.getText().trim());
+			
+			articleDtos.add(articleDto);
+			
+			//System.err.println(articleDto.toJSON());
+		}
+		
+		
+		return articleDtos;
+	}
+
+	@Override
+	public ArticleDto queryRemoteNote(ArticleDto articleDto) {
+		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(articleDto.getHref(), null);
+		
+		DomElement bodyElement = Extractor.$("div[class=body]", fetchResponse.getResponseBody()).get(0);
+		
+		articleDto.setContent(bodyElement.getHtml());
+		
+		//System.err.println(articleDto.getContent());
+		
+		return articleDto;
 	}
 
 }

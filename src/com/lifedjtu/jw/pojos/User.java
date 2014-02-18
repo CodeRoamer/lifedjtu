@@ -42,6 +42,10 @@ public class User extends EntityObject{
 	private String nickname;
 	private boolean userReady = false;
 	
+	//backup feature! user location
+	private double longtitude;
+	private double latitude;
+	
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private List<UserCourse> userCourses;
 	
@@ -52,6 +56,23 @@ public class User extends EntityObject{
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	public double getLongtitude() {
+		return longtitude;
+	}
+
+	public void setLongtitude(double longtitude) {
+		this.longtitude = longtitude;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
 	public String getStudentId() {
 		return studentId;
 	}

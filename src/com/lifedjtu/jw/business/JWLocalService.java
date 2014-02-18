@@ -52,7 +52,11 @@ public interface JWLocalService {
 	public LocalResult<RoomDto> queryRoom(String sessionId, int aid, int buildingId, int roomId);
 	public LocalResult<List<ScoreDto>> queryLocalScores(String studentId, String sessionId); //需要与数据库交互，获取关联用户，忽略注释....推送利器！同种课程实例！注意是实例，一旦有一人查询到分数已出，全部在读于这一课程实例（同一老师授课）的同学都会收到出分推送通知！
 	
+	public LocalResult<Double> queryAverageMarks(String sessionId);
+	public LocalResult<Double> queryAverageMarksByTerm(String sessionId, int schoolYear, int term);
 	
+	public LocalResult<Double> queryGPAMarks(String sessionId);
+	public LocalResult<Double> queryGPAMarksByTerm(String sessionId, int schoolYear, int term);
 	/**
 	 * 以下为一些工具类服务方法,仅限内部调用
 	 */

@@ -77,6 +77,14 @@
 			<result name="success" type="jsonResult">flag,privateKey</result>
 		</action>
 		
+		<action name="getDjtuNotes" method="getDjtuNotes" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag,notes</result>
+		</action>
+		
+		<action name="getDjtuNote" method="getDjtuNote" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag,note</result>
+		</action>
+		
 	</package>
 	
 	<package name="webservice_secure" extends="main" namespace="/webservice/secure">
@@ -97,6 +105,10 @@
 		<action name="changePassword" method="changePassword" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag</result>
 		</action> 
+		 
+		<action name="getAverageMark" method="getAverageMark" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,avgMark</result>
+		</action>
 		 
 	</package>
 	

@@ -18,6 +18,30 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 
 	private JWLocalService jwLocalService;
 	
+	public int getSchoolYear() {
+		return schoolYear;
+	}
+
+	public void setSchoolYear(int schoolYear) {
+		this.schoolYear = schoolYear;
+	}
+
+	public int getTerm() {
+		return term;
+	}
+
+	public void setTerm(int term) {
+		this.term = term;
+	}
+
+	public double getAvgMark() {
+		return avgMark;
+	}
+
+	public void setAvgMark(double avgMark) {
+		this.avgMark = avgMark;
+	}
+
 	public String getOriginPass() {
 		return originPass;
 	}
@@ -205,5 +229,28 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		flag = localResult.getResultState();
 		
 		return SUCCESS;
+	}
+	
+	
+	/**
+	 * -----/webservice/secure/getAverageMark.action
+	 */
+	//in
+	//private String studentId;
+	private int schoolYear = 0;
+	private int term = 0;
+	//out
+	private double avgMark;
+	
+	public String getAverageMark(){
+		
+		LocalResult<Double> localResult = jwLocalService.queryAverageMarksByTerm(sessionId, schoolYear, term);
+		
+		flag = localResult.getResultState();
+		
+		avgMark = localResult.getResult();
+		
+		return SUCCESS;
+		
 	}
 }

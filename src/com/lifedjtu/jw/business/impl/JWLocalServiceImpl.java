@@ -32,6 +32,7 @@ import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 import com.lifedjtu.jw.util.Crypto;
+import com.lifedjtu.jw.util.LifeDjtuEnum.ExamStatus;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
 
 @Component("jwLocalService")
@@ -336,5 +337,91 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 	}
 
+	@Override
+	public LocalResult<Double> queryAverageMarks(String sessionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LocalResult<Double> queryAverageMarksByTerm(String sessionId,
+			int schoolYear, int term) {
+		
+		if(schoolYear==0||term==0){
+			DjtuDate djtuDate = jwRemoteService.queryDjtuDate(sessionId);
+			schoolYear = djtuDate.getSchoolYear();
+			term = djtuDate.getTerm();
+		}
+		
+		List<ScoreDto> scoreDtos = jwRemoteService.queryRemoteScores(sessionId, schoolYear, term);
+		
+		double scoreSum = 0;
+		double markSum = 0;
+		
+		for(ScoreDto scoreDto : scoreDtos){
+			
+			if(scoreDto.getCourseProperty().equals(ExamStatus.CHONG_XIU.toString())){
+				continue;
+			}
+			
+			if(scoreDto.getTotalScore()==null||scoreDto.getTotalScore().equals("")){
+				continue;
+			}
+			
+			//System.err.println(scoreDto.toJSON());
+			
+			double mark = Double.parseDouble(scoreDto.getCourseMarks());
+			double score;
+			try{
+				score =	Double.parseDouble(scoreDto.getTotalScore());
+			}catch(Exception exception){
+				String totalScore = scoreDto.getTotalScore();
+				
+				if(totalScore.equals("优")){
+					score = 90;
+				}else if(totalScore.equals("良")){
+					score = 80;
+				}else if(totalScore.equals("中")){
+					score = 70;
+				}else if(totalScore.equals("及格")){
+					score = 60;
+				}else if(totalScore.equals("不及格")){
+					score = 50;
+				}else if(totalScore.equals("合格")){
+					score = 100;
+				}else if(totalScore.equals("不合格")){
+					score = 0;
+				}else{
+					throw new RuntimeException("cannot translate score!!!:"+totalScore);
+				}
+				
+				//System.err.println("give it score:"+score);
+				
+			}
+			scoreSum += mark*score;
+			markSum += mark;
+			
+		}
+		
+		LocalResult<Double> localResult = new LocalResult<Double>();
+		localResult.autoFill(scoreSum/markSum);
+		
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<Double> queryGPAMarks(String sessionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LocalResult<Double> queryGPAMarksByTerm(String sessionId,
+			int schoolYear, int term) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 	
 }

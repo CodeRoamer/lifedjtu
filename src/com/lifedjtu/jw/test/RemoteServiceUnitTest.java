@@ -9,9 +9,10 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.business.impl.JWRemoteServiceImpl;
-import com.lifedjtu.jw.pojos.dto.ExamDto;
+import com.lifedjtu.jw.pojos.dto.ArticleDto;
 
 public class RemoteServiceUnitTest {
+	/*
 	@Test
 	public void testRemoteService(){
 		char sep = File.separatorChar;
@@ -43,6 +44,22 @@ public class RemoteServiceUnitTest {
 //		}
 		//System.out.println(roomDto);
 	}
+	*/
+	
+	@Test
+	public void testRemoteService(){
+		char sep = File.separatorChar;
+		ApplicationContext ctx=new FileSystemXmlApplicationContext("WebContent"+sep+"WEB-INF"+sep+"applicationContext.xml");
+
+		JWRemoteService remoteService = (JWRemoteServiceImpl)ctx.getBean("jwRemoteService");
+		
+		List<ArticleDto> articleDtos = remoteService.queryRemoteNotes(1);
+		
+		remoteService.queryRemoteNote(articleDtos.get(0));
+		
+		
+	}
+	
 	
 	/*
 	@Test
