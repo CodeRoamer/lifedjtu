@@ -37,8 +37,11 @@ public class InfoProcessHub {
 			term = 0;
 		}
 		int week = 0;
-		String weekStr = parts[3].substring(1);
-		week = Integer.parseInt(weekStr.substring(0, weekStr.length()-1));
+		if(parts.length>3){
+			String weekStr = parts[3].substring(1);
+			week = Integer.parseInt(weekStr.substring(0, weekStr.length()-1));
+		}
+		
 		int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
 		if(weekDay==1){
 			weekDay=7;
