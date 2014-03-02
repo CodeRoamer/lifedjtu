@@ -178,7 +178,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		String serverDynamicPass = Crypto.cypherDynamicPassword(user.getPrivateKey(), System.currentTimeMillis());
 		
 		LocalResult<String> sessionResult = new LocalResult<String>();
-		
+		//System.err.println(dynamicPass+"\n"+serverDynamicPass);
 		if(dynamicPass.equals(serverDynamicPass)){
 			//第二步，确认SessionId是否过期
 			if(LifeDjtuConfig.getIntegerProperty("djtu.sessionAge")<(System.currentTimeMillis()-user.getCurSessionDate().getTime())){

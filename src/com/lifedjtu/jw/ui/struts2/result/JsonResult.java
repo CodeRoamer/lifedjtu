@@ -79,7 +79,16 @@ public class JsonResult implements Result {
 	}
 	
 	public void execute(ActionInvocation invocation) throws Exception {
-		ServletActionContext.getResponse().setContentType("application/json");
+		//为了jsonp，扩展当前的jsonResult
+		String callBack = ServletActionContext.getRequest().getParameter("callback");
+		boolean jsonpFlag = false;
+		if(callBack!=null&&!"".equals(callBack)){
+			ServletActionContext.getResponse().setContentType("text/javascript");
+			jsonpFlag = true;
+		}else{
+			ServletActionContext.getResponse().setContentType("application/json");
+		}
+		
 		ServletActionContext.getResponse().setCharacterEncoding("UTF-8");
 
 		PrintWriter responseStream = ServletActionContext.getResponse()
@@ -101,6 +110,11 @@ public class JsonResult implements Result {
 			}			
 		} 
 
-		responseStream.println(json.toString());
+		if(jsonpFlag){
+			responseStream.println(callBack+"("+json.toString()+");");
+		}else{
+			responseStream.println(json.toString());
+		}
+		
 	}
 }
