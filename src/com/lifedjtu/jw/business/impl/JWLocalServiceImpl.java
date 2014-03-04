@@ -1,5 +1,6 @@
 package com.lifedjtu.jw.business.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import com.lifedjtu.jw.dao.impl.RoomTakenItemDao;
 import com.lifedjtu.jw.dao.impl.UserCourseDao;
 import com.lifedjtu.jw.dao.impl.UserDao;
 import com.lifedjtu.jw.dao.support.UUIDGenerator;
+import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
@@ -34,6 +36,7 @@ import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 import com.lifedjtu.jw.util.Crypto;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ExamStatus;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
+import com.lifedjtu.jw.util.LifeDjtuUtil;
 
 @Component("jwLocalService")
 @Transactional
@@ -237,12 +240,18 @@ public class JWLocalServiceImpl implements JWLocalService{
 	}
 
 	@Override
-	public LocalResult<List<CourseDto>> queryLocalCourseTabel(String studentId, String sessionId) {
+	public LocalResult<List<CourseInstance>> queryLocalCourseTabel(String studentId, String sessionId) {
 		List<CourseDto> courseDtos = jwRemoteService.queryRemoteCourseTable(sessionId);
 		
-		LocalResult<List<CourseDto>> localResult = new LocalResult<List<CourseDto>>();
+		List<CourseInstance> courseInstances = new ArrayList<CourseInstance>();
 		
-		localResult.autoFill(courseDtos);
+		for(CourseDto courseDto : courseDtos){
+			courseInstances.add(LifeDjtuUtil.transferCourseDto(courseDto, -1, -1));
+		}
+		
+		LocalResult<List<CourseInstance>> localResult = new LocalResult<List<CourseInstance>>();
+		
+		localResult.autoFill(courseInstances);
 		
 		Tuple tuple = userDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)), ProjectionWrapper.instance().fields("id","studentId"));
 		

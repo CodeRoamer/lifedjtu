@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.lifedjtu.jw.business.JWLocalService;
 import com.lifedjtu.jw.business.support.LocalResult;
+import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.User;
-import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.ui.struts2.core.support.LifeDjtuAction;
@@ -17,7 +17,8 @@ import com.lifedjtu.jw.ui.struts2.core.support.LifeDjtuAction;
 public class WebserviceSecureAction extends LifeDjtuAction {
 
 	private JWLocalService jwLocalService;
-	
+
+
 	public int getSchoolYear() {
 		return schoolYear;
 	}
@@ -91,11 +92,11 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 
 
-	public List<CourseDto> getCourseDtos() {
+	public List<CourseInstance> getCourseDtos() {
 		return courseDtos;
 	}
 
-	public void setCourseDtos(List<CourseDto> courseDtos) {
+	public void setCourseDtos(List<CourseInstance> courseDtos) {
 		this.courseDtos = courseDtos;
 	}
 
@@ -162,10 +163,10 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	//in
 	//private String studentId;
 	//out
-	private List<CourseDto> courseDtos;
+	private List<CourseInstance> courseDtos;
 	
 	public String getCourseInfo(){
-		LocalResult<List<CourseDto>> localResult = jwLocalService.queryLocalCourseTabel(studentId, sessionId);
+		LocalResult<List<CourseInstance>> localResult = jwLocalService.queryLocalCourseTabel(studentId, sessionId);
 		
 		courseDtos = localResult.getResult();
 		
@@ -253,4 +254,6 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		return SUCCESS;
 		
 	}
+	
+	
 }

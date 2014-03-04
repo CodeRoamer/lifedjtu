@@ -6,6 +6,7 @@ import com.lifedjtu.jw.business.JWLocalService;
 import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.ArticleDto;
+import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.ui.struts2.core.support.LifeDjtuAction;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
 
@@ -16,6 +17,14 @@ public class WebserviceAction extends LifeDjtuAction{
 	
 	
 	
+	public DjtuDate getDate() {
+		return date;
+	}
+
+	public void setDate(DjtuDate date) {
+		this.date = date;
+	}
+
 	public JWLocalService getJwLocalService() {
 		return jwLocalService;
 	}
@@ -210,6 +219,20 @@ public class WebserviceAction extends LifeDjtuAction{
 		note = jwRemoteService.queryRemoteNote(articleDto).getContent();
 		
 		flag = makeFlag(note);
+		
+		return SUCCESS;
+	}
+	
+	
+	/**
+	 * -----/webservice/getDjtuDate.action
+	 */
+	private DjtuDate date;
+	public String getDjtuDate(){
+		
+		date = jwRemoteService.queryDjtuDate(jwRemoteService.randomSessionId());
+		
+		flag = makeFlag(date);
 		
 		return SUCCESS;
 	}

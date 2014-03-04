@@ -21,6 +21,7 @@
 	<context:annotation-config />
 	<context:component-scan base-package="com.lifedjtu.jw.dao.impl" />
 	<context:component-scan base-package="com.lifedjtu.jw.business.impl" />
+	<context:component-scan base-package="com.lifedjtu.jw.business.support" />
 	<context:component-scan base-package="com.lifedjtu.jw.business.task.impl" />
 	<!-- 转变JDBC异常 -->
 	<bean
@@ -74,6 +75,25 @@
 		<aop:pointcut expression="execution(public * com.lifedjtu.jw.dao.impl..*.*(..))"
 			id="dao-transaction" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="dao-transaction" />
+		
+		<aop:aspect ref="serviceAround">
+			<aop:pointcut id="booleanReturnCut"
+				expression="execution(public boolean com.lifedjtu..*.business.*Service+.*(..))" />
+			<aop:pointcut id="entityObjectReturnCut"
+				expression="execution(public com.lifedjtu.jw.pojos.EntityObject+ com.lifedjtu..*.business.*Service+.*(..))" />
+			<aop:pointcut id="collectionObjectReturnCut"
+				expression="execution(public java.util.Collection+ com.lifedjtu..*.business.*Service+.*(..))" />
+			
+
+			<aop:around pointcut-ref="booleanReturnCut"
+				method="booleanAroundMethod"/>
+			<aop:around pointcut-ref="entityObjectReturnCut"
+				method="objectAroundMethod"  />
+			<aop:around pointcut-ref="collectionObjectReturnCut"
+				method="objectAroundMethod"  />
+			
+
+		</aop:aspect>
 	</aop:config>
 
 	<task:annotation-driven executor="lifeDjtuExecutor"

@@ -13,9 +13,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.lifedjtu.jw.dao.support.UUIDGenerator;
+import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.CourseRow;
 import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
+import com.lifedjtu.jw.util.pattern.InfoProcessHub;
 
 public class LifeDjtuUtil {
 	private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -184,6 +187,39 @@ public class LifeDjtuUtil {
 		
 		return content;
 	}
+	
+	public static CourseInstance transferCourseDto(CourseDto courseDto, int year, int term) {
+
+		CourseInstance courseInstance = new CourseInstance();
+		courseInstance.setId(UUIDGenerator.randomUUID());
+		courseInstance.setCourseAlias(courseDto.getAliasName());
+		courseInstance.setCourseName(courseDto.getCourseName());
+		courseInstance.setCourseRemoteId(courseDto.getCourseRemoteId());
+		courseInstance.setBadEval(0);
+		courseInstance.setGoodEval(0);
+		courseInstance.setExamStatus(courseDto.getExamAttr());
+		courseInstance.setCourseSequence(courseDto.getCourseNumber());
+		courseInstance.setPostponed(courseDto.isDelayed());
+
+		
+		StringBuilder takenBuilder = new StringBuilder();
+		List<CourseTakenItem> courseTakenItems = courseDto.getCourseTakenItems();
+		if(courseTakenItems==null||courseTakenItems.size()==0){
+			takenBuilder.append("时间地点均不占");
+		}else{
+			for(CourseTakenItem courseTakenItem : courseTakenItems){
+				takenBuilder.append(InfoProcessHub.transferCourseTakenItem(courseTakenItem)+";");
+			}
+		}
+		
+		courseInstance.setCourseTakenInfo(takenBuilder.toString());
+		courseInstance.setTeacherName(courseDto.getTeacherName());
+		courseInstance.setYear(year);
+		courseInstance.setTerm(term);
+		
+		return courseInstance;
+	}
+
 	
 	/*
 	 * 转变Course集合为CourseRow的可表现形式

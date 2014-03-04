@@ -3,10 +3,10 @@ package com.lifedjtu.jw.business;
 import java.util.List;
 
 import com.lifedjtu.jw.business.support.LocalResult;
+import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
-import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
@@ -30,7 +30,7 @@ public interface JWLocalService {
 	 */
 	public LocalResult<Boolean> changeLocalPassword(String studentId, String sessionId, String originPass, String newPass, String newPassAgain);
 	public LocalResult<List<RoomTakenItem>> queryFreeRooms(double longitude, double latitude); //无需走远程，直接与数据库交互即可
-	public LocalResult<List<CourseDto>> queryLocalCourseTabel(String studentId, String sessionId); //忽略注释.....仅在用户注册时，登录时，和请求刷新时调用，这些数据需存储在app中
+	public LocalResult<List<CourseInstance>> queryLocalCourseTabel(String studentId, String sessionId); //忽略注释.....仅在用户注册时，登录时，和请求刷新时调用，这些数据需存储在app中
 	public LocalResult<List<ExamDto>> queryLocalExams(String studentId, String sessionId); //忽略注释.....仅在用户注册时，登录时，和请求刷新时调用，这些数据需存储在app中。推送利器！同种课程，一旦有一人查询到考试存在，全部选修此课程的同学都会被推送考试通知
 	
 	/**

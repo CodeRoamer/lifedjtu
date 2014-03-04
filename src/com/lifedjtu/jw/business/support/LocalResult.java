@@ -1,9 +1,14 @@
 package com.lifedjtu.jw.business.support;
 
+import com.lifedjtu.jw.pojos.EntityObject;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
 
 
-public class LocalResult<T> {
+public class LocalResult<T> extends EntityObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 277976559542879980L;
 	private T result;
 	private int resultState;
 	public T getResult() {

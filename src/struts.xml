@@ -85,6 +85,11 @@
 			<result name="success" type="jsonResult">flag,note</result>
 		</action>
 		
+		
+		 <action name="getDjtuDate" method="getDjtuDate" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag,date</result>
+		</action>
+		
 	</package>
 	
 	<package name="webservice_secure" extends="main" namespace="/webservice/secure">
@@ -109,6 +114,7 @@
 		<action name="getAverageMark" method="getAverageMark" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,avgMark</result>
 		</action>
+		 
 		 
 	</package>
 	
