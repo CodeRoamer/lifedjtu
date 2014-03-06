@@ -21,6 +21,9 @@ public class URLFetcher {
 		url = repairURL(url);
 		
 		//创建sdk对象
+//		FetchUrlService fetchUrlService = FetchUrlServiceFactory.getFetchUrlService();
+//		String content = fetchUrlService.get(url);
+//		System.err.println(content);
 		
 		LifeDjtuFetchUrl fetch= new LifeDjtuFetchUrl();
 		//打开允许重定向开关,默认

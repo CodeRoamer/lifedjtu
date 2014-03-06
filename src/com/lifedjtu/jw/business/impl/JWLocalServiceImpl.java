@@ -1,7 +1,9 @@
 package com.lifedjtu.jw.business.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
@@ -13,9 +15,12 @@ import com.lifedjtu.jw.business.JWLocalService;
 import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.business.support.LocalResult;
 import com.lifedjtu.jw.business.task.JWUpdateCacheAsyncer;
+import com.lifedjtu.jw.business.task.JWUpdateCacheScheduler;
 import com.lifedjtu.jw.config.LifeDjtuConfig;
 import com.lifedjtu.jw.dao.CriteriaWrapper;
+import com.lifedjtu.jw.dao.Pageable;
 import com.lifedjtu.jw.dao.ProjectionWrapper;
+import com.lifedjtu.jw.dao.Sortable;
 import com.lifedjtu.jw.dao.Tuple;
 import com.lifedjtu.jw.dao.impl.AreaDao;
 import com.lifedjtu.jw.dao.impl.BuildingDao;
@@ -23,6 +28,8 @@ import com.lifedjtu.jw.dao.impl.RoomTakenItemDao;
 import com.lifedjtu.jw.dao.impl.UserCourseDao;
 import com.lifedjtu.jw.dao.impl.UserDao;
 import com.lifedjtu.jw.dao.support.UUIDGenerator;
+import com.lifedjtu.jw.pojos.Area;
+import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
@@ -55,6 +62,18 @@ public class JWLocalServiceImpl implements JWLocalService{
 	private RoomTakenItemDao roomTakenItemDao;
 	@Autowired
 	private UserCourseDao userCourseDao;
+	@Autowired
+	private JWUpdateCacheScheduler jwUpdateCacheScheduler;
+	
+	
+	public JWUpdateCacheScheduler getJwUpdateCacheScheduler() {
+		return jwUpdateCacheScheduler;
+	}
+
+	public void setJwUpdateCacheScheduler(
+			JWUpdateCacheScheduler jwUpdateCacheScheduler) {
+		this.jwUpdateCacheScheduler = jwUpdateCacheScheduler;
+	}
 	
 	public JWUpdateCacheAsyncer getJwUpdateCacheAsyncer() {
 		return jwUpdateCacheAsyncer;
@@ -331,19 +350,23 @@ public class JWLocalServiceImpl implements JWLocalService{
 	}
 
 	@Override
-	public LocalResult<List<ScoreDto>> queryLocalScores(String studentId, String sessionId) {
-		List<ScoreDto> scoreDtos = jwRemoteService.queryRemoteScores(sessionId);
+	public LocalResult<List<ScoreDto>> queryLocalScores(String studentId, String sessionId, int schoolYear, int term) {
+		List<ScoreDto> scoreDtos;
 		
-		DjtuDate djtuDate = jwRemoteService.queryDjtuDate(sessionId);
+		if(schoolYear==0||term==0){
+			scoreDtos = jwRemoteService.queryRemoteScores(sessionId);
+			DjtuDate djtuDate = jwRemoteService.queryDjtuDate(sessionId);
+			jwUpdateCacheAsyncer.updateScoreOutInfo(studentId, scoreDtos, djtuDate);
+		}else{
+			scoreDtos = jwRemoteService.queryRemoteScores(sessionId, schoolYear, term, false);
+		}
+		
 		
 		LocalResult<List<ScoreDto>> localResult = new LocalResult<List<ScoreDto>>();
 		
-		jwUpdateCacheAsyncer.updateScoreOutInfo(studentId, scoreDtos, djtuDate);
 		
 		localResult.autoFill(scoreDtos);
-		return localResult;
-		
-		
+		return localResult;		
 	}
 
 	@Override
@@ -362,7 +385,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			term = djtuDate.getTerm();
 		}
 		
-		List<ScoreDto> scoreDtos = jwRemoteService.queryRemoteScores(sessionId, schoolYear, term);
+		List<ScoreDto> scoreDtos = jwRemoteService.queryRemoteScores(sessionId, schoolYear, term,true);
 		
 		double scoreSum = 0;
 		double markSum = 0;
@@ -429,6 +452,67 @@ public class JWLocalServiceImpl implements JWLocalService{
 			int schoolYear, int term) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public LocalResult<List<Area>> queryLocalAreas() {
+		LocalResult<List<Area>> localResult = new LocalResult<List<Area>>();
+		localResult.autoFill(areaDao.findAll());
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<List<Building>> queryLocalBuildings(String areaId) {
+		LocalResult<List<Building>> localResult = new LocalResult<List<Building>>();
+		localResult.autoFill(buildingDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("area.id", areaId))));
+		// TODO Auto-generated method stub
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<List<RoomTakenItem>> queryFreeRooms(String buildingId) {
+		LocalResult<List<RoomTakenItem>> localResult = new LocalResult<List<RoomTakenItem>>();
+		localResult.autoFill(roomTakenItemDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("building.id", buildingId))));
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<Boolean> safeUpdateRoomTakenInfo() {
+		
+		List<RoomTakenItem> temp = roomTakenItemDao.findByParamsInPageInOrder(CriteriaWrapper.instance().and(Restrictions.isNotNull("dataDate")), Pageable.inPage(0, 1), Sortable.instance("dataDate", Sortable.DESCEND));
+		
+		boolean executeFlag = false;
+		
+		if(temp==null||temp.size()==0){
+			executeFlag = true;
+		}else{
+			RoomTakenItem roomTakenItem = temp.get(0);
+			
+			Date date = new Date();
+			GregorianCalendar calendar = new GregorianCalendar();
+			calendar.setTime(date);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
+			
+			if(roomTakenItem.getDataDate().before(calendar.getTime())){
+				//System.err.println("did update room taken info");
+				executeFlag = true;
+			}else{
+				//System.err.println("did not update room taken info");
+			}
+		}
+		
+		
+		if(executeFlag){
+			jwUpdateCacheScheduler.updateRoomTakenInfo(jwRemoteService.randomSessionId());
+		}
+		
+		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		localResult.autoFill(true);
+		
+		return localResult;
 	}
 
 	

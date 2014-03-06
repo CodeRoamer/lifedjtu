@@ -41,6 +41,10 @@ public class UserValidateInterceptor extends AbstractInterceptor{
 			String studentId = request.getParameter("studentId");
 			String dynamicPass = request.getParameter("dynamicPass");
 			
+			if((studentId==null||studentId.equals(""))||(dynamicPass==null||dynamicPass.equals(""))){
+				return "needLogin";
+			}
+			
 			LocalResult<String> result = jwLocalService.prepareUser(studentId, dynamicPass);
 			
 			

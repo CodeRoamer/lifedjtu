@@ -32,7 +32,7 @@ public interface JWRemoteService {
 	public List<ExamDto> queryRemoteExams(String sessionId);
 	
 	public List<ScoreDto> queryRemoteScores(String sessionId);
-	public List<ScoreDto> queryRemoteScores(String sessionId, int schoolYear, int term);
+	public List<ScoreDto> queryRemoteScores(String sessionId, int schoolYear, int term, boolean onlyMax);
 	
 	public DjtuDate queryDjtuDate(String sessionId);
 	

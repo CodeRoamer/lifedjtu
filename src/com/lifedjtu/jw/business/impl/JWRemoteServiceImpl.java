@@ -406,8 +406,8 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 
 	@Override
 	public List<ScoreDto> queryRemoteScores(String sessionId, int schoolYear,
-			int term) {
-		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryRemoteScoresURL, sessionId, MapMaker.instance("maxStatus", 1+"").param("para", 0+"").param("term", term+"").param("year", (schoolYear-1980)+"").toMap());
+			int term, boolean onlyMax) {
+		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryRemoteScoresURL, sessionId, MapMaker.instance("maxStatus", (onlyMax)?1+"":"").param("para", 0+"").param("term", term+"").param("year", (schoolYear-1980)+"").toMap());
 
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;

@@ -4,6 +4,10 @@ import java.util.List;
 
 import com.lifedjtu.jw.business.JWLocalService;
 import com.lifedjtu.jw.business.JWRemoteService;
+import com.lifedjtu.jw.business.support.LocalResult;
+import com.lifedjtu.jw.pojos.Area;
+import com.lifedjtu.jw.pojos.Building;
+import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.ArticleDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
@@ -15,8 +19,47 @@ public class WebserviceAction extends LifeDjtuAction{
 	private JWLocalService jwLocalService;
 	private JWRemoteService jwRemoteService;
 	
-	
-	
+
+	public List<Area> getAreaList() {
+		return areaList;
+	}
+
+	public void setAreaList(List<Area> areaList) {
+		this.areaList = areaList;
+	}
+
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+
+	public List<Building> getBiuldingList() {
+		return biuldingList;
+	}
+
+	public void setBiuldingList(List<Building> biuldingList) {
+		this.biuldingList = biuldingList;
+	}
+
+	public String getBuildingId() {
+		return buildingId;
+	}
+
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
+	}
+
+	public List<RoomTakenItem> getRoomTakenItemList() {
+		return roomTakenItemList;
+	}
+
+	public void setRoomTakenItemList(List<RoomTakenItem> roomTakenItemList) {
+		this.roomTakenItemList = roomTakenItemList;
+	}
+
 	public DjtuDate getDate() {
 		return date;
 	}
@@ -233,6 +276,70 @@ public class WebserviceAction extends LifeDjtuAction{
 		date = jwRemoteService.queryDjtuDate(jwRemoteService.randomSessionId());
 		
 		flag = makeFlag(date);
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/getAreas.action
+	 */
+	//out
+	private List<Area> areaList;
+	public String getAreas(){
+		
+		LocalResult<List<Area>> localResult = jwLocalService.queryLocalAreas();
+		
+		areaList = localResult.getResult();
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/getBuildings.action
+	 */
+	//in
+	private String areaId;
+	//out
+	private List<Building> biuldingList;
+	public String getBuildings(){
+		
+		LocalResult<List<Building>> localResult = jwLocalService.queryLocalBuildings(areaId);
+		
+		biuldingList = localResult.getResult();
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/getRoomTakenItems.action
+	 */
+	//in
+	private String buildingId;
+	//out
+	private List<RoomTakenItem> roomTakenItemList;
+	public String getRoomTakenItems(){
+		
+		LocalResult<List<RoomTakenItem>> localResult = jwLocalService.queryFreeRooms(buildingId);
+		
+		roomTakenItemList = localResult.getResult();
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/safeUpdateRoomTakenInfo.action
+	 */
+	//in
+	//out
+	public String safeUpdateRoomTakenInfo(){
+		LocalResult<Boolean> localResult = jwLocalService.safeUpdateRoomTakenInfo();
+		flag = localResult.getResultState();
 		
 		return SUCCESS;
 	}

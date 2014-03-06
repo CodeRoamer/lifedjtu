@@ -90,6 +90,19 @@
 			<result name="success" type="jsonResult">flag,date</result>
 		</action>
 		
+		<action name="getAreas" method="getAreas" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag,areaList</result>
+		</action>
+		<action name="getBuildings" method="getBuildings" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag,biuldingList</result>
+		</action>
+		<action name="getRoomTakenItems" method="getRoomTakenItems" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag,roomTakenItemList</result>
+		</action>
+		
+		<action name="safeUpdateRoomTakenInfo" method="safeUpdateRoomTakenInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceAction">
+			<result name="success" type="jsonResult">flag</result>
+		</action>
 	</package>
 	
 	<package name="webservice_secure" extends="main" namespace="/webservice/secure">

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -248,6 +249,12 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 		//System.out.println(roomTakenList.toString());
 		//System.out.println(builder.toString());
 		return builder.toString();
+	}
+	
+	@Override
+	@Async
+	public void updateRoomTakenInfo(String sessionId){
+		updateRoomTakenItem(sessionId);
 	}
 	
 	@Override

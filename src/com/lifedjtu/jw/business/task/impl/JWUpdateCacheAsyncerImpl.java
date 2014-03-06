@@ -54,6 +54,10 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	private JWRemoteService jwRemoteService;
 	@Autowired
 	private SystemNoticeDao systemNoticeDao;
+	
+	/**
+	 * 此方法用来更新course表
+	 */
 	@Override
 	@Async
 	public void updateCourseInfo(String userId, List<CourseDto> courseDtos, DjtuDate djtuDate) {

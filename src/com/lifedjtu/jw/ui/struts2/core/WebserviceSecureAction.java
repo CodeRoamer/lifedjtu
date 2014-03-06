@@ -198,11 +198,13 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	 */
 	//in
 	//private String studentId;
+//	private int schoolYear;
+//	private int term;
 	//out
 	private List<ScoreDto> scoreDtos;
 	
 	public String getScoreInfo(){
-		LocalResult<List<ScoreDto>> localResult = jwLocalService.queryLocalScores(studentId, sessionId);
+		LocalResult<List<ScoreDto>> localResult = jwLocalService.queryLocalScores(studentId, sessionId, schoolYear, term);
 		
 		scoreDtos = localResult.getResult();
 		
