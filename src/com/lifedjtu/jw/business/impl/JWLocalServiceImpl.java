@@ -387,6 +387,13 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		List<ScoreDto> scoreDtos = jwRemoteService.queryRemoteScores(sessionId, schoolYear, term,true);
 		
+		if(scoreDtos==null||scoreDtos.size()==0){
+			LocalResult<Double> localResult = new LocalResult<Double>();
+			localResult.autoFill(Double.valueOf(0));
+			return localResult;
+					
+		}
+		
 		double scoreSum = 0;
 		double markSum = 0;
 		
@@ -437,6 +444,8 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		LocalResult<Double> localResult = new LocalResult<Double>();
 		localResult.autoFill(scoreSum/markSum);
+		
+		//System.err.println(localResult.getResult());
 		
 		return localResult;
 	}

@@ -279,7 +279,11 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 
 	@Override
 	public List<ScoreDto> queryRemoteScores(String sessionId) {
+		//System.err.println("hello you!!!in remote scores");
+
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryRemoteScoresURL, sessionId);
+		//System.err.println(fetchResponse.getResponseBody());
+		
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;
 		}
@@ -407,8 +411,15 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	@Override
 	public List<ScoreDto> queryRemoteScores(String sessionId, int schoolYear,
 			int term, boolean onlyMax) {
-		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryRemoteScoresURL, sessionId, MapMaker.instance("maxStatus", (onlyMax)?1+"":"").param("para", 0+"").param("term", term+"").param("year", (schoolYear-1980)+"").toMap());
+		MapMaker maker = MapMaker.instance("para", 0+"").param("term", term+"").param("year", (schoolYear-1980)+"");
+		if(onlyMax){
+			maker.param("maxStatus", 1+"");
+		}
+		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryRemoteScoresURL, sessionId, maker.toMap());
 
+		//System.err.println(fetchResponse.getResponseBody());
+
+		
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;
 		}
