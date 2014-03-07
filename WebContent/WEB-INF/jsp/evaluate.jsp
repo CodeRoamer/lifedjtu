@@ -37,10 +37,9 @@
           <div class="navbar-inner">
             <div class="container">
               <ul class="nav">
-                <li class="active"><a href="./index.action">主页</a></li>
-                <li><a href="#">客户端下载</a></li>
-                <li><a href="#">服务</a></li>
-                <li><a href="#">开发人员</a></li>
+                <li><a href="./index.action">主页</a></li>
+                <li><a href="./download.action">下载</a></li>
+                <li class="active"><a href="#">服务</a></li>
                 <li><a href="#">关于</a></li>
               </ul>
             </div>
@@ -53,7 +52,7 @@
       <div class="row-fluid">
         <div class="span2"></div>
         <div class="span8">
-        	<h1>交大课程评估</h1>
+        	<h1>交大课程一键评估</h1>
 			<form action="" method="post">
 				<input name="studentId" type="text" placeholder="输入学号">
 				<input name="password" type="password" placeholder="输入密码">
@@ -109,9 +108,10 @@
 
       <hr>
 
-      <div class="footer">
-        <p>&copy; Company 2013</p>
+    <div class="footer">
+        <p>&copy; CodeHolic Team 2013</p>
       </div>
+
 
     </div> <!-- /container -->
 

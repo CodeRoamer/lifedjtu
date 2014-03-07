@@ -1,6 +1,7 @@
 package com.lifedjtu.jw.pojos;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,13 +14,13 @@ public class UserCourse extends EntityObject{
 	private static final long serialVersionUID = 3690794133607720170L;
 	@Id
 	private String id;
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="userId")
 	private User user;
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="courseInstanceId")
 	private CourseInstance courseInstance;
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="examInstanceId")
 	private ExamInstance examInstance;
 	

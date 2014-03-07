@@ -10,6 +10,7 @@ import com.lifedjtu.jw.pojos.Room;
 import com.lifedjtu.jw.pojos.dto.ArticleDto;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
+import com.lifedjtu.jw.pojos.dto.CourseRecordDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
@@ -35,6 +36,8 @@ public interface JWRemoteService {
 	public List<ScoreDto> queryRemoteScores(String sessionId, int schoolYear, int term, boolean onlyMax);
 	
 	public DjtuDate queryDjtuDate(String sessionId);
+	
+	public CourseRecordDto queryRemoteCourseRecord(String sessionId,String remoteId);
 	
 	
 	/*

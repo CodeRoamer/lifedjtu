@@ -1,7 +1,6 @@
 package com.lifedjtu.jw.test;
 
 import java.io.File;
-import java.util.List;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -9,7 +8,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.business.impl.JWRemoteServiceImpl;
-import com.lifedjtu.jw.pojos.dto.ArticleDto;
+import com.lifedjtu.jw.pojos.dto.CourseRecordDto;
 
 public class RemoteServiceUnitTest {
 	/*
@@ -53,10 +52,9 @@ public class RemoteServiceUnitTest {
 
 		JWRemoteService remoteService = (JWRemoteServiceImpl)ctx.getBean("jwRemoteService");
 		
-		List<ArticleDto> articleDtos = remoteService.queryRemoteNotes(1);
+		CourseRecordDto courseRecordDto = remoteService.queryRemoteCourseRecord(remoteService.randomSessionId(), "382117465");
 		
-		remoteService.queryRemoteNote(articleDtos.get(0));
-		
+		System.err.println(courseRecordDto.toJSON());
 		
 	}
 	

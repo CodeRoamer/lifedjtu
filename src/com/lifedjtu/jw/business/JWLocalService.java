@@ -9,6 +9,7 @@ import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
+import com.lifedjtu.jw.pojos.dto.CourseInstanceDto;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
@@ -40,6 +41,12 @@ public interface JWLocalService {
 	public LocalResult<List<RoomTakenItem>> queryFreeRooms(String buildingId);
 	
 	public LocalResult<Boolean> safeUpdateRoomTakenInfo();
+	
+	public LocalResult<List<User>> getSameCourseUsers(String remoteId); //指的是抓取此课中，全部上此门课程的人
+	public LocalResult<List<User>> getSameClassUsers(String studentId,String remoteId); //指的是抓取此课中，同班上此门课程的人
+	public LocalResult<List<User>> getSameGradeUsers(String studentId,String remoteId); //指的是抓取此门课中，同年级的上此门课的人
+	public LocalResult<CourseInstanceDto> getCourseInstanceDto(String sessionId, String remoteId); //根据remoteId，抓取此门课程的额外信息
+	
 	/**
 	 * 这些方法负责在用户注册时，初始化用户数据，搜取用户信息
 	 * 对于一个用户来说，我们需要在其注册时，一步一步引导用户，并从其身上获取必要的数据，更好地为他和为其他用户服务

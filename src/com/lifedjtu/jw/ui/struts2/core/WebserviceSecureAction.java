@@ -6,9 +6,11 @@ import com.lifedjtu.jw.business.JWLocalService;
 import com.lifedjtu.jw.business.support.LocalResult;
 import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.User;
+import com.lifedjtu.jw.pojos.dto.CourseInstanceDto;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.ui.struts2.core.support.LifeDjtuAction;
+import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
 /**
  * 如果获取的集合为空，不能够说明是获取失败，有可能是无东西可以获取！！
  * @author apple
@@ -18,6 +20,73 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 
 	private JWLocalService jwLocalService;
 
+	
+
+	public String getRemoteId() {
+		return remoteId;
+	}
+
+	public void setRemoteId(String remoteId) {
+		this.remoteId = remoteId;
+	}
+
+	public int getCourseMemberNum() {
+		return courseMemberNum;
+	}
+
+	public void setCourseMemberNum(int courseMemberNum) {
+		this.courseMemberNum = courseMemberNum;
+	}
+
+	
+
+	public List<String> getClasses() {
+		return classes;
+	}
+
+	public void setClasses(List<String> classes) {
+		this.classes = classes;
+	}
+
+	public int getGoodEval() {
+		return goodEval;
+	}
+
+	public void setGoodEval(int goodEval) {
+		this.goodEval = goodEval;
+	}
+
+	public int getBadEval() {
+		return badEval;
+	}
+
+	public void setBadEval(int badEval) {
+		this.badEval = badEval;
+	}
+
+	public List<User> getSameCourseMembers() {
+		return sameCourseMembers;
+	}
+
+	public void setSameCourseMembers(List<User> sameCourseMembers) {
+		this.sameCourseMembers = sameCourseMembers;
+	}
+
+	public List<User> getSameClassMembers() {
+		return sameClassMembers;
+	}
+
+	public void setSameClassMembers(List<User> sameClassMembers) {
+		this.sameClassMembers = sameClassMembers;
+	}
+
+	public List<User> getSameGradeMembers() {
+		return sameGradeMembers;
+	}
+
+	public void setSameGradeMembers(List<User> sameGradeMembers) {
+		this.sameGradeMembers = sameGradeMembers;
+	}
 
 	public int getSchoolYear() {
 		return schoolYear;
@@ -257,5 +326,46 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		
 	}
 	
+	
+	/**
+	 * -----/webservice/secure/getCourseInstance.action
+	 */
+	//in
+	private String remoteId;
+	//out
+	private int courseMemberNum;
+	private List<String> classes;
+	private int goodEval;
+	private int badEval;
+	private List<User> sameCourseMembers;
+	private List<User> sameClassMembers;
+	private List<User> sameGradeMembers;
+	
+	//private List<Memo> memos;
+	public String getCourseInstance(){
+		LocalResult<List<User>> localResult1 = jwLocalService.getSameCourseUsers(remoteId);
+		LocalResult<List<User>> localResult2 = jwLocalService.getSameClassUsers(studentId, remoteId);
+		LocalResult<List<User>> localResult3 = jwLocalService.getSameGradeUsers(studentId, remoteId);
+		
+		LocalResult<CourseInstanceDto> localResult4 = jwLocalService.getCourseInstanceDto(sessionId,remoteId);
+		
+		sameCourseMembers = localResult1.getResult();
+		sameClassMembers = localResult2.getResult();
+		sameGradeMembers = localResult3.getResult();
+		
+		goodEval = localResult4.getResult().getGoodEval();
+		badEval = localResult4.getResult().getBadEval();
+		
+		classes = localResult4.getResult().getClasses();
+		courseMemberNum = localResult4.getResult().getCourseMemberNum();
+		
+		if(localResult1.getResultState()!=ResultState.SUCCESS.ordinal()||localResult2.getResultState()!=ResultState.SUCCESS.ordinal()||localResult3.getResultState()!=ResultState.SUCCESS.ordinal()||localResult4.getResultState()!=ResultState.SUCCESS.ordinal()){
+			flag = ResultState.FAIL.ordinal();
+		}else{
+			flag = ResultState.SUCCESS.ordinal();
+		}
+		
+		return SUCCESS;
+	}
 	
 }

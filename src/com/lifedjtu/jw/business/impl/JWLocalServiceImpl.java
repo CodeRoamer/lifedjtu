@@ -24,6 +24,7 @@ import com.lifedjtu.jw.dao.Sortable;
 import com.lifedjtu.jw.dao.Tuple;
 import com.lifedjtu.jw.dao.impl.AreaDao;
 import com.lifedjtu.jw.dao.impl.BuildingDao;
+import com.lifedjtu.jw.dao.impl.CourseInstanceDao;
 import com.lifedjtu.jw.dao.impl.RoomTakenItemDao;
 import com.lifedjtu.jw.dao.impl.UserCourseDao;
 import com.lifedjtu.jw.dao.impl.UserDao;
@@ -33,14 +34,18 @@ import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
+import com.lifedjtu.jw.pojos.UserCourse;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
+import com.lifedjtu.jw.pojos.dto.CourseInstanceDto;
+import com.lifedjtu.jw.pojos.dto.CourseRecordDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 import com.lifedjtu.jw.util.Crypto;
+import com.lifedjtu.jw.util.MapMaker;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ExamStatus;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
 import com.lifedjtu.jw.util.LifeDjtuUtil;
@@ -64,8 +69,17 @@ public class JWLocalServiceImpl implements JWLocalService{
 	private UserCourseDao userCourseDao;
 	@Autowired
 	private JWUpdateCacheScheduler jwUpdateCacheScheduler;
+	@Autowired
+	private CourseInstanceDao courseInstanceDao;
 	
-	
+	public CourseInstanceDao getCourseInstanceDao() {
+		return courseInstanceDao;
+	}
+
+	public void setCourseInstanceDao(CourseInstanceDao courseInstanceDao) {
+		this.courseInstanceDao = courseInstanceDao;
+	}
+
 	public JWUpdateCacheScheduler getJwUpdateCacheScheduler() {
 		return jwUpdateCacheScheduler;
 	}
@@ -520,6 +534,134 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
 		localResult.autoFill(true);
+		
+		return localResult;
+	}
+
+	/**
+	 * 不分年级，修读这门课的人，全部给出，主要用来应对：重修人士，培养计划改革，以及旧的未删数据
+	 */
+	@Override
+	public LocalResult<List<User>> getSameCourseUsers(String remoteId) {
+		Tuple courseInstance = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("courseAlias","id"));
+				
+		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
+		List<User> users = new ArrayList<User>();
+		for(UserCourse userCourse:userCourses){
+			User user = new User();
+			User temp = userCourse.getUser();
+			user.setAcademy(temp.getAcademy());
+			user.setArea(temp.getArea());
+			user.setBirthDate(temp.getBirthDate());
+			user.setCls(temp.getCls());
+			user.setGender(temp.getGender());
+			user.setGrade(temp.getGrade());
+			user.setId(temp.getId());
+			user.setMajor(temp.getMajor());
+			user.setNickname(temp.getNickname());
+			user.setProvince(temp.getProvince());
+			user.setUsername(temp.getUsername());
+			
+			users.add(user);
+		}
+		
+		LocalResult<List<User>> localResult = new LocalResult<List<User>>();
+		localResult.autoFill(users);
+		
+		return localResult;
+	}
+
+	/**
+	 * 什么叫sameClass，就是说，在同一个班修读这一门课~
+	 */
+	@Override
+	public LocalResult<List<User>> getSameClassUsers(String studentId,String remoteId) {
+		
+		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseRemoteId", remoteId)));
+		List<User> users = new ArrayList<User>();
+		for(UserCourse userCourse:userCourses){
+			User user = new User();
+			User temp = userCourse.getUser();
+			user.setAcademy(temp.getAcademy());
+			user.setArea(temp.getArea());
+			user.setBirthDate(temp.getBirthDate());
+			user.setCls(temp.getCls());
+			user.setGender(temp.getGender());
+			user.setGrade(temp.getGrade());
+			user.setId(temp.getId());
+			user.setMajor(temp.getMajor());
+			user.setNickname(temp.getNickname());
+			user.setProvince(temp.getProvince());
+			user.setUsername(temp.getUsername());
+			
+			users.add(user);
+		}
+		
+		LocalResult<List<User>> localResult = new LocalResult<List<User>>();
+		localResult.autoFill(users);
+		
+		return localResult;
+	}
+
+	/**
+	 * 同年级的~~修读同一门课，在不同的教学班
+	 */
+	@Override
+	public LocalResult<List<User>> getSameGradeUsers(String studentId,String remoteId) {
+		Tuple courseInstance = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("courseAlias","id"));
+		Tuple curUser = userDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)),ProjectionWrapper.instance().fields("grade","id"));
+		
+		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").param("user", "user").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("user.grade", curUser.get(0)),Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
+		List<User> users = new ArrayList<User>();
+		for(UserCourse userCourse:userCourses){
+			User user = new User();
+			User temp = userCourse.getUser();
+			user.setAcademy(temp.getAcademy());
+			user.setArea(temp.getArea());
+			user.setBirthDate(temp.getBirthDate());
+			user.setCls(temp.getCls());
+			user.setGender(temp.getGender());
+			user.setGrade(temp.getGrade());
+			user.setId(temp.getId());
+			user.setMajor(temp.getMajor());
+			user.setNickname(temp.getNickname());
+			user.setProvince(temp.getProvince());
+			user.setUsername(temp.getUsername());
+			
+			users.add(user);
+		}
+		
+		LocalResult<List<User>> localResult = new LocalResult<List<User>>();
+		localResult.autoFill(users);
+		
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<CourseInstanceDto> getCourseInstanceDto(String sessionId, String remoteId) {
+		if(remoteId==null||remoteId.equals("")){
+			return null;
+		}
+		
+		CourseInstance courseInstance = courseInstanceDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)));
+		CourseRecordDto courseRecordDto = jwRemoteService.queryRemoteCourseRecord(sessionId, remoteId);
+		if(courseInstance==null||courseRecordDto==null){
+			return null;
+		}
+		
+		CourseInstanceDto courseInstanceDto = new CourseInstanceDto();
+		
+		courseInstanceDto.setBadEval(courseInstance.getBadEval());
+		courseInstanceDto.setCourseName(courseInstance.getCourseName());
+		courseInstanceDto.setCourseRemoteId(remoteId);
+		courseInstanceDto.setGoodEval(courseInstance.getGoodEval());
+		courseInstanceDto.setTeacherName(courseInstance.getTeacherName());
+		courseInstanceDto.setId(courseInstance.getId());
+		courseInstanceDto.setClasses(courseRecordDto.getClasses());
+		courseInstanceDto.setCourseMemberNum(courseRecordDto.getRealCapacity());
+		
+		LocalResult<CourseInstanceDto> localResult = new LocalResult<CourseInstanceDto>();
+		localResult.autoFill(courseInstanceDto);
 		
 		return localResult;
 	}

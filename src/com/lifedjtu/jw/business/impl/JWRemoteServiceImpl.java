@@ -3,6 +3,7 @@ package com.lifedjtu.jw.business.impl;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -18,6 +19,7 @@ import com.lifedjtu.jw.pojos.Room;
 import com.lifedjtu.jw.pojos.dto.ArticleDto;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
+import com.lifedjtu.jw.pojos.dto.CourseRecordDto;
 import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
@@ -52,6 +54,9 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	
 	private final String queryNoteURL = "http://202.199.128.21/jwzx/infoArticleList.do?columnId=259&sortColumn=publicationDate&sortDirection=-1&pagingNumberPer=15";
 
+	//查询单门课程教学记录
+	private final String queryCourseRecord = "http://jw.djtu.edu.cn/academic/teacher/teachingtask/recordStudentIndex.do?";
+	
 	@Override
 	public String signinRemote(String studentId, String password) {
 		// TODO Auto-generated method stub
@@ -501,6 +506,58 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 		//System.err.println(articleDto.getContent());
 		
 		return articleDto;
+	}
+
+	@Override
+	public CourseRecordDto queryRemoteCourseRecord(String sessionId, String remoteId) {
+		//epid=382117465
+		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryCourseRecord+"epid="+remoteId, sessionId);
+		if(fetchResponse.getStatusCode()!=200||!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
+			return null;
+		}
+		List<DomElement> domElements = Extractor.$("table[class=form] tr", fetchResponse.getResponseBody());
+		if(domElements==null||domElements.size()==0){
+			return null;
+		}
+		
+		CourseRecordDto courseRecordDto = new CourseRecordDto();
+		Iterator<DomElement> iterator = domElements.iterator();
+		
+		//aliasName and courseProperty
+		DomElement domElement = iterator.next();
+		List<DomElement> temp = domElement.find("td");
+		courseRecordDto.setCourseAliasName(temp.get(0).getText().trim());
+		courseRecordDto.setCourseProperty(temp.get(1).getText().trim());
+		
+		//course attr and exam type
+		domElement = iterator.next();
+		temp = domElement.find("td");;
+		courseRecordDto.setCourseAttr(temp.get(0).getText().trim());
+		courseRecordDto.setExamType(temp.get(1).getText().trim());
+		
+		//course capacity and real capacity
+		domElement = iterator.next();
+		temp = domElement.find("td");;
+		courseRecordDto.setCourseCapacity(Integer.valueOf(temp.get(0).getText().trim()));
+		courseRecordDto.setRealCapacity(Integer.valueOf(temp.get(1).getText().trim()));
+		
+		//teacher info
+		domElement = iterator.next();
+		temp = domElement.find("td");;
+		courseRecordDto.setTeacherInfo(temp.get(0).getText().trim());
+		
+		//study time
+		domElement = iterator.next();
+		temp = domElement.find("td");;
+		courseRecordDto.setStudyTime(Double.valueOf(temp.get(0).getText().trim()));
+
+		//classes
+		domElement = iterator.next();
+		temp = domElement.find("td");;
+		courseRecordDto.setClasses(Arrays.asList(temp.get(0).getText().trim().split("\\s+")));
+		
+		return courseRecordDto;
+				
 	}
 
 }

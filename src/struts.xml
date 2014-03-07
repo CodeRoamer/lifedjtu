@@ -34,6 +34,9 @@
 		<action name="index">
 			<result name="success">/WEB-INF/jsp/index.jsp</result>
 		</action>
+		<action name="download">
+			<result name="success">/WEB-INF/jsp/download.jsp</result>
+		</action>
 		<action name="signin" method="signin" class="com.lifedjtu.jw.ui.struts2.core.MainWebServiceAction">
 			<result name="success" type="jsonResult">sessionId</result>
 		</action>
@@ -127,7 +130,11 @@
 		<action name="getAverageMark" method="getAverageMark" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,avgMark</result>
 		</action>
-		 
+		
+		<action name="getCourseInstance" method="getCourseInstance" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,courseMemberNum,classes,goodEval,badEval,sameCourseMembers,sameClassMembers,sameGradeMembers</result>
+		</action>
+		
 		 
 	</package>
 	
