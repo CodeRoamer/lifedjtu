@@ -199,7 +199,7 @@ public class LifeDjtuUtil {
 		courseInstance.setGoodEval(0);
 		courseInstance.setExamStatus(courseDto.getExamAttr());
 		courseInstance.setCourseSequence(courseDto.getCourseNumber());
-		courseInstance.setPostponed(courseDto.isDelayed());
+		courseInstance.setPostponed(courseDto.getIsDelayed());
 
 		
 		StringBuilder takenBuilder = new StringBuilder();

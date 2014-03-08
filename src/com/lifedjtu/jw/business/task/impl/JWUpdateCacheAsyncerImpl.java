@@ -63,41 +63,38 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	@Override
 	@Async
 	public void updateCourseInfo(String userId, List<CourseDto> courseDtos, DjtuDate djtuDate) {
-		try{
-			List<Course> courses = new ArrayList<Course>();
-			List<CourseInstance> courseInstances = new ArrayList<CourseInstance>();
-			List<UserCourse> userCourses = new ArrayList<UserCourse>();
-			for(CourseDto courseDto : courseDtos){
-				//System.err.println(courseDto.getAliasName());
-				Course course = courseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseAlias", courseDto.getAliasName()),Restrictions.eq("courseName", courseDto.getCourseName())));
-				if(course==null){
-					course = new Course();
-					course.setCourseAlias(courseDto.getAliasName());
-					course.setCourseName(courseDto.getCourseName());
-					course.setId(UUIDGenerator.randomUUID());
-					course.setCourseCredits(Double.parseDouble(courseDto.getCourseMarks().trim()));
-					course.setCourseProperty(courseDto.getCourseAttr());
-					courses.add(course);
-				}
-				CourseInstance courseInstance = updateCourseInstanceInfo(course, courseDto, djtuDate.getSchoolYear(), djtuDate.getTerm());
-				courseInstances.add(courseInstance);
-				UserCourse userCourse = userCourseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId),Restrictions.eq("courseInstance.id", courseInstance.getId())));
-				if(userCourse==null){
-					userCourse = new UserCourse();
-					userCourse.setId(UUIDGenerator.randomUUID());
-					userCourse.setUser(new User(userId));
-					userCourse.setCourseInstance(courseInstance);
-					userCourses.add(userCourse);
-				}
-				
+		List<Course> courses = new ArrayList<Course>();
+		List<CourseInstance> courseInstances = new ArrayList<CourseInstance>();
+		List<UserCourse> userCourses = new ArrayList<UserCourse>();
+		for(CourseDto courseDto : courseDtos){
+			//System.out.println("Course Info:\n"+courseDto.toJSON());
+			Course course = courseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseAlias", courseDto.getAliasName()),Restrictions.eq("courseName", courseDto.getCourseName())));
+			if(course==null){
+				course = new Course();
+				course.setCourseAlias(courseDto.getAliasName());
+				course.setCourseName(courseDto.getCourseName());
+				course.setId(UUIDGenerator.randomUUID());
+				course.setCourseCredits(Double.parseDouble(courseDto.getCourseMarks().trim()));
+				course.setCourseProperty(courseDto.getCourseAttr());
+				courses.add(course);
 			}
-			courseDao.addMulti(courses);
-			courseInstanceDao.addMulti(courseInstances);
-			userCourseDao.addMulti(userCourses);
-		}catch(Exception exception){
-			exception.printStackTrace();
+			CourseInstance courseInstance = updateCourseInstanceInfo(course, courseDto, djtuDate.getSchoolYear(), djtuDate.getTerm());
+			courseInstances.add(courseInstance);
+			UserCourse userCourse = userCourseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId),Restrictions.eq("courseInstance.id", courseInstance.getId())));
+			if(userCourse==null){
+				userCourse = new UserCourse();
+				userCourse.setId(UUIDGenerator.randomUUID());
+				userCourse.setUser(new User(userId));
+				userCourse.setCourseInstance(courseInstance);
+				userCourses.add(userCourse);
+			}
+			
+			//System.out.println("Course Instance:\n"+courseInstance.toJSON());
+			//System.out.println("User Course:\n"+userCourse.toJSON());
 		}
-		
+		courseDao.addMulti(courses);
+		courseInstanceDao.addMulti(courseInstances);
+		userCourseDao.addMulti(userCourses);	
 	}
 
 	@Override
@@ -113,7 +110,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			courseInstance.setGoodEval(0);
 			courseInstance.setExamStatus(courseDto.getExamAttr());
 			courseInstance.setCourseSequence(courseDto.getCourseNumber());
-			courseInstance.setPostponed(courseDto.isDelayed());
+			courseInstance.setPostponed(courseDto.getIsDelayed());
 			courseInstance.setCourse(course);
 		}
 		

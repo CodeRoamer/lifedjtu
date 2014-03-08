@@ -103,12 +103,7 @@ public class CourseDto extends EntityObject{
 	public void setExamAttr(String examAttr) {
 		this.examAttr = examAttr;
 	}
-	public String isDelayed() {
-		return isDelayed;
-	}
-	public void setDelayed(String isDelayed) {
-		this.isDelayed = isDelayed;
-	}
+	
 	public List<CourseTakenItem> getCourseTakenItems() {
 		return courseTakenItems;
 	}

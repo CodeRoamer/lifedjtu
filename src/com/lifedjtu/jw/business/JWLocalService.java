@@ -46,6 +46,9 @@ public interface JWLocalService {
 	public LocalResult<List<User>> getSameGradeUsers(String studentId,String remoteId); //指的是抓取此门课中，同年级的上此门课的人
 	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String remoteId);//根据remoteId，获取此门课程的全部信息
 	
+	public LocalResult<Boolean> giveGoodEvalToCourse(String studentId, String remoteId);
+	public LocalResult<Boolean> giveBadEvalToCourse(String studentId, String remoteId);
+	
 	/**
 	 * 这些方法负责在用户注册时，初始化用户数据，搜取用户信息
 	 * 对于一个用户来说，我们需要在其注册时，一步一步引导用户，并从其身上获取必要的数据，更好地为他和为其他用户服务

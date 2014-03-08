@@ -261,6 +261,9 @@ public class JWLocalServiceImpl implements JWLocalService{
 		return localResult;
 	}
 
+	/**
+	 * 计划根据经纬度来定位学生周边的空教室情况
+	 */
 	@Override
 	public LocalResult<List<RoomTakenItem>> queryFreeRooms(double longitude,
 			double latitude) {
@@ -381,6 +384,9 @@ public class JWLocalServiceImpl implements JWLocalService{
 		return localResult;		
 	}
 
+	/**
+	 * 计划此方法运算学生的全部学期的平均分
+	 */
 	@Override
 	public LocalResult<Double> queryAverageMarks(String sessionId) {
 		// TODO Auto-generated method stub
@@ -647,6 +653,20 @@ public class JWLocalServiceImpl implements JWLocalService{
 		localResult.autoFill(courseInstance);
 		
 		return localResult;
+	}
+
+	@Override
+	public LocalResult<Boolean> giveGoodEvalToCourse(String studentId,
+			String remoteId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LocalResult<Boolean> giveBadEvalToCourse(String studentId,
+			String remoteId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
