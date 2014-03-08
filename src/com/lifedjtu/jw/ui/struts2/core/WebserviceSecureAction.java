@@ -1,12 +1,12 @@
 package com.lifedjtu.jw.ui.struts2.core;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.lifedjtu.jw.business.JWLocalService;
 import com.lifedjtu.jw.business.support.LocalResult;
 import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.User;
-import com.lifedjtu.jw.pojos.dto.CourseInstanceDto;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.ui.struts2.core.support.LifeDjtuAction;
@@ -327,6 +327,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	
 	
+	
 	/**
 	 * -----/webservice/secure/getCourseInstance.action
 	 */
@@ -347,7 +348,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		LocalResult<List<User>> localResult2 = jwLocalService.getSameClassUsers(studentId, remoteId);
 		LocalResult<List<User>> localResult3 = jwLocalService.getSameGradeUsers(studentId, remoteId);
 		
-		LocalResult<CourseInstanceDto> localResult4 = jwLocalService.getCourseInstanceDto(sessionId,remoteId);
+		LocalResult<CourseInstance> localResult4 = jwLocalService.getCourseInstance(sessionId,remoteId);
 		
 		sameCourseMembers = localResult1.getResult();
 		sameClassMembers = localResult2.getResult();
@@ -356,7 +357,9 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		goodEval = localResult4.getResult().getGoodEval();
 		badEval = localResult4.getResult().getBadEval();
 		
-		classes = localResult4.getResult().getClasses();
+		
+		
+		classes = Arrays.asList(localResult4.getResult().getClasses().split("\\|"));
 		courseMemberNum = localResult4.getResult().getCourseMemberNum();
 		
 		if(localResult1.getResultState()!=ResultState.SUCCESS.ordinal()||localResult2.getResultState()!=ResultState.SUCCESS.ordinal()||localResult3.getResultState()!=ResultState.SUCCESS.ordinal()||localResult4.getResultState()!=ResultState.SUCCESS.ordinal()){

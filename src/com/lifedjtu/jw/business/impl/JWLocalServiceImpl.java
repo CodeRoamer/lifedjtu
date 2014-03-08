@@ -37,18 +37,16 @@ import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.UserCourse;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
-import com.lifedjtu.jw.pojos.dto.CourseInstanceDto;
-import com.lifedjtu.jw.pojos.dto.CourseRecordDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 import com.lifedjtu.jw.util.Crypto;
-import com.lifedjtu.jw.util.MapMaker;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ExamStatus;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
 import com.lifedjtu.jw.util.LifeDjtuUtil;
+import com.lifedjtu.jw.util.MapMaker;
 
 @Component("jwLocalService")
 @Transactional
@@ -638,30 +636,15 @@ public class JWLocalServiceImpl implements JWLocalService{
 	}
 
 	@Override
-	public LocalResult<CourseInstanceDto> getCourseInstanceDto(String sessionId, String remoteId) {
+	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String remoteId) {
 		if(remoteId==null||remoteId.equals("")){
 			return null;
 		}
 		
 		CourseInstance courseInstance = courseInstanceDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)));
-		CourseRecordDto courseRecordDto = jwRemoteService.queryRemoteCourseRecord(sessionId, remoteId);
-		if(courseInstance==null||courseRecordDto==null){
-			return null;
-		}
 		
-		CourseInstanceDto courseInstanceDto = new CourseInstanceDto();
-		
-		courseInstanceDto.setBadEval(courseInstance.getBadEval());
-		courseInstanceDto.setCourseName(courseInstance.getCourseName());
-		courseInstanceDto.setCourseRemoteId(remoteId);
-		courseInstanceDto.setGoodEval(courseInstance.getGoodEval());
-		courseInstanceDto.setTeacherName(courseInstance.getTeacherName());
-		courseInstanceDto.setId(courseInstance.getId());
-		courseInstanceDto.setClasses(courseRecordDto.getClasses());
-		courseInstanceDto.setCourseMemberNum(courseRecordDto.getRealCapacity());
-		
-		LocalResult<CourseInstanceDto> localResult = new LocalResult<CourseInstanceDto>();
-		localResult.autoFill(courseInstanceDto);
+		LocalResult<CourseInstance> localResult = new LocalResult<CourseInstance>();
+		localResult.autoFill(courseInstance);
 		
 		return localResult;
 	}

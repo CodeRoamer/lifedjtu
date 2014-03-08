@@ -36,6 +36,9 @@ public class CourseInstance extends EntityObject{
 	
 	private int goodEval;
 	private int badEval;
+	//class1|class2|class3
+	private String classes;
+	private int courseMemberNum;
 	
 	@OneToMany(mappedBy="courseInstance", fetch=FetchType.LAZY)
 	private List<UserCourse> userCourses;
@@ -160,6 +163,22 @@ public class CourseInstance extends EntityObject{
 
 	public void setTeacherName(String teacherName) {
 		this.teacherName = teacherName;
+	}
+
+	public String getClasses() {
+		return classes;
+	}
+
+	public void setClasses(String classes) {
+		this.classes = classes;
+	}
+
+	public int getCourseMemberNum() {
+		return courseMemberNum;
+	}
+
+	public void setCourseMemberNum(int courseMemberNum) {
+		this.courseMemberNum = courseMemberNum;
 	}
 	
 }

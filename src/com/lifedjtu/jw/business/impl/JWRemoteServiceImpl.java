@@ -9,7 +9,10 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ServletContextAware;
 
 import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.config.LifeDjtuConfig;
@@ -38,7 +41,7 @@ import com.lifedjtu.jw.util.extractor.Extractor;
 import com.lifedjtu.jw.util.pattern.InfoProcessHub;
 
 @Component("jwRemoteService")
-public class JWRemoteServiceImpl implements JWRemoteService {
+public class JWRemoteServiceImpl implements JWRemoteService,ServletContextAware {
 
 	private final String loginURL = "202.199.128.21/academic/j_acegi_security_check";
 	private final String studentMessageURL = "http://202.199.128.21/academic/showHeader.do";
@@ -56,6 +59,14 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 
 	//查询单门课程教学记录
 	private final String queryCourseRecord = "http://jw.djtu.edu.cn/academic/teacher/teachingtask/recordStudentIndex.do?";
+	
+	
+	private ServletContext servletContext;
+	@Override
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+	}
+	
 	
 	@Override
 	public String signinRemote(String studentId, String password) {
@@ -410,7 +421,28 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 	
 	@Override
 	public String randomSessionId() {
-		return signinRemote(LifeDjtuConfig.getProperty("remote.studentId"), LifeDjtuConfig.getProperty("remote.password"));
+		
+		String globalSession = (String)servletContext.getAttribute("global_session");
+		Long globalSessionAge = (Long)servletContext.getAttribute("global_session_age");
+		
+		boolean refetchFlag = false;
+		
+		if(globalSession==null||globalSessionAge==null){
+			refetchFlag = true;
+		}else{
+			if(System.currentTimeMillis()-globalSessionAge>=LifeDjtuConfig.getIntegerProperty("djtu.sessionAge")){
+				refetchFlag = true;
+			}
+		}
+		
+		if(refetchFlag){
+			globalSession = signinRemote(LifeDjtuConfig.getProperty("remote.studentId"), LifeDjtuConfig.getProperty("remote.password"));
+			globalSessionAge = System.currentTimeMillis();
+			servletContext.setAttribute("global_session", globalSession);
+			servletContext.setAttribute("global_session_age", globalSessionAge);
+		}
+		
+		return globalSession;
 	}
 
 	@Override
@@ -559,6 +591,8 @@ public class JWRemoteServiceImpl implements JWRemoteService {
 		return courseRecordDto;
 				
 	}
+
+	
 
 }
 

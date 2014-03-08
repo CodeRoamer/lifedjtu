@@ -29,6 +29,7 @@ import com.lifedjtu.jw.pojos.SystemNotice;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.UserCourse;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
+import com.lifedjtu.jw.pojos.dto.CourseRecordDto;
 import com.lifedjtu.jw.pojos.dto.CourseTakenItem;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
@@ -54,6 +55,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	private JWRemoteService jwRemoteService;
 	@Autowired
 	private SystemNoticeDao systemNoticeDao;
+	
 	
 	/**
 	 * 此方法用来更新course表
@@ -115,7 +117,19 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			courseInstance.setCourse(course);
 		}
 		
-
+		//如果课程还没有合班信息，远程抓取下.
+		if(courseInstance.getClasses()==null||courseInstance.getClasses().equals("")){
+			CourseRecordDto temp = jwRemoteService.queryRemoteCourseRecord(jwRemoteService.randomSessionId(), courseInstance.getCourseRemoteId());
+			if(temp!=null){
+				StringBuilder builder = new StringBuilder();
+				for(String str : temp.getClasses()){
+					builder.append(str+"|");
+				}
+				String classes = builder.toString();
+				courseInstance.setClasses(classes.substring(0,classes.length()-1));
+				courseInstance.setCourseMemberNum(temp.getRealCapacity());
+			}
+		}
 		
 		StringBuilder takenBuilder = new StringBuilder();
 		List<CourseTakenItem> courseTakenItems = courseDto.getCourseTakenItems();
