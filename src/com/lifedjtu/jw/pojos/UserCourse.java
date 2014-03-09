@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+
 @Entity
 public class UserCourse extends EntityObject{
 	/**
@@ -27,7 +28,7 @@ public class UserCourse extends EntityObject{
 	private boolean scoreNoted;
 	private boolean examNoted;
 	
-	
+	private long timestamp;
 	
 	public boolean isScoreNoted() {
 		return scoreNoted;
@@ -89,5 +90,17 @@ public class UserCourse extends EntityObject{
 	}
 
 
-	public UserCourse() {}
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+
+	public UserCourse() {
+		timestamp = System.currentTimeMillis();
+	}
 }

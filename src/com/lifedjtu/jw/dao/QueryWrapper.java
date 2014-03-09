@@ -1,12 +1,15 @@
 package com.lifedjtu.jw.dao;
 
 
+import java.util.Map;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 
 @SuppressWarnings("rawtypes")
 public class QueryWrapper {
-	private DetachedCriteria criteria;
+private DetachedCriteria criteria;
+	
 	private QueryWrapper(Class cls){
 		criteria = DetachedCriteria.forClass(cls);
 	}
@@ -17,6 +20,13 @@ public class QueryWrapper {
 	
 	public QueryWrapper join(String mappedField, String alias){
 		criteria.createAlias(mappedField, alias);
+		return this;
+	}
+	
+	public QueryWrapper join(Map<String, String> propPair){
+		for(Map.Entry<String, String> entry:propPair.entrySet()){
+			join(entry.getKey(), entry.getValue());
+		}
 		return this;
 	}
 	

@@ -41,9 +41,13 @@ public interface JWLocalService {
 	
 	public LocalResult<Boolean> safeUpdateRoomTakenInfo();
 	
-	public LocalResult<List<User>> getSameCourseUsers(String remoteId); //指的是抓取此课中，全部上此门课程的人
-	public LocalResult<List<User>> getSameClassUsers(String studentId,String remoteId); //指的是抓取此课中，同班上此门课程的人
-	public LocalResult<List<User>> getSameGradeUsers(String studentId,String remoteId); //指的是抓取此门课中，同年级的上此门课的人
+	public LocalResult<List<User>> getSameCourseUsers(String remoteId, int pageNum, int pageSize); //指的是抓取此课中，全部上此门课程的人
+	public LocalResult<List<User>> getSameClassUsers(String studentId,String remoteId, int pageNum, int pageSize); //指的是抓取此课中，同班上此门课程的人
+	public LocalResult<List<User>> getSameGradeUsers(String studentId,String remoteId, int pageNum, int pageSize); //指的是抓取此门课中，同年级的上此门课的人
+	public LocalResult<Integer> getSameCourseUserNum(String remoteId);//指的是抓取此课中，全部上此门课程的人
+	public LocalResult<Integer> getSameClassUserNum(String studentId,String remoteId); //指的是抓取此课中，同班上此门课程的人
+	public LocalResult<Integer> getSameGradeUserNum(String studentId,String remoteId); //指的是抓取此门课中，同年级的上此门课的人
+
 	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String remoteId);//根据remoteId，获取此门课程的全部信息
 	
 	public LocalResult<Boolean> giveGoodEvalToCourse(String studentId, String remoteId);

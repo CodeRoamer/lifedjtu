@@ -132,10 +132,25 @@
 		</action>
 		
 		<action name="getCourseInstance" method="getCourseInstance" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
-			<result name="success" type="jsonResult">flag,courseMemberNum,classes,goodEval,badEval,sameCourseMembers,sameClassMembers,sameGradeMembers</result>
+			<result name="success" type="jsonResult">flag,courseMemberNum,classes,goodEval,badEval,sameCourseMemberNum,sameClassMemberNum,sameGradeMemberNum</result>
 		</action>
 		
-		 
+		 <action name="getSameClassMembers" method="getSameClassMembers" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,memberList</result>
+		</action>
+		<action name="getSameCourseMembers" method="getSameCourseMembers" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,memberList</result>
+		</action>
+		<action name="getSameGradeMembers" method="getSameGradeMembers" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,memberList</result>
+		</action>
+		
+		<action name="giveGoodEval" method="giveGoodEval" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag</result>
+		</action>
+		<action name="giveBadEval" method="giveBadEval" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag</result>
+		</action>
 	</package>
 	
 	

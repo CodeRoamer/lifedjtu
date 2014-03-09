@@ -22,6 +22,7 @@ import com.lifedjtu.jw.dao.Pageable;
 import com.lifedjtu.jw.dao.ProjectionWrapper;
 import com.lifedjtu.jw.dao.Sortable;
 import com.lifedjtu.jw.dao.Tuple;
+import com.lifedjtu.jw.dao.UpdateWrapper;
 import com.lifedjtu.jw.dao.impl.AreaDao;
 import com.lifedjtu.jw.dao.impl.BuildingDao;
 import com.lifedjtu.jw.dao.impl.CourseInstanceDao;
@@ -546,10 +547,12 @@ public class JWLocalServiceImpl implements JWLocalService{
 	 * 不分年级，修读这门课的人，全部给出，主要用来应对：重修人士，培养计划改革，以及旧的未删数据
 	 */
 	@Override
-	public LocalResult<List<User>> getSameCourseUsers(String remoteId) {
+	public LocalResult<List<User>> getSameCourseUsers(String remoteId, int pageNum, int pageSize) {
 		Tuple courseInstance = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("courseAlias","id"));
 				
-		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
+		//List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
+		List<UserCourse> userCourses = userCourseDao.findByJoinedParamsInPageInOrder(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
+		
 		List<User> users = new ArrayList<User>();
 		for(UserCourse userCourse:userCourses){
 			User user = new User();
@@ -579,9 +582,10 @@ public class JWLocalServiceImpl implements JWLocalService{
 	 * 什么叫sameClass，就是说，在同一个班修读这一门课~
 	 */
 	@Override
-	public LocalResult<List<User>> getSameClassUsers(String studentId,String remoteId) {
+	public LocalResult<List<User>> getSameClassUsers(String studentId,String remoteId, int pageNum, int pageSize) {
 		
-		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseRemoteId", remoteId)));
+		//List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseRemoteId", remoteId)));
+		List<UserCourse> userCourses = userCourseDao.findByJoinedParamsInPageInOrder(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseRemoteId", remoteId)),Pageable.inPage(pageNum, pageSize),Sortable.instance("timestamp", Sortable.ASCEND));
 		List<User> users = new ArrayList<User>();
 		for(UserCourse userCourse:userCourses){
 			User user = new User();
@@ -611,11 +615,13 @@ public class JWLocalServiceImpl implements JWLocalService{
 	 * 同年级的~~修读同一门课，在不同的教学班
 	 */
 	@Override
-	public LocalResult<List<User>> getSameGradeUsers(String studentId,String remoteId) {
+	public LocalResult<List<User>> getSameGradeUsers(String studentId,String remoteId, int pageNum, int pageSize) {
 		Tuple courseInstance = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("courseAlias","id"));
 		Tuple curUser = userDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)),ProjectionWrapper.instance().fields("grade","id"));
 		
-		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").param("user", "user").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("user.grade", curUser.get(0)),Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
+		//List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").param("user", "user").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("user.grade", curUser.get(0)),Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
+		List<UserCourse> userCourses = userCourseDao.findByJoinedParamsInPageInOrder(MapMaker.instance("courseInstance", "courseInstance").param("user", "user").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("user.grade", curUser.get(0)),Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))),Pageable.inPage(pageNum, pageSize),Sortable.instance("timestamp", Sortable.ASCEND));
+
 		List<User> users = new ArrayList<User>();
 		for(UserCourse userCourse:userCourses){
 			User user = new User();
@@ -658,15 +664,67 @@ public class JWLocalServiceImpl implements JWLocalService{
 	@Override
 	public LocalResult<Boolean> giveGoodEvalToCourse(String studentId,
 			String remoteId) {
-		// TODO Auto-generated method stub
-		return null;
+		int result = courseInstanceDao.updateMultiByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), UpdateWrapper.instance().inc("'goodEval'", 1));
+	
+		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		
+		if(result>0){
+			localResult.autoFill(true);
+		}else{
+			localResult.autoFill(false);
+		}
+		
+		return localResult;
 	}
 
 	@Override
 	public LocalResult<Boolean> giveBadEvalToCourse(String studentId,
 			String remoteId) {
-		// TODO Auto-generated method stub
-		return null;
+		int result = courseInstanceDao.updateMultiByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), UpdateWrapper.instance().inc("'badEval'", 1));
+		
+		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		
+		if(result>0){
+			localResult.autoFill(true);
+		}else{
+			localResult.autoFill(false);
+		}
+		
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<Integer> getSameCourseUserNum(String remoteId) {
+		Tuple courseInstance = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("courseAlias","id"));
+		
+		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
+	
+		LocalResult<Integer> localResult = new LocalResult<Integer>();
+		localResult.autoFill(userCourses.size());
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<Integer> getSameClassUserNum(String studentId,
+			String remoteId) {
+		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseRemoteId", remoteId)));
+		
+		LocalResult<Integer> localResult = new LocalResult<Integer>();
+		localResult.autoFill(userCourses.size());
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<Integer> getSameGradeUserNum(String studentId,
+			String remoteId) {
+		Tuple courseInstance = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("courseAlias","id"));
+		Tuple curUser = userDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)),ProjectionWrapper.instance().fields("grade","id"));
+		
+		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").param("user", "user").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("user.grade", curUser.get(0)),Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
+		
+		LocalResult<Integer> localResult = new LocalResult<Integer>();
+		localResult.autoFill(userCourses.size());
+		return localResult;
 	}
 
 	

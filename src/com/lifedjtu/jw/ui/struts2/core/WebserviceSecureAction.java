@@ -38,7 +38,14 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		this.courseMemberNum = courseMemberNum;
 	}
 
-	
+
+	public List<User> getMemberList() {
+		return memberList;
+	}
+
+	public void setMemberList(List<User> memberList) {
+		this.memberList = memberList;
+	}
 
 	public List<String> getClasses() {
 		return classes;
@@ -64,30 +71,41 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		this.badEval = badEval;
 	}
 
-	public List<User> getSameCourseMembers() {
-		return sameCourseMembers;
+	
+	
+	public int getSameCourseMemberNum() {
+		return sameCourseMemberNum;
 	}
 
-	public void setSameCourseMembers(List<User> sameCourseMembers) {
-		this.sameCourseMembers = sameCourseMembers;
+	public void setSameCourseMemberNum(int sameCourseMemberNum) {
+		this.sameCourseMemberNum = sameCourseMemberNum;
 	}
 
-	public List<User> getSameClassMembers() {
-		return sameClassMembers;
+	public int getSameClassMemberNum() {
+		return sameClassMemberNum;
 	}
 
-	public void setSameClassMembers(List<User> sameClassMembers) {
-		this.sameClassMembers = sameClassMembers;
+	public void setSameClassMemberNum(int sameClassMemberNum) {
+		this.sameClassMemberNum = sameClassMemberNum;
 	}
 
-	public List<User> getSameGradeMembers() {
-		return sameGradeMembers;
+	public int getSameGradeMemberNum() {
+		return sameGradeMemberNum;
 	}
 
-	public void setSameGradeMembers(List<User> sameGradeMembers) {
-		this.sameGradeMembers = sameGradeMembers;
+	public void setSameGradeMemberNum(int sameGradeMemberNum) {
+		this.sameGradeMemberNum = sameGradeMemberNum;
 	}
 
+	public int getPageNum() {
+		return pageNum;
+	}
+
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+
+	
 	public int getSchoolYear() {
 		return schoolYear;
 	}
@@ -338,21 +356,21 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	private List<String> classes;
 	private int goodEval;
 	private int badEval;
-	private List<User> sameCourseMembers;
-	private List<User> sameClassMembers;
-	private List<User> sameGradeMembers;
+	private int sameCourseMemberNum;
+	private int sameClassMemberNum;
+	private int sameGradeMemberNum;
 	
 	//private List<Memo> memos;
 	public String getCourseInstance(){
-		LocalResult<List<User>> localResult1 = jwLocalService.getSameCourseUsers(remoteId);
-		LocalResult<List<User>> localResult2 = jwLocalService.getSameClassUsers(studentId, remoteId);
-		LocalResult<List<User>> localResult3 = jwLocalService.getSameGradeUsers(studentId, remoteId);
+		LocalResult<Integer> localResult1 = jwLocalService.getSameCourseUserNum(remoteId);
+		LocalResult<Integer> localResult2 = jwLocalService.getSameClassUserNum(studentId, remoteId);
+		LocalResult<Integer> localResult3 = jwLocalService.getSameGradeUserNum(studentId, remoteId);
 		
 		LocalResult<CourseInstance> localResult4 = jwLocalService.getCourseInstance(sessionId,remoteId);
 		
-		sameCourseMembers = localResult1.getResult();
-		sameClassMembers = localResult2.getResult();
-		sameGradeMembers = localResult3.getResult();
+		sameCourseMemberNum = localResult1.getResult();
+		sameClassMemberNum = localResult2.getResult();
+		sameGradeMemberNum = localResult3.getResult();
 		
 		goodEval = localResult4.getResult().getGoodEval();
 		badEval = localResult4.getResult().getBadEval();
@@ -371,4 +389,90 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		return SUCCESS;
 	}
 	
+	/**
+	 * -----/webservice/secure/getSameClassMembers.action
+	 */
+	//in
+	//private String remoteId;
+	private int pageNum = 0;
+	//out
+	//private List<User> memberList;
+	
+	public String getSameClassMembers(){
+		LocalResult<List<User>> localResult = jwLocalService.getSameClassUsers(studentId, remoteId, pageNum, 10);
+		
+		memberList = localResult.getResult();
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/secure/getSameCourseMembers.action
+	 */
+	//in
+	//private String remoteId;
+	//private int pageNum = 0;
+	//out
+	//private List<User> memberList;
+	
+	public String getSameCourseMembers(){
+		LocalResult<List<User>> localResult = jwLocalService.getSameCourseUsers(remoteId, pageNum, 10);
+		
+		memberList = localResult.getResult();
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/secure/getSameGradeMembers.action
+	 */
+	//in
+	//private String remoteId;
+	//private int pageNum = 0;
+	//out
+	private List<User> memberList;
+	
+	public String getSameGradeMembers(){
+		LocalResult<List<User>> localResult = jwLocalService.getSameGradeUsers(studentId,remoteId, pageNum, 10);
+		
+		memberList = localResult.getResult();
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/secure/giveGoodEval.action
+	 */
+	//in
+	//private String remoteId;
+	//out
+	
+	public String giveGoodEval(){
+		LocalResult<Boolean> localResult = jwLocalService.giveGoodEvalToCourse(studentId, remoteId);
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/secure/giveBadEval.action
+	 */
+	//in
+	//private String remoteId;
+	//out
+	
+	public String giveBadEval(){
+		LocalResult<Boolean> localResult = jwLocalService.giveBadEvalToCourse(studentId, remoteId);
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
 }

@@ -28,8 +28,8 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	
 	private Class<T> cls;
 	protected HibernateTemplate hibernateTemplate;
-	//请务必使用getSession()来获取Session
-	//private Session session;
+	
+	
 	/**
 	 * Default constructor. 构造函数不传参，但是很重要，为继承的子类抽出泛型的Class对象，以便于 传给DAO方法
 	 */
@@ -52,21 +52,16 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	
 	
 	
-	//OK!!!
+	
 	@Override
 	public void add(T paramT) {
-		hibernateTemplate.save(paramT);
+		hibernateTemplate.persist(paramT);
 	}
 
 	@Override
 	public void addMulti(Collection<T> paramTs) {
-		hibernateTemplate.saveOrUpdateAll(paramTs);
-	}
-
-	@Override
-	public void addMultiOneByOne(Collection<T> paramTs) {
-		for(T paraT : paramTs){
-			hibernateTemplate.save(paraT);
+		for(T paramT : paramTs){
+			add(paramT);
 		}
 	}
 
@@ -74,15 +69,23 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	public void update(T paramT) {
 		hibernateTemplate.update(paramT);
 	}
-
+	
 	@Override
-	public int updateFirstByParams(CriteriaWrapper criteriaWrapper,
-			UpdateWrapper UpdateWrapper) {
-		return 0;
+	public void upsert(T paramT) {
+		hibernateTemplate.saveOrUpdate(paramT);
 	}
 
+
+
 	@Override
-	public int updateFirstByParams(String id, UpdateWrapper UpdateWrapper) {
+	public void upsertMulti(Collection<T> paramTs) {
+		hibernateTemplate.saveOrUpdateAll(paramTs);
+	}
+
+	//-----------------------------update 不稳定部分 --------------------------------
+	
+	@Override
+	public int updateFirstById(String id, UpdateWrapper UpdateWrapper) {
 		CriteriaWrapper criteriaWrapper = CriteriaWrapper.instance().and(Restrictions.eq("id", id));
 		return wrapBatchUpdate(criteriaWrapper, UpdateWrapper);
 	}
@@ -94,17 +97,29 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 	}
 
+	@Override
+	public int updateMultiByIds(Collection<String> ids,
+			UpdateWrapper UpdateWrapper) {
+		CriteriaWrapper criteriaWrapper = CriteriaWrapper.instance().and(Restrictions.in("id", ids));
+		return wrapBatchUpdate(criteriaWrapper, UpdateWrapper);
+	}
+	
 
+	//-----------------------------update 不稳定部分结束 --------------------------------
+
+	
 	@Override
 	public void delete(T paramT) {
 		hibernateTemplate.delete(paramT);
 	}
 
-	//OK!!!
+	//-----------------------------delete 不稳定部分 --------------------------------
 	@Override
 	public void deleteByParams(CriteriaWrapper criteriaWrapper) {
 		getSession().createQuery("delete from "+cls.getSimpleName()+" where "+criteriaWrapper.getCriteria().toString()).executeUpdate();
 	}
+	//-----------------------------delete 不稳定部分结束 --------------------------------
+	
 
 	@Override
 	public T findOneById(String id) {
@@ -225,7 +240,7 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public List<T> findMultiByIds(String... ids) {
+	public List<T> findByIds(String... ids) {
 		return wrapQueryList(CriteriaWrapper.instance().and(Restrictions.in("id", ids)), null, null, null);
 	}
 
@@ -233,7 +248,7 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 
 	@Override
-	public List<T> findMultiByIdsInOrder(Sortable sortable, String... ids) {
+	public List<T> findByIdsInOrder(Sortable sortable, String... ids) {
 		return wrapQueryList(CriteriaWrapper.instance().and(Restrictions.in("id", ids)), null, sortable, null);
 	}
 
@@ -335,32 +350,96 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 	@Override
 	public List<T> findByJoinedParams(Map<String, String> propPair, CriteriaWrapper criteriaWrapper) {
-		QueryWrapper queryWrapper = QueryWrapper.from(cls);
-		for(Map.Entry<String, String> entry:propPair.entrySet()){
-			queryWrapper.join(entry.getKey(), entry.getValue());
-		}
-		queryWrapper.addCriteria(criteriaWrapper);
-		return hibernateTemplate.findByCriteria(queryWrapper.getCriteria());
+		return wrapJoinedQueryList(propPair, criteriaWrapper, null, null, null);
 	}
 
 	@Override
 	public T findOneByJoinedParams(Map<String, String> propPair, CriteriaWrapper criteriaWrapper) {
-		QueryWrapper queryWrapper = QueryWrapper.from(cls);
-		for(Map.Entry<String, String> entry:propPair.entrySet()){
-			queryWrapper.join(entry.getKey(), entry.getValue());
-		}
-		queryWrapper.addCriteria(criteriaWrapper);
-		List<T> list = hibernateTemplate.findByCriteria(queryWrapper.getCriteria(),0,1);
-		if(list==null||list.size()==0){
-			return null;
-		}else{
-			return list.get(0);
-		}
+		return wrapJoinedQueryOne(propPair, criteriaWrapper, null, null);
 	}
+	
+
+	@Override
+	public List<T> findByJoinedParamsInPage(Map<String, String> propPair,
+			CriteriaWrapper criteriaWrapper, Pageable pageable) {
+		return wrapJoinedQueryList(propPair, criteriaWrapper, null, null, pageable);
+	}
+
+
+
+	@Override
+	public List<T> findByJoinedParamsInOrder(Map<String, String> propPair,
+			CriteriaWrapper criteriaWrapper, Sortable sortable) {
+		return wrapJoinedQueryList(propPair, criteriaWrapper, null, sortable, null);
+	}
+
+
+
+	@Override
+	public List<T> findByJoinedParamsInPageInOrder(
+			Map<String, String> propPair, CriteriaWrapper criteriaWrapper,
+			Pageable pageable, Sortable sortable) {
+		return wrapJoinedQueryList(propPair, criteriaWrapper, null, sortable, pageable);
+	}
+
+
+
+	@Override
+	public List<Tuple> findProjectedByJoinedParams(
+			Map<String, String> propPair, CriteriaWrapper criteriaWrapper,
+			ProjectionWrapper projectionWrapper) {
+		return wrapTuple(wrapJoinedQueryList(propPair, criteriaWrapper, projectionWrapper, null, null));
+	}
+
+
+
+	@Override
+	public List<Tuple> findProjectedByJoinedParamsInPage(
+			Map<String, String> propPair, CriteriaWrapper criteriaWrapper,
+			ProjectionWrapper projectionWrapper, Pageable pageable) {
+		return wrapTuple(wrapJoinedQueryList(propPair, criteriaWrapper, projectionWrapper, null, pageable));
+	}
+
+
+
+	@Override
+	public List<Tuple> findProjectedByJoinedParamsInOrder(
+			Map<String, String> propPair, CriteriaWrapper criteriaWrapper,
+			ProjectionWrapper projectionWrapper, Sortable sortable) {
+		return wrapTuple(wrapJoinedQueryList(propPair, criteriaWrapper, projectionWrapper, sortable, null));
+
+	}
+
+
+
+	@Override
+	public List<Tuple> findProjectedByJoinedParamsInPageInOrder(
+			Map<String, String> propPair, CriteriaWrapper criteriaWrapper,
+			ProjectionWrapper projectionWrapper, Pageable pageable,
+			Sortable sortable) {
+		return wrapTuple(wrapJoinedQueryList(propPair, criteriaWrapper, projectionWrapper, sortable, pageable));
+	}
+
+
+	@Override
+	public Tuple findOneProjectedByJoinedParams(Map<String, String> propPair,
+			CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper) {
+		return wrapJoinedQueryProjectedOne(propPair, criteriaWrapper, projectionWrapper, null);
+	}
+
+
+	@Override
+	public Tuple findOneProjectedByJoinedParamsInOrder(
+			Map<String, String> propPair, CriteriaWrapper criteriaWrapper,
+			ProjectionWrapper projectionWrapper, Sortable sortable) {
+		return wrapJoinedQueryProjectedOne(propPair, criteriaWrapper, projectionWrapper, sortable);
+	}
+	
 	@Override
 	public List findByNamedQuery(String queryName, ParamMapper paramMapper) {
 		return hibernateTemplate.findByNamedQueryAndNamedParam(queryName, paramMapper.getKeyArray(), paramMapper.getValueArray());
 	}
+	
 	@Override
 	public Class<T> getParameterizedClass() {
 		return cls;
@@ -372,11 +451,25 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 		return 0;
 	}
 
+	@Override
+	public long getCountByParam(CriteriaWrapper criteriaWrapper) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
+   
 	private int wrapBatchUpdate(CriteriaWrapper criteriaWrapper, UpdateWrapper updateWrapper){
 		return getSession().createQuery(updateWrapper.getUpdate(cls, criteriaWrapper)).executeUpdate();
 	}
 	
+	/**
+	 * 利用QueryWrapper生成可以被spring的hibernateTemplate所利用的DetachedCriteria对象
+	 * @param criteriaWrapper
+	 * @param projectionWrapper
+	 * @param sortable
+	 * @param pageable
+	 * @return 查询结合List
+	 */
 	private List wrapQueryList(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable, Pageable pageable){
 		DetachedCriteria detachedCriteria = QueryWrapper.from(cls).addCriteria(criteriaWrapper).addProjection(projectionWrapper).addOrder(sortable).getCriteria();
 		if(pageable==null){
@@ -412,6 +505,33 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 		}
 	}
 
+	private List wrapJoinedQueryList(Map<String, String> propPair, CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable, Pageable pageable){
+		DetachedCriteria detachedCriteria = QueryWrapper.from(cls).join(propPair).addCriteria(criteriaWrapper).addProjection(projectionWrapper).addOrder(sortable).getCriteria();
+		if(pageable==null){
+			return hibernateTemplate.findByCriteria(detachedCriteria); 
+		}else{
+			return hibernateTemplate.findByCriteria(detachedCriteria, pageable.getOffset(), pageable.getPageSize());
+		}
+	} 
+	
+	private T wrapJoinedQueryOne(Map<String, String> propPair, CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable){
+		List<T> list =  wrapJoinedQueryList(propPair, criteriaWrapper, projectionWrapper, sortable, Pageable.inPage(0,1));
+		if(list!=null&&list.size()!=0){
+			return list.get(0);
+		}else{
+			return null;
+		}
+	} 
+
+	private Tuple wrapJoinedQueryProjectedOne(Map<String, String> propPair, CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable){
+		List list =  wrapJoinedQueryList(propPair, criteriaWrapper, projectionWrapper, sortable, Pageable.inPage(0,1));
+		if(list!=null&&list.size()!=0){
+			return new Tuple((Object[])list.get(0));
+		}else{
+			return null;
+		}
+	}
+	
 	public HibernateTemplate getHibernateTemplate() {
 		return hibernateTemplate;
 	}
@@ -424,10 +544,6 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	public Session getSession() {
 		return hibernateTemplate.getSessionFactory().getCurrentSession();
 	}
-
-
-
-
 
 
 	
