@@ -18,16 +18,30 @@ import com.lifedjtu.jw.business.task.JWUpdateCacheScheduler;
 import com.lifedjtu.jw.dao.CriteriaWrapper;
 import com.lifedjtu.jw.dao.impl.AreaDao;
 import com.lifedjtu.jw.dao.impl.BuildingDao;
+import com.lifedjtu.jw.dao.impl.CourseDao;
+import com.lifedjtu.jw.dao.impl.CourseInstanceDao;
+import com.lifedjtu.jw.dao.impl.IMGroupDao;
+import com.lifedjtu.jw.dao.impl.IMGroupUserDao;
+import com.lifedjtu.jw.dao.impl.InstantMessageDao;
 import com.lifedjtu.jw.dao.impl.RoomDao;
 import com.lifedjtu.jw.dao.impl.RoomTakenItemDao;
+import com.lifedjtu.jw.dao.impl.UserCourseDao;
 import com.lifedjtu.jw.dao.support.UUIDGenerator;
 import com.lifedjtu.jw.pojos.Area;
 import com.lifedjtu.jw.pojos.Building;
+import com.lifedjtu.jw.pojos.Course;
+import com.lifedjtu.jw.pojos.CourseInstance;
+import com.lifedjtu.jw.pojos.IMGroup;
+import com.lifedjtu.jw.pojos.IMGroupUser;
 import com.lifedjtu.jw.pojos.Room;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
+import com.lifedjtu.jw.pojos.User;
+import com.lifedjtu.jw.pojos.UserCourse;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.RoomInfoDto;
+import com.lifedjtu.jw.util.LifeDjtuEnum.GroupFlag;
+import com.lifedjtu.jw.util.MapMaker;
 
 @Component("jwUpdateCacheScheduler")
 @Transactional
@@ -44,6 +58,18 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 	private JWRemoteService jwRemoteService;
 	@Autowired
 	private JWLocalService jwLocalService;
+	@Autowired
+	private CourseDao courseDao;
+	@Autowired
+	private CourseInstanceDao courseInstanceDao;
+	@Autowired
+	private IMGroupDao imGroupDao;
+	@Autowired
+	private IMGroupUserDao imGroupUserDao;
+	@Autowired
+	private InstantMessageDao instantMessageDao;
+	@Autowired
+	private UserCourseDao userCourseDao;
 	
 	@Override
 	public boolean updateBuildingEntryInfo(String sessionId, String areaId) {
@@ -190,6 +216,42 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 
 	
 	
+	public UserCourseDao getUserCourseDao() {
+		return userCourseDao;
+	}
+	public void setUserCourseDao(UserCourseDao userCourseDao) {
+		this.userCourseDao = userCourseDao;
+	}
+	public CourseDao getCourseDao() {
+		return courseDao;
+	}
+	public void setCourseDao(CourseDao courseDao) {
+		this.courseDao = courseDao;
+	}
+	public CourseInstanceDao getCourseInstanceDao() {
+		return courseInstanceDao;
+	}
+	public void setCourseInstanceDao(CourseInstanceDao courseInstanceDao) {
+		this.courseInstanceDao = courseInstanceDao;
+	}
+	public IMGroupDao getImGroupDao() {
+		return imGroupDao;
+	}
+	public void setImGroupDao(IMGroupDao imGroupDao) {
+		this.imGroupDao = imGroupDao;
+	}
+	public IMGroupUserDao getImGroupUserDao() {
+		return imGroupUserDao;
+	}
+	public void setImGroupUserDao(IMGroupUserDao imGroupUserDao) {
+		this.imGroupUserDao = imGroupUserDao;
+	}
+	public InstantMessageDao getInstantMessageDao() {
+		return instantMessageDao;
+	}
+	public void setInstantMessageDao(InstantMessageDao instantMessageDao) {
+		this.instantMessageDao = instantMessageDao;
+	}
 	public AreaDao getAreaDao() {
 		return areaDao;
 	}
@@ -268,6 +330,100 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 		updateRoomInfo(sessionId);
 		updateRoomTakenItem(sessionId);
 		System.err.println("Daily updated info complete!!");
+	}
+	
+	
+	
+	
+	@Override
+	public boolean updateSameCourseGroupInfo() {
+		List<Course> courses = courseDao.findAll();
+		for(Course course: courses){
+			//System.err.println("add Course:"+course.getCourseAlias());
+			IMGroup imGroup = imGroupDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("course.id", course.getId())));
+			if(imGroup==null){
+				imGroup = new IMGroup();
+				imGroup.setGroupFlag(GroupFlag.SAME_COURSE.ordinal());
+				imGroup.setCourse(course);
+				imGroup.setId(UUIDGenerator.randomUUID());
+				imGroupDao.add(imGroup);
+			}
+			
+			List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.course.id", course.getId())));
+			//System.err.println("find student learn this course:"+userCourses.size());
+			for(UserCourse userCourse : userCourses){
+				User temp = userCourse.getUser();
+				
+				IMGroupUser imGroupUser = imGroupUserDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", imGroup.getId()),Restrictions.eq("user.id", temp.getId())));
+				if(imGroupUser==null){
+					imGroupUser = new IMGroupUser();
+					imGroupUser.setId(UUIDGenerator.randomUUID());
+					imGroupUser.setImGroup(imGroup);
+					imGroupUser.setStudentId(temp.getStudentId());
+					imGroupUser.setUser(temp);
+					imGroupUserDao.add(imGroupUser);
+				}
+			}
+			
+			String courseId = course.getId();
+			
+			updateSameClassGroupInfoByCourse(courseId);
+		}
+		
+		return true;
+	}
+	@Override
+	public boolean updateSameClassGroupInfoByCourse(String courseId) {
+		List<CourseInstance> courseInstances = courseInstanceDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("course.id", courseId)));
+		for(CourseInstance courseInstance: courseInstances){
+			//System.err.println("\tadd CourseInstance:"+courseInstance.getCourseRemoteId());
+
+			IMGroup imGroup = imGroupDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.id", courseInstance.getId())));
+			if(imGroup==null){
+				imGroup = new IMGroup();
+				imGroup.setGroupFlag(GroupFlag.SAME_CLASS.ordinal());
+				imGroup.setCourseInstance(courseInstance);
+				imGroup.setId(UUIDGenerator.randomUUID());
+				imGroupDao.add(imGroup);
+			}
+			
+			List<UserCourse> userCourses = userCourseDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.id", courseInstance.getId())));
+			//System.err.println("find student learn this courseInstance:"+userCourses.size());
+			for(UserCourse userCourse : userCourses){
+				User temp = userCourse.getUser();
+				
+				IMGroupUser imGroupUser = imGroupUserDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", imGroup.getId()),Restrictions.eq("user.id", temp.getId())));
+				if(imGroupUser==null){
+					imGroupUser = new IMGroupUser();
+					imGroupUser.setId(UUIDGenerator.randomUUID());
+					imGroupUser.setImGroup(imGroup);
+					imGroupUser.setStudentId(temp.getStudentId());
+					imGroupUser.setUser(temp);
+					imGroupUserDao.add(imGroupUser);
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	
+	@Override
+	public boolean cleanupInstantMessage() {
+		instantMessageDao.deleteByParams(CriteriaWrapper.instance().and(Restrictions.eq("'readFlag'", 1)));
+		return true;
+	}
+	
+	//@Scheduled(fixedDelay=120000)
+	@Scheduled(cron="0 0 2 * * ?")
+	@Override
+	public void updateIMSystem() {
+		try{
+			updateSameCourseGroupInfo();
+			cleanupInstantMessage();
+		}catch(Exception exception){
+			exception.printStackTrace();
+		}
 	}
 	
 }

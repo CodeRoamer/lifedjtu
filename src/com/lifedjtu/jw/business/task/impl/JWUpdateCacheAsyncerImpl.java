@@ -18,6 +18,8 @@ import com.lifedjtu.jw.dao.impl.CourseDao;
 import com.lifedjtu.jw.dao.impl.CourseInstanceDao;
 import com.lifedjtu.jw.dao.impl.ExamDao;
 import com.lifedjtu.jw.dao.impl.ExamInstanceDao;
+import com.lifedjtu.jw.dao.impl.IMGroupDao;
+import com.lifedjtu.jw.dao.impl.IMGroupUserDao;
 import com.lifedjtu.jw.dao.impl.SystemNoticeDao;
 import com.lifedjtu.jw.dao.impl.UserCourseDao;
 import com.lifedjtu.jw.dao.support.UUIDGenerator;
@@ -25,6 +27,8 @@ import com.lifedjtu.jw.pojos.Course;
 import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.Exam;
 import com.lifedjtu.jw.pojos.ExamInstance;
+import com.lifedjtu.jw.pojos.IMGroup;
+import com.lifedjtu.jw.pojos.IMGroupUser;
 import com.lifedjtu.jw.pojos.SystemNotice;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.UserCourse;
@@ -36,6 +40,7 @@ import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.ExamTimeEntry;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.util.MapMaker;
+import com.lifedjtu.jw.util.LifeDjtuEnum.GroupFlag;
 import com.lifedjtu.jw.util.pattern.InfoProcessHub;
 
 @Component("jwUpdateCacheAsyncer")
@@ -55,7 +60,10 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	private JWRemoteService jwRemoteService;
 	@Autowired
 	private SystemNoticeDao systemNoticeDao;
-	
+	@Autowired
+	private IMGroupDao imGroupDao;
+	@Autowired
+	private IMGroupUserDao imGroupUserDao;
 	
 	/**
 	 * 此方法用来更新course表
@@ -66,6 +74,8 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 		List<Course> courses = new ArrayList<Course>();
 		List<CourseInstance> courseInstances = new ArrayList<CourseInstance>();
 		List<UserCourse> userCourses = new ArrayList<UserCourse>();
+		List<IMGroup> imGroups = new ArrayList<IMGroup>();
+		List<IMGroupUser> imGroupUsers = new ArrayList<IMGroupUser>();
 		for(CourseDto courseDto : courseDtos){
 			//System.out.println("Course Info:\n"+courseDto.toJSON());
 			Course course = courseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseAlias", courseDto.getAliasName()),Restrictions.eq("courseName", courseDto.getCourseName())));
@@ -78,8 +88,30 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 				course.setCourseProperty(courseDto.getCourseAttr());
 				courses.add(course);
 			}
+			//添加Course group
+			IMGroup imGroup_course = imGroupDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("course.id", course.getId())));
+			if(imGroup_course==null){
+				imGroup_course = new IMGroup();
+				imGroup_course.setGroupFlag(GroupFlag.SAME_COURSE.ordinal());
+				imGroup_course.setCourse(course);
+				imGroup_course.setId(UUIDGenerator.randomUUID());
+				imGroups.add(imGroup_course);
+			}
+			
 			CourseInstance courseInstance = updateCourseInstanceInfo(course, courseDto, djtuDate.getSchoolYear(), djtuDate.getTerm());
 			courseInstances.add(courseInstance);
+			
+			//添加class group
+			IMGroup imGroup_class = imGroupDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.id", courseInstance.getId())));
+			if(imGroup_class==null){
+				imGroup_class = new IMGroup();
+				imGroup_class.setGroupFlag(GroupFlag.SAME_CLASS.ordinal());
+				imGroup_class.setCourseInstance(courseInstance);
+				imGroup_class.setId(UUIDGenerator.randomUUID());
+				imGroups.add(imGroup_class);
+			}
+			
+			
 			UserCourse userCourse = userCourseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId),Restrictions.eq("courseInstance.id", courseInstance.getId())));
 			if(userCourse==null){
 				userCourse = new UserCourse();
@@ -89,12 +121,35 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 				userCourses.add(userCourse);
 			}
 			
+			IMGroupUser imGroupUser_Course = imGroupUserDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", imGroup_course.getId()),Restrictions.eq("user.id", userCourse.getUser().getId())));
+			if(imGroupUser_Course==null){
+				imGroupUser_Course = new IMGroupUser();
+				imGroupUser_Course.setId(UUIDGenerator.randomUUID());
+				imGroupUser_Course.setImGroup(imGroup_course);
+				imGroupUser_Course.setStudentId(userCourse.getUser().getStudentId());
+				imGroupUser_Course.setUser(userCourse.getUser());
+				imGroupUsers.add(imGroupUser_Course);
+			}
+			
+			IMGroupUser imGroupUser_class = imGroupUserDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", imGroup_class.getId()),Restrictions.eq("user.id", userCourse.getUser().getId())));
+			if(imGroupUser_class==null){
+				imGroupUser_class = new IMGroupUser();
+				imGroupUser_class.setId(UUIDGenerator.randomUUID());
+				imGroupUser_class.setImGroup(imGroup_class);
+				imGroupUser_class.setStudentId(userCourse.getUser().getStudentId());
+				imGroupUser_class.setUser(userCourse.getUser());
+				imGroupUsers.add(imGroupUser_class);
+			}
+			
 			//System.out.println("Course Instance:\n"+courseInstance.toJSON());
 			//System.out.println("User Course:\n"+userCourse.toJSON());
 		}
 		courseDao.addMulti(courses);
 		courseInstanceDao.addMulti(courseInstances);
 		userCourseDao.addMulti(userCourses);	
+		
+		imGroupDao.addMulti(imGroups);
+		imGroupUserDao.addMulti(imGroupUsers);
 	}
 
 	@Override

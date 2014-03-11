@@ -1,6 +1,11 @@
 package com.lifedjtu.jw.util;
 
 public class LifeDjtuEnum {
+	
+	public static enum GroupFlag {
+		SAME_CLASS,SAME_COURSE;
+	}
+		
 	public static enum ResultState {
 		FAIL, NEEDLOGIN, SUCCESS;
 		public static ResultState valueOf(int value){
@@ -62,6 +67,8 @@ public class LifeDjtuEnum {
 		}
 		
 	}
+	
+	
 	
 	
 }

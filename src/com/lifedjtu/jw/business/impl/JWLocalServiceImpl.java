@@ -25,7 +25,10 @@ import com.lifedjtu.jw.dao.Tuple;
 import com.lifedjtu.jw.dao.UpdateWrapper;
 import com.lifedjtu.jw.dao.impl.AreaDao;
 import com.lifedjtu.jw.dao.impl.BuildingDao;
+import com.lifedjtu.jw.dao.impl.CourseDao;
 import com.lifedjtu.jw.dao.impl.CourseInstanceDao;
+import com.lifedjtu.jw.dao.impl.IMGroupDao;
+import com.lifedjtu.jw.dao.impl.IMGroupUserDao;
 import com.lifedjtu.jw.dao.impl.RoomTakenItemDao;
 import com.lifedjtu.jw.dao.impl.UserCourseDao;
 import com.lifedjtu.jw.dao.impl.UserDao;
@@ -33,9 +36,9 @@ import com.lifedjtu.jw.dao.support.UUIDGenerator;
 import com.lifedjtu.jw.pojos.Area;
 import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.CourseInstance;
+import com.lifedjtu.jw.pojos.IMGroupUser;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
-import com.lifedjtu.jw.pojos.UserCourse;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
@@ -70,7 +73,22 @@ public class JWLocalServiceImpl implements JWLocalService{
 	private JWUpdateCacheScheduler jwUpdateCacheScheduler;
 	@Autowired
 	private CourseInstanceDao courseInstanceDao;
+	@Autowired
+	private CourseDao courseDao;
+	@Autowired
+	private IMGroupUserDao imGroupUserDao;
+	@Autowired
+	private IMGroupDao imGroupDao;
 	
+	
+	public CourseDao getCourseDao() {
+		return courseDao;
+	}
+
+	public void setCourseDao(CourseDao courseDao) {
+		this.courseDao = courseDao;
+	}
+
 	public CourseInstanceDao getCourseInstanceDao() {
 		return courseInstanceDao;
 	}
@@ -102,6 +120,22 @@ public class JWLocalServiceImpl implements JWLocalService{
 
 	public void setUserCourseDao(UserCourseDao userCourseDao) {
 		this.userCourseDao = userCourseDao;
+	}
+
+	public IMGroupUserDao getImGroupUserDao() {
+		return imGroupUserDao;
+	}
+
+	public void setImGroupUserDao(IMGroupUserDao imGroupUserDao) {
+		this.imGroupUserDao = imGroupUserDao;
+	}
+
+	public IMGroupDao getImGroupDao() {
+		return imGroupDao;
+	}
+
+	public void setImGroupDao(IMGroupDao imGroupDao) {
+		this.imGroupDao = imGroupDao;
 	}
 
 	public AreaDao getAreaDao() {
@@ -547,16 +581,19 @@ public class JWLocalServiceImpl implements JWLocalService{
 	 * 不分年级，修读这门课的人，全部给出，主要用来应对：重修人士，培养计划改革，以及旧的未删数据
 	 */
 	@Override
-	public LocalResult<List<User>> getSameCourseUsers(String remoteId, int pageNum, int pageSize) {
-		Tuple courseInstance = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("courseAlias","id"));
+	public LocalResult<List<User>> getSameCourseUsers(String courseId, int pageNum, int pageSize) {
+		//Tuple courseInstance = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("courseAlias","id"));
 				
 		//List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
-		List<UserCourse> userCourses = userCourseDao.findByJoinedParamsInPageInOrder(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
+		//List<UserCourse> userCourses = userCourseDao.findByJoinedParamsInPageInOrder(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
 		
 		List<User> users = new ArrayList<User>();
-		for(UserCourse userCourse:userCourses){
+		
+		List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParamsInPageInOrder(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.course.id", courseId)), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
+		
+		for(IMGroupUser imGroupUser:imGroupUsers){
 			User user = new User();
-			User temp = userCourse.getUser();
+			User temp = imGroupUser.getUser();
 			user.setAcademy(temp.getAcademy());
 			user.setArea(temp.getArea());
 			user.setBirthDate(temp.getBirthDate());
@@ -582,14 +619,17 @@ public class JWLocalServiceImpl implements JWLocalService{
 	 * 什么叫sameClass，就是说，在同一个班修读这一门课~
 	 */
 	@Override
-	public LocalResult<List<User>> getSameClassUsers(String studentId,String remoteId, int pageNum, int pageSize) {
+	public LocalResult<List<User>> getSameClassUsers(String courseInstanceId, int pageNum, int pageSize) {
 		
 		//List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseRemoteId", remoteId)));
-		List<UserCourse> userCourses = userCourseDao.findByJoinedParamsInPageInOrder(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseRemoteId", remoteId)),Pageable.inPage(pageNum, pageSize),Sortable.instance("timestamp", Sortable.ASCEND));
+		//List<UserCourse> userCourses = userCourseDao.findByJoinedParamsInPageInOrder(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseRemoteId", remoteId)),Pageable.inPage(pageNum, pageSize),Sortable.instance("timestamp", Sortable.ASCEND));
+		
+		List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParamsInPageInOrder(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.courseInstance.id", courseInstanceId)), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
+		
 		List<User> users = new ArrayList<User>();
-		for(UserCourse userCourse:userCourses){
+		for(IMGroupUser imGroupUser:imGroupUsers){
 			User user = new User();
-			User temp = userCourse.getUser();
+			User temp = imGroupUser.getUser();
 			user.setAcademy(temp.getAcademy());
 			user.setArea(temp.getArea());
 			user.setBirthDate(temp.getBirthDate());
@@ -614,6 +654,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	/**
 	 * 同年级的~~修读同一门课，在不同的教学班
 	 */
+	/*
 	@Override
 	public LocalResult<List<User>> getSameGradeUsers(String studentId,String remoteId, int pageNum, int pageSize) {
 		Tuple courseInstance = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("courseAlias","id"));
@@ -646,14 +687,14 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		return localResult;
 	}
-
+	 */
 	@Override
-	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String remoteId) {
-		if(remoteId==null||remoteId.equals("")){
+	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String courseInstanceId) {
+		if(courseInstanceId==null||courseInstanceId.equals("")){
 			return null;
 		}
 		
-		CourseInstance courseInstance = courseInstanceDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)));
+		CourseInstance courseInstance = courseInstanceDao.findOneById(courseInstanceId);
 		
 		LocalResult<CourseInstance> localResult = new LocalResult<CourseInstance>();
 		localResult.autoFill(courseInstance);
@@ -663,9 +704,9 @@ public class JWLocalServiceImpl implements JWLocalService{
 
 	@Override
 	public LocalResult<Boolean> giveGoodEvalToCourse(String studentId,
-			String remoteId) {
-		int result = courseInstanceDao.updateMultiByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), UpdateWrapper.instance().inc("'goodEval'", 1));
-	
+			String courseInstanceId) {
+		int result = courseInstanceDao.updateFirstById(courseInstanceId, UpdateWrapper.instance().inc("'goodEval'", 1));
+					
 		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
 		
 		if(result>0){
@@ -679,8 +720,8 @@ public class JWLocalServiceImpl implements JWLocalService{
 
 	@Override
 	public LocalResult<Boolean> giveBadEvalToCourse(String studentId,
-			String remoteId) {
-		int result = courseInstanceDao.updateMultiByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), UpdateWrapper.instance().inc("'badEval'", 1));
+			String courseInstanceId) {
+		int result = courseInstanceDao.updateFirstById(courseInstanceId, UpdateWrapper.instance().inc("'badEval'", 1));
 		
 		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
 		
@@ -694,26 +735,38 @@ public class JWLocalServiceImpl implements JWLocalService{
 	}
 
 	@Override
-	public LocalResult<Integer> getSameCourseUserNum(String remoteId) {
-		Tuple courseInstance = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("courseAlias","id"));
-		
-		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
-	
+	public LocalResult<Integer> getSameCourseUserNum(String courseId) {
+		List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParams(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.course.id", courseId)));
+
 		LocalResult<Integer> localResult = new LocalResult<Integer>();
-		localResult.autoFill(userCourses.size());
+		localResult.autoFill(imGroupUsers.size());
 		return localResult;
 	}
 
 	@Override
-	public LocalResult<Integer> getSameClassUserNum(String studentId,
-			String remoteId) {
-		List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseRemoteId", remoteId)));
+	public LocalResult<Integer> getSameClassUserNum(String courseInstanceId) {
+		List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParams(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.courseInstance.id", courseInstanceId)));
 		
 		LocalResult<Integer> localResult = new LocalResult<Integer>();
-		localResult.autoFill(userCourses.size());
+		localResult.autoFill(imGroupUsers.size());
 		return localResult;
 	}
 
+	@Override
+	public String getCourseIdByAlias(String courseAlias) {
+		Tuple tuple = courseDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseAlias", courseAlias)), ProjectionWrapper.instance().fields("id","courseAlias"));
+	
+		return (String)tuple.get(0);
+	}
+
+	@Override
+	public String getCourseInstanceIdByRemoteId(String remoteId) {
+		Tuple tuple = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("id","courseRemoteId"));
+		
+		return (String)tuple.get(0);
+	}
+
+	/*
 	@Override
 	public LocalResult<Integer> getSameGradeUserNum(String studentId,
 			String remoteId) {
@@ -726,7 +779,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		localResult.autoFill(userCourses.size());
 		return localResult;
 	}
-
+	*/
 	
 	
 }

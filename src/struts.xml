@@ -132,7 +132,7 @@
 		</action>
 		
 		<action name="getCourseInstance" method="getCourseInstance" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
-			<result name="success" type="jsonResult">flag,courseMemberNum,classes,goodEval,badEval,sameCourseMemberNum,sameClassMemberNum,sameGradeMemberNum</result>
+			<result name="success" type="jsonResult">flag,courseMemberNum,classes,goodEval,badEval,sameCourseMemberNum,sameClassMemberNum,courseId,courseInstanceId</result>
 		</action>
 		
 		 <action name="getSameClassMembers" method="getSameClassMembers" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">

@@ -22,12 +22,46 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 
 	
 
-	public String getRemoteId() {
-		return remoteId;
+	
+
+	public String getBindId() {
+		return bindId;
 	}
 
-	public void setRemoteId(String remoteId) {
-		this.remoteId = remoteId;
+	public void setBindId(String bindId) {
+		this.bindId = bindId;
+	}
+
+	public String getCourseAlias() {
+		return courseAlias;
+	}
+
+	public void setCourseAlias(String courseAlias) {
+		this.courseAlias = courseAlias;
+	}
+
+	public String getCourseRemoteId() {
+		return courseRemoteId;
+	}
+
+	public void setCourseRemoteId(String courseRemoteId) {
+		this.courseRemoteId = courseRemoteId;
+	}
+
+	public String getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
+
+	public String getCourseInstanceId() {
+		return courseInstanceId;
+	}
+
+	public void setCourseInstanceId(String courseInstanceId) {
+		this.courseInstanceId = courseInstanceId;
 	}
 
 	public int getCourseMemberNum() {
@@ -89,13 +123,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		this.sameClassMemberNum = sameClassMemberNum;
 	}
 
-	public int getSameGradeMemberNum() {
-		return sameGradeMemberNum;
-	}
-
-	public void setSameGradeMemberNum(int sameGradeMemberNum) {
-		this.sameGradeMemberNum = sameGradeMemberNum;
-	}
+	
 
 	public int getPageNum() {
 		return pageNum;
@@ -350,7 +378,8 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	 * -----/webservice/secure/getCourseInstance.action
 	 */
 	//in
-	private String remoteId;
+	private String courseAlias;
+	private String courseRemoteId;
 	//out
 	private int courseMemberNum;
 	private List<String> classes;
@@ -358,19 +387,25 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	private int badEval;
 	private int sameCourseMemberNum;
 	private int sameClassMemberNum;
-	private int sameGradeMemberNum;
+	private String courseId;
+	private String courseInstanceId;
+	//private int sameGradeMemberNum;
 	
 	//private List<Memo> memos;
 	public String getCourseInstance(){
-		LocalResult<Integer> localResult1 = jwLocalService.getSameCourseUserNum(remoteId);
-		LocalResult<Integer> localResult2 = jwLocalService.getSameClassUserNum(studentId, remoteId);
-		LocalResult<Integer> localResult3 = jwLocalService.getSameGradeUserNum(studentId, remoteId);
 		
-		LocalResult<CourseInstance> localResult4 = jwLocalService.getCourseInstance(sessionId,remoteId);
+		courseId = jwLocalService.getCourseIdByAlias(courseAlias);
+		courseInstanceId = jwLocalService.getCourseInstanceIdByRemoteId(courseRemoteId);
+		
+		LocalResult<Integer> localResult1 = jwLocalService.getSameCourseUserNum(courseId);
+		LocalResult<Integer> localResult2 = jwLocalService.getSameClassUserNum(courseInstanceId);
+		//LocalResult<Integer> localResult3 = jwLocalService.getSameGradeUserNum(studentId, remoteId);
+		
+		LocalResult<CourseInstance> localResult4 = jwLocalService.getCourseInstance(sessionId,courseInstanceId);
 		
 		sameCourseMemberNum = localResult1.getResult();
 		sameClassMemberNum = localResult2.getResult();
-		sameGradeMemberNum = localResult3.getResult();
+		//sameGradeMemberNum = localResult3.getResult();
 		
 		goodEval = localResult4.getResult().getGoodEval();
 		badEval = localResult4.getResult().getBadEval();
@@ -380,7 +415,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		classes = Arrays.asList(localResult4.getResult().getClasses().split("\\|"));
 		courseMemberNum = localResult4.getResult().getCourseMemberNum();
 		
-		if(localResult1.getResultState()!=ResultState.SUCCESS.ordinal()||localResult2.getResultState()!=ResultState.SUCCESS.ordinal()||localResult3.getResultState()!=ResultState.SUCCESS.ordinal()||localResult4.getResultState()!=ResultState.SUCCESS.ordinal()){
+		if(localResult1.getResultState()!=ResultState.SUCCESS.ordinal()||localResult2.getResultState()!=ResultState.SUCCESS.ordinal()||localResult4.getResultState()!=ResultState.SUCCESS.ordinal()){
 			flag = ResultState.FAIL.ordinal();
 		}else{
 			flag = ResultState.SUCCESS.ordinal();
@@ -393,13 +428,13 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	 * -----/webservice/secure/getSameClassMembers.action
 	 */
 	//in
-	//private String remoteId;
+	private String bindId; //应该为courseInstanceId
 	private int pageNum = 0;
 	//out
-	//private List<User> memberList;
+	private List<User> memberList;
 	
 	public String getSameClassMembers(){
-		LocalResult<List<User>> localResult = jwLocalService.getSameClassUsers(studentId, remoteId, pageNum, 10);
+		LocalResult<List<User>> localResult = jwLocalService.getSameClassUsers(bindId, pageNum, 10);
 		
 		memberList = localResult.getResult();
 		
@@ -412,13 +447,13 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	 * -----/webservice/secure/getSameCourseMembers.action
 	 */
 	//in
-	//private String remoteId;
+	//private String bindId; //应该为courseId
 	//private int pageNum = 0;
 	//out
 	//private List<User> memberList;
 	
 	public String getSameCourseMembers(){
-		LocalResult<List<User>> localResult = jwLocalService.getSameCourseUsers(remoteId, pageNum, 10);
+		LocalResult<List<User>> localResult = jwLocalService.getSameCourseUsers(bindId, pageNum, 10);
 		
 		memberList = localResult.getResult();
 		
@@ -430,6 +465,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	/**
 	 * -----/webservice/secure/getSameGradeMembers.action
 	 */
+	/*
 	//in
 	//private String remoteId;
 	//private int pageNum = 0;
@@ -445,16 +481,16 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		
 		return SUCCESS;
 	}
-	
+	*/
 	/**
 	 * -----/webservice/secure/giveGoodEval.action
 	 */
 	//in
-	//private String remoteId;
+	//private String courseInstanceId;
 	//out
 	
 	public String giveGoodEval(){
-		LocalResult<Boolean> localResult = jwLocalService.giveGoodEvalToCourse(studentId, remoteId);
+		LocalResult<Boolean> localResult = jwLocalService.giveGoodEvalToCourse(studentId, courseInstanceId);
 		
 		flag = localResult.getResultState();
 		
@@ -465,11 +501,11 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	 * -----/webservice/secure/giveBadEval.action
 	 */
 	//in
-	//private String remoteId;
+	//private String courseInstanceId;
 	//out
 	
 	public String giveBadEval(){
-		LocalResult<Boolean> localResult = jwLocalService.giveBadEvalToCourse(studentId, remoteId);
+		LocalResult<Boolean> localResult = jwLocalService.giveBadEvalToCourse(studentId, courseInstanceId);
 		
 		flag = localResult.getResultState();
 		
