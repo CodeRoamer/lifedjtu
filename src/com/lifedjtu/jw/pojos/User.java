@@ -46,6 +46,15 @@ public class User extends EntityObject{
 	private double longtitude;
 	private double latitude;
 	
+	//用户是否在线
+	//0代表在线，1代表下线
+	private int online;
+	
+	//保护隐私策略
+	//选择详见 PrivateInfoPolicy Enum
+	private int privateInfoPolicy;
+	
+	
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private List<UserCourse> userCourses;
 	
@@ -207,6 +216,22 @@ public class User extends EntityObject{
 		this.id = id;
 	}
 	
+	public int getOnline() {
+		return online;
+	}
+
+	public void setOnline(int online) {
+		this.online = online;
+	}
+
+	public int getPrivateInfoPolicy() {
+		return privateInfoPolicy;
+	}
+
+	public void setPrivateInfoPolicy(int privateInfoPolicy) {
+		this.privateInfoPolicy = privateInfoPolicy;
+	}
+
 	public User(String studentId, String password){
 		this.studentId = studentId;
 		this.password = password;

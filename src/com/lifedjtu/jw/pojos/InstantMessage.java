@@ -37,6 +37,8 @@ public class InstantMessage extends EntityObject{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date messageDate;
 	
+	private String messageContent;
+	
 	//已读为1，未读为0
 	private boolean readFlag;
 
@@ -94,6 +96,14 @@ public class InstantMessage extends EntityObject{
 
 	public void setReadFlag(boolean readFlag) {
 		this.readFlag = readFlag;
+	}
+
+	public String getMessageContent() {
+		return messageContent;
+	}
+
+	public void setMessageContent(String messageContent) {
+		this.messageContent = messageContent;
 	}
 	
 	

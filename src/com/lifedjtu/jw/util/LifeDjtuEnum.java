@@ -2,6 +2,10 @@ package com.lifedjtu.jw.util;
 
 public class LifeDjtuEnum {
 	
+	public static enum PrivateInfoPolicy {
+		CLOSE_TO_ALL,OPEN_TO_FRIENDS,  OPEN_TO_ALL
+	}
+	
 	public static enum GroupFlag {
 		SAME_CLASS,SAME_COURSE;
 	}
