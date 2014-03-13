@@ -40,6 +40,7 @@ public class User extends EntityObject{
 	private String area;
 	
 	private String nickname;
+	//user终将在被添加进所有他应当归属的group后，宣告userReady
 	private boolean userReady = false;
 	
 	//backup feature! user location

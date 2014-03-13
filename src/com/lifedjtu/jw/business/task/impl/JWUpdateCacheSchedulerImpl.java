@@ -20,6 +20,7 @@ import com.lifedjtu.jw.dao.impl.AreaDao;
 import com.lifedjtu.jw.dao.impl.BuildingDao;
 import com.lifedjtu.jw.dao.impl.CourseDao;
 import com.lifedjtu.jw.dao.impl.CourseInstanceDao;
+import com.lifedjtu.jw.dao.impl.FriendPendingDao;
 import com.lifedjtu.jw.dao.impl.IMGroupDao;
 import com.lifedjtu.jw.dao.impl.IMGroupUserDao;
 import com.lifedjtu.jw.dao.impl.InstantMessageDao;
@@ -70,7 +71,8 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 	private InstantMessageDao instantMessageDao;
 	@Autowired
 	private UserCourseDao userCourseDao;
-	
+	@Autowired
+	private FriendPendingDao friendPendingDao;
 	@Override
 	public boolean updateBuildingEntryInfo(String sessionId, String areaId) {
 		Area area = areaDao.findOneById(areaId);
@@ -421,9 +423,17 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 		try{
 			updateSameCourseGroupInfo();
 			cleanupInstantMessage();
+			cleanupObsoleteFriendRequests();
 		}catch(Exception exception){
 			exception.printStackTrace();
 		}
+	}
+	
+	//此方法隶属于IMSystem，已在调度方法中添加进去了
+	@Override
+	public boolean cleanupObsoleteFriendRequests() {
+		friendPendingDao.deleteByParams(CriteriaWrapper.instance().and(Restrictions.eq("'requestSourceReadFlag'", 1)));
+		return true;
 	}
 	
 }

@@ -2,6 +2,25 @@ package com.lifedjtu.jw.util;
 
 public class LifeDjtuEnum {
 	
+	public static enum FriendRequestStatus{
+		PENDING, ALLOWED, ALLOWED_BOTH, REFUSED;
+		public static FriendRequestStatus valueOf(int value){
+			switch (value) {
+			case 0:
+				return PENDING;
+			case 1:
+				return ALLOWED;
+			case 2:
+				return ALLOWED_BOTH;
+			case 3:
+				return REFUSED;
+			default:
+				return REFUSED;
+			}
+		}
+		
+	}
+	
 	public static enum PrivateInfoPolicy {
 		CLOSE_TO_ALL,OPEN_TO_FRIENDS,  OPEN_TO_ALL
 	}

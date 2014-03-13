@@ -22,6 +22,7 @@ import com.lifedjtu.jw.dao.impl.IMGroupDao;
 import com.lifedjtu.jw.dao.impl.IMGroupUserDao;
 import com.lifedjtu.jw.dao.impl.SystemNoticeDao;
 import com.lifedjtu.jw.dao.impl.UserCourseDao;
+import com.lifedjtu.jw.dao.impl.UserDao;
 import com.lifedjtu.jw.dao.support.UUIDGenerator;
 import com.lifedjtu.jw.pojos.Course;
 import com.lifedjtu.jw.pojos.CourseInstance;
@@ -64,7 +65,8 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	private IMGroupDao imGroupDao;
 	@Autowired
 	private IMGroupUserDao imGroupUserDao;
-	
+	@Autowired
+	private UserDao userDao;
 	/**
 	 * 此方法用来更新course表
 	 */
@@ -76,6 +78,12 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 		List<UserCourse> userCourses = new ArrayList<UserCourse>();
 		List<IMGroup> imGroups = new ArrayList<IMGroup>();
 		List<IMGroupUser> imGroupUsers = new ArrayList<IMGroupUser>();
+		
+		//there is a need for me to get the user!!! sorry for the efficiency
+		//如果我不手动去User，那么在添加imGroupUser时 stduetnId字段仍为空。。。
+		//而且我需要修改user的ready字段
+		User user = userDao.findOneById(userId);
+		
 		for(CourseDto courseDto : courseDtos){
 			//System.out.println("Course Info:\n"+courseDto.toJSON());
 			Course course = courseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseAlias", courseDto.getAliasName()),Restrictions.eq("courseName", courseDto.getCourseName())));
@@ -113,10 +121,13 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			
 			
 			UserCourse userCourse = userCourseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId),Restrictions.eq("courseInstance.id", courseInstance.getId())));
+			
+			
+			
 			if(userCourse==null){
 				userCourse = new UserCourse();
 				userCourse.setId(UUIDGenerator.randomUUID());
-				userCourse.setUser(new User(userId));
+				userCourse.setUser(user);
 				userCourse.setCourseInstance(courseInstance);
 				userCourses.add(userCourse);
 			}
@@ -150,6 +161,9 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 		
 		imGroupDao.addMulti(imGroups);
 		imGroupUserDao.addMulti(imGroupUsers);
+		
+		//所有的Group终将添加完毕，这是user 已经ready了
+		user.setUserReady(true);
 	}
 
 	@Override

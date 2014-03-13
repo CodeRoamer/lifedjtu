@@ -95,7 +95,8 @@ public class StudentRegistry extends EntityObject{
 			
 		}
 		
-		user.setUserReady(true);
+		//user is not ready here!! setUserReady in async method see that in Asyncer
+		//user.setUserReady(true);
 		
 		user.setNickname("");
 		

@@ -6,6 +6,7 @@ import com.lifedjtu.jw.business.support.LocalResult;
 import com.lifedjtu.jw.pojos.Area;
 import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.CourseInstance;
+import com.lifedjtu.jw.pojos.FriendPending;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
@@ -13,6 +14,7 @@ import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
+import com.lifedjtu.jw.util.LifeDjtuEnum.FriendRequestStatus;
 
 public interface JWLocalService {
 	/**
@@ -54,6 +56,15 @@ public interface JWLocalService {
 	
 	public LocalResult<Boolean> giveGoodEvalToCourse(String studentId, String courseInstanceId);
 	public LocalResult<Boolean> giveBadEvalToCourse(String studentId, String courseInstanceId);
+	
+	//全部为studentId，这样方便操作
+	public LocalResult<Boolean> addFriend(String studentId, String friendStudentId, String content);
+	public LocalResult<List<FriendPending>> getFriendPendingList(String studentId);
+	public LocalResult<Boolean> answerFriendRequest(String studentId, String requestSourceStudentId, FriendRequestStatus status);
+	public LocalResult<List<FriendPending>> viewFriendRequestResultList(String studentId);
+	
+	public LocalResult<List<User>> getFriendList(String studentId);
+	public LocalResult<Boolean> removeFriend(String studentId, String friendId, boolean removeBoth);
 	
 	/**
 	 * 这些方法负责在用户注册时，初始化用户数据，搜取用户信息

@@ -151,6 +151,26 @@
 		<action name="giveBadEval" method="giveBadEval" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag</result>
 		</action>
+		
+		
+		<action name="addFriend" method="addFriend" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag</result>
+		</action>
+		<action name="answerFriendRequest" method="answerFriendRequest" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag</result>
+		</action>
+		<action name="getAllFriends" method="getAllFriends" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,friendList</result>
+		</action>
+		<action name="getAllFriendPendingRequests" method="getAllFriendPendingRequests" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,pendingList</result>
+		</action>
+		<action name="viewAllFriendPendingRequests" method="viewAllFriendPendingRequests" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,pendingList</result>
+		</action>
+		<action name="removeFriend" method="removeFriend" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag</result>
+		</action>
 	</package>
 	
 	

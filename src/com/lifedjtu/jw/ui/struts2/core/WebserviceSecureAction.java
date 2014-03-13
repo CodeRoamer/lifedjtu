@@ -6,10 +6,12 @@ import java.util.List;
 import com.lifedjtu.jw.business.JWLocalService;
 import com.lifedjtu.jw.business.support.LocalResult;
 import com.lifedjtu.jw.pojos.CourseInstance;
+import com.lifedjtu.jw.pojos.FriendPending;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.ui.struts2.core.support.LifeDjtuAction;
+import com.lifedjtu.jw.util.LifeDjtuEnum.FriendRequestStatus;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
 /**
  * 如果获取的集合为空，不能够说明是获取失败，有可能是无东西可以获取！！
@@ -19,10 +21,63 @@ import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
 public class WebserviceSecureAction extends LifeDjtuAction {
 
 	private JWLocalService jwLocalService;
-
 	
 
-	
+	public List<User> getFriendList() {
+		return friendList;
+	}
+
+	public void setFriendList(List<User> friendList) {
+		this.friendList = friendList;
+	}
+
+	public List<FriendPending> getPendingList() {
+		return pendingList;
+	}
+
+	public void setPendingList(List<FriendPending> pendingList) {
+		this.pendingList = pendingList;
+	}
+
+	public boolean isRemoveBoth() {
+		return removeBoth;
+	}
+
+	public void setRemoveBoth(boolean removeBoth) {
+		this.removeBoth = removeBoth;
+	}
+
+	public String getFriendStudentId() {
+		return friendStudentId;
+	}
+
+	public void setFriendStudentId(String friendStudentId) {
+		this.friendStudentId = friendStudentId;
+	}
+
+	public String getRequestContent() {
+		return requestContent;
+	}
+
+	public void setRequestContent(String requestContent) {
+		this.requestContent = requestContent;
+	}
+
+	public String getRequestSourceStudentId() {
+		return requestSourceStudentId;
+	}
+
+	public void setRequestSourceStudentId(String requestSourceStudentId) {
+		this.requestSourceStudentId = requestSourceStudentId;
+	}
+
+	public int getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(int answer) {
+		this.answer = answer;
+	}
 
 	public String getBindId() {
 		return bindId;
@@ -511,4 +566,104 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		
 		return SUCCESS;
 	}
+	
+	
+	/**
+	 * -----/webservice/secure/addFriend.action
+	 */
+	//in
+	private String friendStudentId;
+	private String requestContent;
+	//out
+	
+	public String addFriend(){
+		LocalResult<Boolean> localResult = jwLocalService.addFriend(studentId, friendStudentId, requestContent);
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+
+	/**
+	 * -----/webservice/secure/answerFriendRequest.action
+	 */
+	//in
+	private String requestSourceStudentId;
+	private int answer;
+	//out
+	
+	public String answerFriendRequest(){
+		LocalResult<Boolean> localResult = jwLocalService.answerFriendRequest(studentId, requestSourceStudentId, FriendRequestStatus.valueOf(answer));
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/secure/getAllFriends.action
+	 */
+	//in
+	//out
+	private List<User> friendList;
+	
+	public String getAllFriends(){
+		LocalResult<List<User>> localResult = jwLocalService.getFriendList(studentId);
+		
+		friendList = localResult.getResult();
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/secure/getAllFriendPendingRequests.action
+	 */
+	//in
+	//out
+	private List<FriendPending> pendingList;
+	
+	public String getAllFriendPendingRequests(){
+		LocalResult<List<FriendPending>> localResult = jwLocalService.getFriendPendingList(studentId);
+		
+		pendingList = localResult.getResult();
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	
+	/**
+	 * -----/webservice/secure/viewAllFriendPendingRequests.action
+	 */
+	//in
+	//out
+	//private List<FriendPending> pendingList;
+	
+	public String viewAllFriendPendingRequests(){
+		LocalResult<List<FriendPending>> localResult = jwLocalService.viewFriendRequestResultList(studentId);
+		
+		pendingList = localResult.getResult();
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/secure/removeFriend.action
+	 */
+	//in
+	//private String friendStudentId;
+	private boolean removeBoth;
+	//out
+	
+	public String removeFriend(){
+		LocalResult<Boolean> localResult = jwLocalService.removeFriend(studentId, friendStudentId, removeBoth);
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
 }

@@ -27,6 +27,8 @@ import com.lifedjtu.jw.dao.impl.AreaDao;
 import com.lifedjtu.jw.dao.impl.BuildingDao;
 import com.lifedjtu.jw.dao.impl.CourseDao;
 import com.lifedjtu.jw.dao.impl.CourseInstanceDao;
+import com.lifedjtu.jw.dao.impl.FriendDao;
+import com.lifedjtu.jw.dao.impl.FriendPendingDao;
 import com.lifedjtu.jw.dao.impl.IMGroupDao;
 import com.lifedjtu.jw.dao.impl.IMGroupUserDao;
 import com.lifedjtu.jw.dao.impl.RoomTakenItemDao;
@@ -36,6 +38,8 @@ import com.lifedjtu.jw.dao.support.UUIDGenerator;
 import com.lifedjtu.jw.pojos.Area;
 import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.CourseInstance;
+import com.lifedjtu.jw.pojos.Friend;
+import com.lifedjtu.jw.pojos.FriendPending;
 import com.lifedjtu.jw.pojos.IMGroupUser;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
@@ -48,6 +52,7 @@ import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 import com.lifedjtu.jw.util.Crypto;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ExamStatus;
+import com.lifedjtu.jw.util.LifeDjtuEnum.FriendRequestStatus;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
 import com.lifedjtu.jw.util.LifeDjtuUtil;
 import com.lifedjtu.jw.util.MapMaker;
@@ -79,8 +84,27 @@ public class JWLocalServiceImpl implements JWLocalService{
 	private IMGroupUserDao imGroupUserDao;
 	@Autowired
 	private IMGroupDao imGroupDao;
+	@Autowired
+	private FriendDao friendDao;
+	@Autowired
+	private FriendPendingDao friendPendingDao;
 	
-	
+	public FriendDao getFriendDao() {
+		return friendDao;
+	}
+
+	public void setFriendDao(FriendDao friendDao) {
+		this.friendDao = friendDao;
+	}
+
+	public FriendPendingDao getFriendPendingDao() {
+		return friendPendingDao;
+	}
+
+	public void setFriendPendingDao(FriendPendingDao friendPendingDao) {
+		this.friendPendingDao = friendPendingDao;
+	}
+
 	public CourseDao getCourseDao() {
 		return courseDao;
 	}
@@ -764,6 +788,163 @@ public class JWLocalServiceImpl implements JWLocalService{
 		Tuple tuple = courseInstanceDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("id","courseRemoteId"));
 		
 		return (String)tuple.get(0);
+	}
+
+	@Override
+	public LocalResult<Boolean> addFriend(String studentId, String friendStudentId,
+			String content) {
+		User mySelf = userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)));
+		User pendingFriend = userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", friendStudentId)));
+		
+		FriendPending friendPending = new FriendPending();
+		friendPending.setId(UUIDGenerator.randomUUID());
+		friendPending.setRequestContent(content);
+		friendPending.setRequestDes(pendingFriend);
+		friendPending.setRequestDesName(pendingFriend.getUsername());
+		friendPending.setRequestDesStudentId(friendStudentId);
+		
+		friendPending.setRequestSource(mySelf);
+		friendPending.setRequestSourceName(mySelf.getUsername());
+		friendPending.setRequestSourceStudentId(studentId);
+		friendPending.setRequestStatus(FriendRequestStatus.PENDING.ordinal());
+		
+		friendPendingDao.add(friendPending);
+		
+		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		localResult.autoFill(true);
+		
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<List<FriendPending>> getFriendPendingList(
+			String studentId) {
+		List<FriendPending> pendings = friendPendingDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("requestDesStudentId", studentId)));
+	
+		LocalResult<List<FriendPending>> localResult = new LocalResult<List<FriendPending>>();
+		localResult.autoFill(pendings);
+		
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<Boolean> answerFriendRequest(String studentId,
+			String requestSourceStudentId, FriendRequestStatus status) {
+		
+		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		if(FriendRequestStatus.PENDING==status){//非法！！，不能将任何一个请求重新改为pending
+			localResult.autoFill(false);
+			return localResult;
+		}
+		
+		List<FriendPending> friendPendings = friendPendingDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("requestSourceStudentId", requestSourceStudentId),Restrictions.eq("requestDesStudentId", studentId),Restrictions.eq("requestStatus", FriendRequestStatus.PENDING.ordinal())));
+	
+		if(friendPendings.size()==0){//并没有类似请求，用户操作非法
+			localResult.autoFill(false);
+			return localResult;
+		}
+		
+		for(FriendPending friendPending : friendPendings){
+			friendPending.setRequestStatus(status.ordinal());
+		}
+		
+		if(status==FriendRequestStatus.REFUSED){ //用户拒绝了，不做任何事情
+			localResult.autoFill(true);
+			return localResult;
+		}
+		
+		User mySelf = friendPendings.get(0).getRequestDes();
+		User wantToAddMe = friendPendings.get(0).getRequestSource();
+		
+		if(status==FriendRequestStatus.ALLOWED){ //单纯的同意，单方添加
+			Friend friend = new Friend();
+			friend.setFriend(mySelf);
+			friend.setToUser(wantToAddMe);
+			friend.setFriendStudentId(studentId);
+			friend.setId(UUIDGenerator.randomUUID());
+			friend.setToUserStudentId(requestSourceStudentId);
+			friendDao.add(friend);
+		}else if(status==FriendRequestStatus.ALLOWED_BOTH){ //双方互加！！好友
+			Friend friend = new Friend();
+			friend.setFriend(mySelf);
+			friend.setToUser(wantToAddMe);
+			friend.setFriendStudentId(studentId);
+			friend.setId(UUIDGenerator.randomUUID());
+			friend.setToUserStudentId(requestSourceStudentId);
+			friendDao.add(friend);
+			
+			Friend friend2 = new Friend();
+			friend2.setFriend(wantToAddMe);
+			friend2.setToUser(mySelf);
+			friend2.setFriendStudentId(requestSourceStudentId);
+			friend2.setId(UUIDGenerator.randomUUID());
+			friend2.setToUserStudentId(studentId);
+			friendDao.add(friend2);
+		}
+		
+		localResult.autoFill(true);
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<List<FriendPending>> viewFriendRequestResultList(
+			String studentId) {
+		
+		List<FriendPending> list = friendPendingDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("requestSourceStudentId", studentId),Restrictions.ne("requestStatus", FriendRequestStatus.PENDING.ordinal()),Restrictions.eq("requestSourceReadFlag", 0)));
+
+		for(FriendPending friendPending : list){
+			friendPending.setRequestSourceReadFlag(1);
+		}
+		
+		LocalResult<List<FriendPending>> localResult = new LocalResult<List<FriendPending>>();
+		
+		localResult.autoFill(list);
+		
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<List<User>> getFriendList(String studentId) {
+		List<Friend> friends = friendDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("toUserStudentId", studentId)));
+	
+		List<User> users = new ArrayList<User>();
+		
+		for(Friend friend : friends){
+			User user = new User();
+			User temp = friend.getFriend();
+			user.setAcademy(temp.getAcademy());
+			user.setArea(temp.getArea());
+			user.setBirthDate(temp.getBirthDate());
+			user.setCls(temp.getCls());
+			user.setGender(temp.getGender());
+			user.setGrade(temp.getGrade());
+			user.setId(temp.getId());
+			user.setMajor(temp.getMajor());
+			user.setNickname(temp.getNickname());
+			user.setProvince(temp.getProvince());
+			user.setUsername(temp.getUsername());
+			
+			users.add(user);
+		}
+		
+		LocalResult<List<User>> localResult = new LocalResult<List<User>>();
+		localResult.autoFill(users);
+		
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<Boolean> removeFriend(String studentId, String friendStudentId,
+			boolean removeBoth) {
+		friendDao.deleteByParams(CriteriaWrapper.instance().and(Restrictions.eq("'toUserStudentId'", studentId),Restrictions.eq("'friendStudentId'", friendStudentId)));
+
+		if(removeBoth){
+			friendDao.deleteByParams(CriteriaWrapper.instance().and(Restrictions.eq("'toUserStudentId'", friendStudentId),Restrictions.eq("'friendStudentId'", studentId)));
+		}
+		
+		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		localResult.autoFill(true);
+		return localResult;
 	}
 
 	/*

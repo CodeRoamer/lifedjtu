@@ -24,4 +24,8 @@ public interface JWUpdateCacheScheduler {
 	public boolean cleanupInstantMessage(); //主调方法
 	//新增的scheduler方法
 	public void updateIMSystem();
+	
+	
+	public boolean cleanupObsoleteFriendRequests(); //主调方法
+
 }
