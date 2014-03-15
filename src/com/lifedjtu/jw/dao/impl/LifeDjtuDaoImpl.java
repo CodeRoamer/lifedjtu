@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
@@ -25,7 +26,6 @@ import com.lifedjtu.jw.pojos.EntityObject;
 
 @SuppressWarnings({"unchecked","rawtypes"})
 public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
-	
 	private Class<T> cls;
 	protected HibernateTemplate hibernateTemplate;
 	
@@ -447,14 +447,20 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 
 	@Override
 	public long getCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		List result = wrapQueryList(null, ProjectionWrapper.instance(Projections.rowCount()), null, null);
+		if(result.size()==1){
+			return (Long)result.get(0);
+		}
+		return -1;
 	}
 
 	@Override
 	public long getCountByParam(CriteriaWrapper criteriaWrapper) {
-		// TODO Auto-generated method stub
-		return 0;
+		List result = wrapQueryList(criteriaWrapper, ProjectionWrapper.instance(Projections.rowCount()), null, null);
+		if(result.size()==1){
+			return (Long)result.get(0);
+		}
+		return -1;
 	}
 
    
@@ -499,7 +505,7 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	private Tuple wrapQueryProjectedOne(CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable){
 		List list =  wrapQueryList(criteriaWrapper, projectionWrapper, sortable, Pageable.inPage(0,1));
 		if(list!=null&&list.size()!=0){
-			return new Tuple((Object[])list.get(0));
+			return new Tuple(list.get(0));
 		}else{
 			return null;
 		}
@@ -526,7 +532,7 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	private Tuple wrapJoinedQueryProjectedOne(Map<String, String> propPair, CriteriaWrapper criteriaWrapper, ProjectionWrapper projectionWrapper, Sortable sortable){
 		List list =  wrapJoinedQueryList(propPair, criteriaWrapper, projectionWrapper, sortable, Pageable.inPage(0,1));
 		if(list!=null&&list.size()!=0){
-			return new Tuple((Object[])list.get(0));
+			return new Tuple(list.get(0));
 		}else{
 			return null;
 		}
@@ -544,7 +550,6 @@ public class LifeDjtuDaoImpl<T extends EntityObject> implements LifeDjtuDao<T> {
 	public Session getSession() {
 		return hibernateTemplate.getSessionFactory().getCurrentSession();
 	}
-
 
 	
 }

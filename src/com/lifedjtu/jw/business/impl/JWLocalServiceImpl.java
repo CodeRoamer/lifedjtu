@@ -713,12 +713,12 @@ public class JWLocalServiceImpl implements JWLocalService{
 	}
 	 */
 	@Override
-	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String courseInstanceId) {
-		if(courseInstanceId==null||courseInstanceId.equals("")){
+	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String courseRemoteId) {
+		if(courseRemoteId==null||courseRemoteId.equals("")){
 			return null;
 		}
 		
-		CourseInstance courseInstance = courseInstanceDao.findOneById(courseInstanceId);
+		CourseInstance courseInstance = courseInstanceDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", courseRemoteId)));
 		
 		LocalResult<CourseInstance> localResult = new LocalResult<CourseInstance>();
 		localResult.autoFill(courseInstance);
@@ -944,6 +944,63 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
 		localResult.autoFill(true);
+		return localResult;
+	}
+
+	@Override
+	public String getGroupIdByCourseAlias(String courseAlias) {
+		Tuple tuple = imGroupDao.findOneProjectedByJoinedParams(MapMaker.instance("course", "course").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("course.courseAlias", courseAlias)), ProjectionWrapper.instance().fields("id","groupFlag"));
+		return (String)tuple.get(0);
+	}
+
+	@Override
+	public String getGroupIdByCourseRemoteId(String remoteId) {
+		Tuple tuple = imGroupDao.findOneProjectedByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseRemoteId", remoteId)), ProjectionWrapper.instance().fields("id","groupFlag"));
+		return (String)tuple.get(0);
+	}
+
+	@Override
+	public LocalResult<List<User>> getGroupUserList(String groupId,
+			int pageNum, int pageSize) {
+		List<User> users = new ArrayList<User>();
+		
+		//List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParamsInPageInOrder(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.course.id", courseId)), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
+		
+		List<IMGroupUser> imGroupUsers = imGroupUserDao.findByParamsInPageInOrder(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", groupId)), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
+		
+		for(IMGroupUser imGroupUser:imGroupUsers){
+			User user = new User();
+			User temp = imGroupUser.getUser();
+			user.setAcademy(temp.getAcademy());
+			user.setArea(temp.getArea());
+			user.setBirthDate(temp.getBirthDate());
+			user.setCls(temp.getCls());
+			user.setGender(temp.getGender());
+			user.setGrade(temp.getGrade());
+			user.setStudentId(temp.getStudentId());
+			user.setId(temp.getId());
+			user.setMajor(temp.getMajor());
+			user.setNickname(temp.getNickname());
+			user.setProvince(temp.getProvince());
+			user.setUsername(temp.getUsername());
+			
+			users.add(user);
+		}
+		
+		LocalResult<List<User>> localResult = new LocalResult<List<User>>();
+		localResult.autoFill(users);
+		
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<Integer> getGroupUserNum(String groupId) {
+		//List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParams(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.courseInstance.id", courseInstanceId)));
+		//Tuple tuple = imGroupUserDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", groupId)), ProjectionWrapper.instance().fields("id").add(Projections.count("id")));
+		long size = imGroupUserDao.getCountByParam(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", groupId)));
+		
+		LocalResult<Integer> localResult = new LocalResult<Integer>();
+		localResult.autoFill((int)size);
 		return localResult;
 	}
 

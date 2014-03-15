@@ -52,7 +52,7 @@ public interface JWLocalService {
 	//deprecated!!!!  no use for list same grades
 	//public LocalResult<Integer> getSameGradeUserNum(String studentId,String remoteId); //指的是抓取此门课中，同年级的上此门课的人
 
-	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String courseInstanceId);//根据remoteId，获取此门课程的全部信息
+	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String courseRemoteId);//根据remoteId，获取此门课程的全部信息
 	
 	public LocalResult<Boolean> giveGoodEvalToCourse(String studentId, String courseInstanceId);
 	public LocalResult<Boolean> giveBadEvalToCourse(String studentId, String courseInstanceId);
@@ -98,4 +98,9 @@ public interface JWLocalService {
 	public String getCourseIdByAlias(String courseAlias);
 	public String getCourseInstanceIdByRemoteId(String remoteId);
 	
+	public String getGroupIdByCourseAlias(String courseAlias);
+	public String getGroupIdByCourseRemoteId(String remoteId);
+	
+	public LocalResult<List<User>> getGroupUserList(String groupId, int pageNum, int pageSize);
+	public LocalResult<Integer> getGroupUserNum(String groupId);
 }

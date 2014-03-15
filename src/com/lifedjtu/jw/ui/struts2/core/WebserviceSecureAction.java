@@ -101,14 +101,22 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 
 	public void setCourseRemoteId(String courseRemoteId) {
 		this.courseRemoteId = courseRemoteId;
+	}	
+
+	public String getCourseGroupId() {
+		return courseGroupId;
 	}
 
-	public String getCourseId() {
-		return courseId;
+	public void setCourseGroupId(String courseGroupId) {
+		this.courseGroupId = courseGroupId;
 	}
 
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
+	public String getCourseInstanceGroupId() {
+		return courseInstanceGroupId;
+	}
+
+	public void setCourseInstanceGroupId(String courseInstanceGroupId) {
+		this.courseInstanceGroupId = courseInstanceGroupId;
 	}
 
 	public String getCourseInstanceId() {
@@ -442,21 +450,21 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	private int badEval;
 	private int sameCourseMemberNum;
 	private int sameClassMemberNum;
-	private String courseId;
-	private String courseInstanceId;
+	private String courseGroupId;//courseId;
+	private String courseInstanceGroupId;//courseInstanceId;
 	//private int sameGradeMemberNum;
 	
 	//private List<Memo> memos;
 	public String getCourseInstance(){
 		
-		courseId = jwLocalService.getCourseIdByAlias(courseAlias);
-		courseInstanceId = jwLocalService.getCourseInstanceIdByRemoteId(courseRemoteId);
+		courseGroupId = jwLocalService.getGroupIdByCourseAlias(courseAlias);
+		courseInstanceGroupId = jwLocalService.getGroupIdByCourseRemoteId(courseRemoteId);
 		
-		LocalResult<Integer> localResult1 = jwLocalService.getSameCourseUserNum(courseId);
-		LocalResult<Integer> localResult2 = jwLocalService.getSameClassUserNum(courseInstanceId);
+		LocalResult<Integer> localResult1 = jwLocalService.getGroupUserNum(courseGroupId);
+		LocalResult<Integer> localResult2 = jwLocalService.getGroupUserNum(courseInstanceGroupId);
 		//LocalResult<Integer> localResult3 = jwLocalService.getSameGradeUserNum(studentId, remoteId);
 		
-		LocalResult<CourseInstance> localResult4 = jwLocalService.getCourseInstance(sessionId,courseInstanceId);
+		LocalResult<CourseInstance> localResult4 = jwLocalService.getCourseInstance(sessionId,courseRemoteId);
 		
 		sameCourseMemberNum = localResult1.getResult();
 		sameClassMemberNum = localResult2.getResult();
@@ -541,7 +549,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	 * -----/webservice/secure/giveGoodEval.action
 	 */
 	//in
-	//private String courseInstanceId;
+	private String courseInstanceId;
 	//out
 	
 	public String giveGoodEval(){
@@ -660,6 +668,25 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	
 	public String removeFriend(){
 		LocalResult<Boolean> localResult = jwLocalService.removeFriend(studentId, friendStudentId, removeBoth);
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/secure/getGroupMembers.action
+	 */
+	//in
+	//private String bindId; //应该为groupId
+	//private int pageNum = 0;
+	//out
+	//private List<User> memberList;
+	
+	public String getGroupMembers(){
+		LocalResult<List<User>> localResult = jwLocalService.getGroupUserList(bindId, pageNum, 10);
+		
+		memberList = localResult.getResult();
 		
 		flag = localResult.getResultState();
 		

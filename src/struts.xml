@@ -132,7 +132,7 @@
 		</action>
 		
 		<action name="getCourseInstance" method="getCourseInstance" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
-			<result name="success" type="jsonResult">flag,courseMemberNum,classes,goodEval,badEval,sameCourseMemberNum,sameClassMemberNum,courseId,courseInstanceId</result>
+			<result name="success" type="jsonResult">flag,courseMemberNum,classes,goodEval,badEval,sameCourseMemberNum,sameClassMemberNum,courseGroupId,courseInstanceGroupId</result>
 		</action>
 		
 		 <action name="getSameClassMembers" method="getSameClassMembers" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
@@ -170,6 +170,10 @@
 		</action>
 		<action name="removeFriend" method="removeFriend" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag</result>
+		</action>
+		
+		<action name="getGroupMembers" method="getGroupMembers" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,memberList</result>
 		</action>
 	</package>
 	

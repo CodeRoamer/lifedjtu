@@ -21,9 +21,9 @@ public class InstantMessage extends EntityObject{
 	@Id
 	private String id;
 	
-	//destination只能是用户Id
+	//destination只能是studentId
 	private String messageDes;
-	//Source也只能是用户Id
+	//Source也只能是studentId
 	private String messageSource;
 	
 	//标记消息是否来自群组
