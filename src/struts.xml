@@ -175,6 +175,10 @@
 		<action name="getGroupMembers" method="getGroupMembers" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,memberList</result>
 		</action>
+		<action name="getAllGroups" method="getAllGroups" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,groupList</result>
+		</action>
+		
 	</package>
 	
 	

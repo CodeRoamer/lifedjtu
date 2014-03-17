@@ -40,6 +40,7 @@ import com.lifedjtu.jw.pojos.Building;
 import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.Friend;
 import com.lifedjtu.jw.pojos.FriendPending;
+import com.lifedjtu.jw.pojos.IMGroup;
 import com.lifedjtu.jw.pojos.IMGroupUser;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
@@ -47,6 +48,7 @@ import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
+import com.lifedjtu.jw.pojos.dto.GroupDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
@@ -983,7 +985,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			user.setNickname(temp.getNickname());
 			user.setProvince(temp.getProvince());
 			user.setUsername(temp.getUsername());
-			
+			user.setOnline(temp.getOnline());
 			users.add(user);
 		}
 		
@@ -1001,6 +1003,38 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		LocalResult<Integer> localResult = new LocalResult<Integer>();
 		localResult.autoFill((int)size);
+		return localResult;
+	}
+
+	@Override
+	public LocalResult<List<GroupDto>> getGroupsForUser(String studentId) {
+		List<GroupDto> groupDtos = new ArrayList<GroupDto>();
+		
+		List<Tuple> groupIds = imGroupUserDao.findProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)), ProjectionWrapper.instance().fields("imGroup.id")); 
+	
+		for(Tuple tuple : groupIds){
+			GroupDto groupDto = new GroupDto();
+			
+			IMGroup imGroup = imGroupDao.findOneById((String)tuple.get(0));
+			groupDto.setId(imGroup.getId());
+			
+			if(imGroup.getGroupFlag()==0){
+				groupDto.setGroupName(imGroup.getCourseInstance().getCourseName()+"(同课同班)");
+			}else{
+				groupDto.setGroupName(imGroup.getCourse().getCourseName()+"(同课)");
+			}
+			
+			List<Tuple> tuples = imGroupUserDao.findProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", groupDto.getId())), ProjectionWrapper.instance().fields("studentId"));
+			List<String> studentIds = new ArrayList<String>();
+			for(Tuple subTuple: tuples){
+				studentIds.add((String)subTuple.get(0));
+			}
+			groupDto.setGroupMembers(studentIds);
+			groupDtos.add(groupDto);
+		}
+		
+		LocalResult<List<GroupDto>> localResult = new LocalResult<List<GroupDto>>();
+		localResult.autoFill(groupDtos);
 		return localResult;
 	}
 

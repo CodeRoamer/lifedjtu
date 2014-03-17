@@ -9,6 +9,7 @@ import com.lifedjtu.jw.pojos.CourseInstance;
 import com.lifedjtu.jw.pojos.FriendPending;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
+import com.lifedjtu.jw.pojos.dto.GroupDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.ui.struts2.core.support.LifeDjtuAction;
 import com.lifedjtu.jw.util.LifeDjtuEnum.FriendRequestStatus;
@@ -22,6 +23,14 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 
 	private JWLocalService jwLocalService;
 	
+
+	public List<GroupDto> getGroupList() {
+		return groupList;
+	}
+
+	public void setGroupList(List<GroupDto> groupList) {
+		this.groupList = groupList;
+	}
 
 	public List<User> getFriendList() {
 		return friendList;
@@ -684,9 +693,26 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	//private List<User> memberList;
 	
 	public String getGroupMembers(){
-		LocalResult<List<User>> localResult = jwLocalService.getGroupUserList(bindId, pageNum, 10);
+		LocalResult<List<User>> localResult = jwLocalService.getGroupUserList(bindId, pageNum, 20);
 		
 		memberList = localResult.getResult();
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/secure/getAllGroups.action
+	 */
+	//in
+	//out
+	private List<GroupDto> groupList;
+	
+	public String getAllGroups(){
+		LocalResult<List<GroupDto>> localResult = jwLocalService.getGroupsForUser(studentId);
+		
+		groupList = localResult.getResult();
 		
 		flag = localResult.getResultState();
 		

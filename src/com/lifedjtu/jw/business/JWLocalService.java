@@ -11,6 +11,7 @@ import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.ExamDto;
+import com.lifedjtu.jw.pojos.dto.GroupDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
@@ -57,7 +58,7 @@ public interface JWLocalService {
 	public LocalResult<Boolean> giveGoodEvalToCourse(String studentId, String courseInstanceId);
 	public LocalResult<Boolean> giveBadEvalToCourse(String studentId, String courseInstanceId);
 	
-	//全部为studentId，这样方便操作
+	//全部为studentId，这样方便操作，好友功能
 	public LocalResult<Boolean> addFriend(String studentId, String friendStudentId, String content);
 	public LocalResult<List<FriendPending>> getFriendPendingList(String studentId);
 	public LocalResult<Boolean> answerFriendRequest(String studentId, String requestSourceStudentId, FriendRequestStatus status);
@@ -66,6 +67,8 @@ public interface JWLocalService {
 	public LocalResult<List<User>> getFriendList(String studentId);
 	public LocalResult<Boolean> removeFriend(String studentId, String friendId, boolean removeBoth);
 	
+	//后续的群组功能，获取用户全部群组及成员简易信息
+	public LocalResult<List<GroupDto>> getGroupsForUser(String studentId);
 	/**
 	 * 这些方法负责在用户注册时，初始化用户数据，搜取用户信息
 	 * 对于一个用户来说，我们需要在其注册时，一步一步引导用户，并从其身上获取必要的数据，更好地为他和为其他用户服务
