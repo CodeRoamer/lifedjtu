@@ -1,9 +1,7 @@
 package com.lifedjtu.jw.business.support;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.springframework.stereotype.Component;
 
-@Component("serviceAround")
 public class ServiceAround {
 			
 	public boolean booleanAroundMethod(ProceedingJoinPoint point){

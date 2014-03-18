@@ -27,7 +27,7 @@ public interface JWLocalService {
 	/**
 	 * 初始化方法，主要与数据库交互（也有可能与远程交互）
 	 */
-	public boolean isUserExist(String studentId);
+	public boolean isUserExistAndReady(String studentId);
 	public User signupLocal(String studentId, String passowrd);
 	public User signinLocal(String studentId, String password);
 	/**
@@ -79,6 +79,10 @@ public interface JWLocalService {
 	 */
 	public LocalResult<User> fetchUserDetailInfo(String studentId, String sessionId); //加载用户详细信息，更新数据库，返回User实体
 	
+	/**
+	 * 只为了抓取用户信息，不访问远程
+	 */
+	public LocalResult<User> getUserDetailInfo(String studentId);
 	
 	/**
 	 * 以下方法的返回结果，或从remoteService获取的中间变量不存数据库

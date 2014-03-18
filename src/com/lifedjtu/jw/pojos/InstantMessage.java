@@ -26,6 +26,9 @@ public class InstantMessage extends EntityObject{
 	//Source也只能是studentId
 	private String messageSource;
 	
+	//可以是任意的，如果用户不指定，默认是学号
+	private String givenName;
+	
 	//标记消息是否来自群组
 	@Column(name="imGroupFlag")
 	private boolean imGroupFlag;
@@ -104,6 +107,14 @@ public class InstantMessage extends EntityObject{
 
 	public void setMessageContent(String messageContent) {
 		this.messageContent = messageContent;
+	}
+
+	public String getGivenName() {
+		return givenName;
+	}
+
+	public void setGivenName(String givenName) {
+		this.givenName = givenName;
 	}
 	
 	

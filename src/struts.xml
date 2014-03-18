@@ -178,6 +178,9 @@
 		<action name="getAllGroups" method="getAllGroups" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,groupList</result>
 		</action>
+		<action name="getMySelfInfo" method="getMySelfInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,user</result>
+		</action>
 		
 	</package>
 	

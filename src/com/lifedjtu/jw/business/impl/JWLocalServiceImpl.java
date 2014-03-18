@@ -206,42 +206,44 @@ public class JWLocalServiceImpl implements JWLocalService{
 	
 
 	@Override
-	public boolean isUserExist(String studentId) {
-		if(userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId))) != null) return true;
+	public boolean isUserExistAndReady(String studentId) {
+		User user = userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)));
+		if(user != null&& user.isUserReady()) return true;
 		return false;
 	}
 
 	@Override
 	public User signupLocal(String studentId, String password) {
-		
-		if(isUserExist(studentId)){
+		String sessionId = jwRemoteService.signinRemote(studentId, password);
+		if(sessionId==null||sessionId.equals("")){
 			return null;
 		}
 		
-		String sessionId = jwRemoteService.signinRemote(studentId, password);
-		if(sessionId != null){
-			User user = new User();
-			
+		User user = userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)));
+		if(user != null&& user.isUserReady()){
+			return null;
+		}else{			
+			if(user==null){
+				user = new User();
+				user.setStudentId(studentId);
+				user.setId(UUIDGenerator.randomUUID());
+			}
 			user.setCurSessionId(sessionId);
 			user.setCurSessionDate(new Date());
 			
-			user.setStudentId(studentId);
 			user.setPassword(Crypto.encodeAES(password));
-			
 			user.setPrivateKey(Crypto.randomPrivateKey());
-			user.setId(UUIDGenerator.randomUUID());
 			
 			userDao.add(user);
-			
 			return user;
 		}
-		return null;
+				
 	}
 
 	@Override
 	public User signinLocal(String studentId, String password) {
 		
-		if(!isUserExist(studentId)){
+		if(!isUserExistAndReady(studentId)){
 			return null;
 		}
 		
@@ -529,12 +531,18 @@ public class JWLocalServiceImpl implements JWLocalService{
 		return localResult;
 	}
 
+	/**
+	 * GPA算法不确定
+	 */
 	@Override
 	public LocalResult<Double> queryGPAMarks(String sessionId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * GPA算法不确定
+	 */
 	@Override
 	public LocalResult<Double> queryGPAMarksByTerm(String sessionId,
 			int schoolYear, int term) {
@@ -553,7 +561,6 @@ public class JWLocalServiceImpl implements JWLocalService{
 	public LocalResult<List<Building>> queryLocalBuildings(String areaId) {
 		LocalResult<List<Building>> localResult = new LocalResult<List<Building>>();
 		localResult.autoFill(buildingDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("area.id", areaId))));
-		// TODO Auto-generated method stub
 		return localResult;
 	}
 
@@ -1036,6 +1043,19 @@ public class JWLocalServiceImpl implements JWLocalService{
 		LocalResult<List<GroupDto>> localResult = new LocalResult<List<GroupDto>>();
 		localResult.autoFill(groupDtos);
 		return localResult;
+	}
+
+	@Override
+	public LocalResult<User> getUserDetailInfo(String studentId) {
+		LocalResult<User> localResult = new LocalResult<User>();
+		if(!isUserExistAndReady(studentId)){
+			localResult.autoFill(null);
+			return localResult;
+		}else{
+			User user = userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)));
+			localResult.autoFill(user);
+			return localResult;
+		}
 	}
 
 	/*

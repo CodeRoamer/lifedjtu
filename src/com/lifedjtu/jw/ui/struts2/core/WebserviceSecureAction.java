@@ -719,4 +719,21 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		return SUCCESS;
 	}
 	
+	/**
+	 * -----/webservice/secure/getMySelfInfo.action
+	 */
+	//in
+	//out
+	//private User user;
+	
+	public String getMySelfInfo(){
+		LocalResult<User> localResult = jwLocalService.getUserDetailInfo(studentId);
+		
+		user = localResult.getResult();
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
 }

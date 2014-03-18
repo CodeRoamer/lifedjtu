@@ -182,7 +182,7 @@ public class WebserviceAction extends LifeDjtuAction{
 	private boolean exist;
 	
 	public String checkUser(){
-		exist = jwLocalService.isUserExist(studentId);
+		exist = jwLocalService.isUserExistAndReady(studentId);
 		
 		flag = makeFlag(true);
 		
