@@ -22,7 +22,7 @@ public interface JWLocalService {
 	 * 用户身份验证接口，提供给Interceptor
 	 */
 	public LocalResult<String> prepareUser(String studentId, String dynamicPass);
-	
+	public LocalResult<Boolean> prepareUserLocal(String studentId, String dynamicPass);
 	
 	/**
 	 * 初始化方法，主要与数据库交互（也有可能与远程交互）
@@ -53,7 +53,7 @@ public interface JWLocalService {
 	//deprecated!!!!  no use for list same grades
 	//public LocalResult<Integer> getSameGradeUserNum(String studentId,String remoteId); //指的是抓取此门课中，同年级的上此门课的人
 
-	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String courseRemoteId);//根据remoteId，获取此门课程的全部信息
+	public LocalResult<CourseInstance> getCourseInstance(String courseRemoteId);//根据remoteId，获取此门课程的全部信息
 	
 	public LocalResult<Boolean> giveGoodEvalToCourse(String studentId, String courseInstanceId);
 	public LocalResult<Boolean> giveBadEvalToCourse(String studentId, String courseInstanceId);

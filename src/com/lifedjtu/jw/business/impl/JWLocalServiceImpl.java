@@ -247,27 +247,64 @@ public class JWLocalServiceImpl implements JWLocalService{
 			return null;
 		}
 		
-		String sessionId = jwRemoteService.signinRemote(studentId, password);
-		if(sessionId != null){
-			User user = userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)));
-			
-			user.setCurSessionId(sessionId);
-			user.setCurSessionDate(new Date());
-			
-			user.setPassword(Crypto.encodeAES(password));
-			
-			user.setPrivateKey(Crypto.randomPrivateKey());
-			
-			userDao.update(user);
-			
-			return user;
+		
+		User user = userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)));
+
+		String sessionId;
+		
+		try{
+			sessionId = jwRemoteService.signinRemote(studentId, password);
+			if(sessionId != null){
+				
+				user.setCurSessionId(sessionId);
+				user.setCurSessionDate(new Date());
+				
+				user.setPassword(Crypto.encodeAES(password));
+				user.setPrivateKey(Crypto.randomPrivateKey());
+				
+				userDao.update(user);
+				
+				return user;
+			}
+		}catch(Exception exception){
+			//抛出异常，本地验证密码，可能远程服务器已经down了...
+			if(Crypto.encodeAES(password).equals(user.getPassword())){
+				user.setPrivateKey(Crypto.randomPrivateKey());
+				
+				userDao.update(user);
+				
+				return user;
+			}
 		}
+		
+		
 		return null;		
 		
 	}
 
-	
+	@Override
+	public LocalResult<Boolean> prepareUserLocal(String studentId,
+			String dynamicPass) {
+		User user = userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)));
+		
+		String serverDynamicPass = Crypto.cypherDynamicPassword(user.getPrivateKey(), System.currentTimeMillis());
+		
+		LocalResult<Boolean> successResult = new LocalResult<Boolean>();
+		//System.err.println(dynamicPass+"\n"+serverDynamicPass);
+		if(dynamicPass.equals(serverDynamicPass)){
+			//第二步，确认SessionId是否过期
+			successResult.setResult(true);
+			successResult.setResultState(ResultState.SUCCESS.ordinal());
+		}else{
+			successResult.setResult(false);
+			successResult.setResultState(ResultState.NEEDLOGIN.ordinal());
+		}
+		
+		return successResult;
+	}
 
+	
+	
 	@Override
 	public LocalResult<String> prepareUser(String studentId, String dynamicPass) {
 		User user = userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)));
@@ -722,7 +759,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	}
 	 */
 	@Override
-	public LocalResult<CourseInstance> getCourseInstance(String sessionId, String courseRemoteId) {
+	public LocalResult<CourseInstance> getCourseInstance(String courseRemoteId) {
 		if(courseRemoteId==null||courseRemoteId.equals("")){
 			return null;
 		}
@@ -1057,6 +1094,8 @@ public class JWLocalServiceImpl implements JWLocalService{
 			return localResult;
 		}
 	}
+
+	
 
 	/*
 	@Override

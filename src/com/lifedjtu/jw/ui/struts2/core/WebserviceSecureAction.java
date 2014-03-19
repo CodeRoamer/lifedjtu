@@ -447,7 +447,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	
 	
 	/**
-	 * -----/webservice/secure/getCourseInstance.action
+	 * -----/webservice/secure/local/getCourseInstance.action
 	 */
 	//in
 	private String courseAlias;
@@ -473,7 +473,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		LocalResult<Integer> localResult2 = jwLocalService.getGroupUserNum(courseInstanceGroupId);
 		//LocalResult<Integer> localResult3 = jwLocalService.getSameGradeUserNum(studentId, remoteId);
 		
-		LocalResult<CourseInstance> localResult4 = jwLocalService.getCourseInstance(sessionId,courseRemoteId);
+		LocalResult<CourseInstance> localResult4 = jwLocalService.getCourseInstance(courseRemoteId);
 		
 		sameCourseMemberNum = localResult1.getResult();
 		sameClassMemberNum = localResult2.getResult();
@@ -497,7 +497,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	
 	/**
-	 * -----/webservice/secure/getSameClassMembers.action
+	 * -----/webservice/secure/local/getSameClassMembers.action
 	 */
 	//in
 	private String bindId; //应该为courseInstanceId
@@ -516,7 +516,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	
 	/**
-	 * -----/webservice/secure/getSameCourseMembers.action
+	 * -----/webservice/secure/local/getSameCourseMembers.action
 	 */
 	//in
 	//private String bindId; //应该为courseId
@@ -555,7 +555,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	*/
 	/**
-	 * -----/webservice/secure/giveGoodEval.action
+	 * -----/webservice/secure/local/giveGoodEval.action
 	 */
 	//in
 	private String courseInstanceId;
@@ -570,7 +570,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	
 	/**
-	 * -----/webservice/secure/giveBadEval.action
+	 * -----/webservice/secure/local/giveBadEval.action
 	 */
 	//in
 	//private String courseInstanceId;
@@ -586,7 +586,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	
 	
 	/**
-	 * -----/webservice/secure/addFriend.action
+	 * -----/webservice/secure/local/addFriend.action
 	 */
 	//in
 	private String friendStudentId;
@@ -603,7 +603,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	
 
 	/**
-	 * -----/webservice/secure/answerFriendRequest.action
+	 * -----/webservice/secure/local/answerFriendRequest.action
 	 */
 	//in
 	private String requestSourceStudentId;
@@ -619,7 +619,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	
 	/**
-	 * -----/webservice/secure/getAllFriends.action
+	 * -----/webservice/secure/local/getAllFriends.action
 	 */
 	//in
 	//out
@@ -635,7 +635,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	
 	/**
-	 * -----/webservice/secure/getAllFriendPendingRequests.action
+	 * -----/webservice/secure/local/getAllFriendPendingRequests.action
 	 */
 	//in
 	//out
@@ -652,7 +652,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	
 	
 	/**
-	 * -----/webservice/secure/viewAllFriendPendingRequests.action
+	 * -----/webservice/secure/local/viewAllFriendPendingRequests.action
 	 */
 	//in
 	//out
@@ -668,7 +668,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	
 	/**
-	 * -----/webservice/secure/removeFriend.action
+	 * -----/webservice/secure/local/removeFriend.action
 	 */
 	//in
 	//private String friendStudentId;
@@ -684,7 +684,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	
 	/**
-	 * -----/webservice/secure/getGroupMembers.action
+	 * -----/webservice/secure/local/getGroupMembers.action
 	 */
 	//in
 	//private String bindId; //应该为groupId
@@ -703,7 +703,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	
 	/**
-	 * -----/webservice/secure/getAllGroups.action
+	 * -----/webservice/secure/local/getAllGroups.action
 	 */
 	//in
 	//out
@@ -720,7 +720,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	}
 	
 	/**
-	 * -----/webservice/secure/getMySelfInfo.action
+	 * -----/webservice/secure/local/getMySelfInfo.action
 	 */
 	//in
 	//out

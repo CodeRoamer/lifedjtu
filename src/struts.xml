@@ -113,12 +113,7 @@
 			<result name="success" type="jsonResult">flag,user</result>
 		</action>
 		 
-		<action name="getCourseInfo" method="getCourseInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
-			<result name="success" type="jsonResult">flag,courseDtos</result>
-		</action>
-		<action name="getExamInfo" method="getExamInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
-			<result name="success" type="jsonResult">flag,examDtos</result>
-		</action>
+		
 		<action name="getScoreInfo" method="getScoreInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,scoreDtos</result>
 		</action>
@@ -131,6 +126,17 @@
 			<result name="success" type="jsonResult">flag,avgMark</result>
 		</action>
 		
+		<!-- course与exam是需要灵活性的，可以脱离教务，访问数据库信息，根据用户的喜好 -->
+		<action name="getCourseInfo" method="getCourseInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,courseDtos</result>
+		</action>
+		<action name="getExamInfo" method="getExamInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,examDtos</result>
+		</action>
+				
+	</package>
+	
+	<package name="webservice_secure_local" extends="webservice_secure" namespace="/webservice/secure/local">
 		<action name="getCourseInstance" method="getCourseInstance" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,courseMemberNum,classes,goodEval,badEval,sameCourseMemberNum,sameClassMemberNum,courseGroupId,courseInstanceGroupId</result>
 		</action>
@@ -183,6 +189,5 @@
 		</action>
 		
 	</package>
-	
 	
 </struts>

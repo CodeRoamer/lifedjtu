@@ -36,6 +36,8 @@ public class UserValidateInterceptor extends AbstractInterceptor{
 		
 		boolean isWebservice = invocation.getProxy().getNamespace().contains("webservice");
 		boolean isSecure = invocation.getProxy().getNamespace().contains("secure");
+		//webservice/secure/local/*.action
+		boolean isLocal = invocation.getProxy().getNamespace().contains("local");
 		
 		if(isWebservice&&isSecure){
 			String studentId = request.getParameter("studentId");
@@ -45,17 +47,29 @@ public class UserValidateInterceptor extends AbstractInterceptor{
 				return "needLogin";
 			}
 			
-			LocalResult<String> result = jwLocalService.prepareUser(studentId, dynamicPass);
-			
-			
-			if(result.getResultState()==ResultState.SUCCESS.ordinal()){
-				invocation.getStack().setValue("sessionId", result.getResult());
-				return invocation.invoke();
-			}else if(result.getResultState()==ResultState.NEEDLOGIN.ordinal()){
-				return "needLogin";
-			}else {
-				return "fail";
+			if(isLocal){
+				LocalResult<Boolean> successResult = jwLocalService.prepareUserLocal(studentId, dynamicPass);
+				if(successResult.getResultState()==ResultState.SUCCESS.ordinal()){
+					return invocation.invoke();
+				}else if(successResult.getResultState()==ResultState.NEEDLOGIN.ordinal()){
+					return "needLogin";
+				}else{
+					return "fail";
+				}
+			}else{
+				LocalResult<String> result = jwLocalService.prepareUser(studentId, dynamicPass);
+				
+				if(result.getResultState()==ResultState.SUCCESS.ordinal()){
+					invocation.getStack().setValue("sessionId", result.getResult());
+					return invocation.invoke();
+				}else if(result.getResultState()==ResultState.NEEDLOGIN.ordinal()){
+					return "needLogin";
+				}else {
+					return "fail";
+				}
 			}
+			
+			
 		}else{
 			return invocation.invoke();
 		}
