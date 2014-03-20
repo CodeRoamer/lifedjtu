@@ -121,7 +121,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			
 			
 			UserCourse userCourse = userCourseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId),Restrictions.eq("courseInstance.id", courseInstance.getId())));
-			
+			//如果用户删课的话则么办？？？？？？
 			
 			
 			if(userCourse==null){

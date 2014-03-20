@@ -353,7 +353,7 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 	private List<CourseInstance> courseDtos;
 	
 	public String getCourseInfo(){
-		LocalResult<List<CourseInstance>> localResult = jwLocalService.queryLocalCourseTabel(studentId, sessionId);
+		LocalResult<List<CourseInstance>> localResult = jwLocalService.queryLocalCourseTabel(studentId, sessionId,true);
 		
 		courseDtos = localResult.getResult();
 		
@@ -730,6 +730,24 @@ public class WebserviceSecureAction extends LifeDjtuAction {
 		LocalResult<User> localResult = jwLocalService.getUserDetailInfo(studentId);
 		
 		user = localResult.getResult();
+		
+		flag = localResult.getResultState();
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * -----/webservice/secure/local/getCourseInfo.action
+	 */
+	//in
+	//private String studentId;
+	//out
+	//private List<CourseInstance> courseDtos;
+	
+	public String getCourseInfoLocal(){
+		LocalResult<List<CourseInstance>> localResult = jwLocalService.queryLocalCourseTabel(studentId, sessionId,false);
+		
+		courseDtos = localResult.getResult();
 		
 		flag = localResult.getResultState();
 		

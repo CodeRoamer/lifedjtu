@@ -112,7 +112,10 @@
 		<action name="getUserInfo" method="getUserInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,user</result>
 		</action>
-		 
+		
+		 <action name="getExamInfo" method="getExamInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,examDtos</result>
+		</action>
 		
 		<action name="getScoreInfo" method="getScoreInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,scoreDtos</result>
@@ -130,9 +133,7 @@
 		<action name="getCourseInfo" method="getCourseInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,courseDtos</result>
 		</action>
-		<action name="getExamInfo" method="getExamInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
-			<result name="success" type="jsonResult">flag,examDtos</result>
-		</action>
+		
 				
 	</package>
 	
@@ -187,7 +188,9 @@
 		<action name="getMySelfInfo" method="getMySelfInfo" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,user</result>
 		</action>
-		
+		<action name="getCourseInfo" method="getCourseInfoLocal" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
+			<result name="success" type="jsonResult">flag,courseDtos</result>
+		</action>
 	</package>
 	
 </struts>

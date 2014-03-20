@@ -44,6 +44,7 @@ import com.lifedjtu.jw.pojos.IMGroup;
 import com.lifedjtu.jw.pojos.IMGroupUser;
 import com.lifedjtu.jw.pojos.RoomTakenItem;
 import com.lifedjtu.jw.pojos.User;
+import com.lifedjtu.jw.pojos.UserCourse;
 import com.lifedjtu.jw.pojos.dto.BuildingDto;
 import com.lifedjtu.jw.pojos.dto.CourseDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
@@ -374,23 +375,33 @@ public class JWLocalServiceImpl implements JWLocalService{
 	}
 
 	@Override
-	public LocalResult<List<CourseInstance>> queryLocalCourseTabel(String studentId, String sessionId) {
-		List<CourseDto> courseDtos = jwRemoteService.queryRemoteCourseTable(sessionId);
-		
+	public LocalResult<List<CourseInstance>> queryLocalCourseTabel(String studentId, String sessionId, boolean eagerFetch) {
 		List<CourseInstance> courseInstances = new ArrayList<CourseInstance>();
+
 		
-		for(CourseDto courseDto : courseDtos){
-			courseInstances.add(LifeDjtuUtil.transferCourseDto(courseDto, -1, -1));
-		}
+		if(eagerFetch){
+			List<CourseDto> courseDtos = jwRemoteService.queryRemoteCourseTable(sessionId);
+			for(CourseDto courseDto : courseDtos){
+				courseInstances.add(LifeDjtuUtil.transferCourseDto(courseDto, -1, -1));
+			}
+			
+			Tuple tuple = userDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)), ProjectionWrapper.instance().fields("id","studentId"));
+			
+			jwUpdateCacheAsyncer.updateCourseInfo((String)tuple.get(0), courseDtos, jwRemoteService.queryDjtuDate(sessionId));
+			
+		}else{
+			List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("user", "user").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("user.studentId", studentId)));
+			//仍要注意提防。。。新的一学年课程必须清空...这里并没有判定是哪一年的课程
+			for(UserCourse userCourse : userCourses){
+				courseInstances.add(userCourse.getCourseInstance());
+			}
+		}		
+		
 		
 		LocalResult<List<CourseInstance>> localResult = new LocalResult<List<CourseInstance>>();
 		
 		localResult.autoFill(courseInstances);
 		
-		Tuple tuple = userDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)), ProjectionWrapper.instance().fields("id","studentId"));
-		
-		
-		jwUpdateCacheAsyncer.updateCourseInfo((String)tuple.get(0), courseDtos, jwRemoteService.queryDjtuDate(sessionId));
 		
 		return localResult;
 	}
