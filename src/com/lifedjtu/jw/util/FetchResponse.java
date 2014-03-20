@@ -1,5 +1,6 @@
 package com.lifedjtu.jw.util;
 
+import java.io.InputStream;
 import java.util.Map;
 
 import com.lifedjtu.jw.pojos.EntityObject;
@@ -19,6 +20,15 @@ public class FetchResponse  extends EntityObject{
 	//存储当前与教务在线官网的会话ID
 	private String sessionId;
 	
+	private InputStream inputStream;
+	
+	
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
 	public String getSessionId() {
 		return sessionId;
 	}

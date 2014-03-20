@@ -242,4 +242,29 @@ public class LifeDjtuUtil {
 
 		return null;
 	}
+	
+	/*
+	 * 修正可以避免的验证码识别错误
+	 */
+	public static String fixDamnCode(char[] code){
+		StringBuilder sb = new StringBuilder();
+		for(char chr : code){
+			if(chr=='\0'||chr==' '){
+				continue;
+			}
+			
+			if(chr=='D'){
+				sb.append('0');
+			}else if(chr=='I'){
+				sb.append('1');
+			}else if(chr=='/'){
+				sb.append('7');
+			}else if(chr=='n'){
+				sb.append('0');
+			}else{
+				sb.append(chr);
+			}
+		}
+		return sb.toString();
+	}
 }

@@ -56,7 +56,7 @@ public class LifeDjtuFetchUrl {
 	private String responseCookies;
 	private int statusCode;
 	private Map<String, String> responseHeaders;
-	
+	private String contentType;
 	
 	private String url;
 	
@@ -76,6 +76,14 @@ public class LifeDjtuFetchUrl {
 
 	public void setHttpPost(HttpPost httpPost) {
 		this.httpPost = httpPost;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 	public boolean isAllowRedirect() {
@@ -162,13 +170,24 @@ public class LifeDjtuFetchUrl {
 		return get(url);
 	}
 	
-	public String get(String url){
+	public InputStream getAsStream(String url){
 		this.url = url;
 		httpGet = new HttpGet();
 		httpGet.setURI(composeURI());
 		httpGet.setHeader("Cookie",composeCookieHeader());
 		
 		return connect(httpGet);
+	}
+	
+	public String get(String url){
+		this.url = url;
+		httpGet = new HttpGet();
+		httpGet.setURI(composeURI());
+		httpGet.setHeader("Cookie",composeCookieHeader());
+		
+		connect(httpGet);
+		
+		return responseBody;
 		
 	}
 	
@@ -187,7 +206,9 @@ public class LifeDjtuFetchUrl {
 		httpPost.setEntity(composeEntity());
 		httpPost.setHeader("Cookie",composeCookieHeader());
 
-		return connect(httpPost);
+		connect(httpPost);
+		
+		return responseBody;
 	}
 	
 	
@@ -240,18 +261,25 @@ public class LifeDjtuFetchUrl {
 		return null;
 	}
 	
-	public String connect(HttpUriRequest httpRequest){
+	public InputStream connect(HttpUriRequest httpRequest){
 		BufferedReader reader = null;
 		try {
 			httpClient = new DefaultHttpClient();
+			//设置client请求
 			HttpParams params = httpClient.getParams();  
 			params.setParameter(ClientPNames.HANDLE_REDIRECTS, allowRedirect);
 			params.setParameter(ClientPNames.MAX_REDIRECTS, redirectNum);
 			httpClient.setParams(params);
+			//执行connect
 			HttpResponse response = httpClient.execute(httpRequest);
+			reset();
+
+			//抓取cookie，尤其是session cookie
 			Header cookieHeader = response.getFirstHeader("Set-Cookie");
 			responseCookies = (cookieHeader==null)?"":cookieHeader.getValue();
+			//获取状态码
 			statusCode = response.getStatusLine().getStatusCode();
+			//获取全部的头部
 			HeaderIterator iter = response.headerIterator();
 			responseHeaders = new HashMap<String,String>();
 			while(iter.hasNext()){
@@ -263,34 +291,60 @@ public class LifeDjtuFetchUrl {
 			InputStream inputStream = response.getEntity().getContent();
 			Header typeHeader = response.getEntity().getContentType();
 			Header encodingHeader = response.getEntity().getContentEncoding();
-			String encoding = "";
-			if(encodingHeader!=null){
-				encoding = encodingHeader.getValue().trim();
-			}else if(typeHeader != null){
-				Pattern pattern = Pattern.compile(".*[cC]harset=([a-zA-z0-9-]+).*");
-				Matcher matcher = pattern.matcher(typeHeader.getValue());
-				if(matcher.find()){
-					encoding = matcher.group(1);
+			//默认处理文字
+			boolean plainText = true;
+			//response type的判断
+			if(typeHeader != null){
+				String value = typeHeader.getValue();
+				int index;
+				if((index=value.indexOf(";"))!=-1){
+					value = value.substring(0,index);
+				}
+				//value now is the type of response
+				//System.err.println("in fetcher: "+value);
+				contentType = value;
+				
+				if(!value.contains("text")){
+					plainText = false;
+					//System.err.println("not text");
+				}
+			}
+			
+			if(plainText){
+				//编码判断
+				String encoding = "";
+				if(encodingHeader!=null){
+					encoding = encodingHeader.getValue().trim();
+				}else if(typeHeader != null){
+					Pattern pattern = Pattern.compile(".*[cC]harset=([a-zA-z0-9-]+).*");
+					Matcher matcher = pattern.matcher(typeHeader.getValue());
+					if(matcher.find()){
+						encoding = matcher.group(1);
+					}else{
+						encoding = "UTF-8";
+					}
 				}else{
 					encoding = "UTF-8";
 				}
+				//System.out.println(encoding);
+				reader = new BufferedReader(new InputStreamReader(inputStream,encoding));
+				String line = "";
+				StringBuilder builder = new StringBuilder();
+				while((line=reader.readLine())!=null){
+					builder.append(line);
+				}
+				reader.close();
+				responseBody = builder.toString();
+				
+				return null;
 			}else{
-				encoding = "UTF-8";
+				//处理其他格式，返回流
+				return inputStream;
 			}
-			//System.out.println(encoding);
-			reader = new BufferedReader(new InputStreamReader(inputStream,encoding));
-			String line = "";
-			StringBuilder builder = new StringBuilder();
-			while((line=reader.readLine())!=null){
-				builder.append(line);
-			}
-			reader.close();
-			responseBody = builder.toString();
+			
 			//System.err.println(statusCode);
 			//System.out.println(responseBody);
-			reset();
 			
-			return responseBody;
 		} catch (IOException e) {
 			e.printStackTrace();
 			if(reader!=null){
