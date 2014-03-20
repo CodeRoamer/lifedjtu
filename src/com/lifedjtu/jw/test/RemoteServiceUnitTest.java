@@ -51,8 +51,8 @@ public class RemoteServiceUnitTest {
 		ApplicationContext ctx=new FileSystemXmlApplicationContext("WebContent"+sep+"WEB-INF"+sep+"applicationContext.xml");
 
 		JWRemoteService remoteService = (JWRemoteServiceImpl)ctx.getBean("jwRemoteService");
-		
-		CourseRecordDto courseRecordDto = remoteService.queryRemoteCourseRecord(remoteService.randomSessionId(), "382117465");
+		String sessionId = remoteService.signinRemote("1018110323", "lh911119");
+		CourseRecordDto courseRecordDto = remoteService.queryRemoteCourseRecord(sessionId, "382117465");
 		
 		System.err.println(courseRecordDto.toJSON());
 		

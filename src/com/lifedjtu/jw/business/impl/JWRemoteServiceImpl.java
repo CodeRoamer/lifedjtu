@@ -43,8 +43,8 @@ import com.lifedjtu.jw.util.pattern.InfoProcessHub;
 @Component("jwRemoteService")
 public class JWRemoteServiceImpl implements JWRemoteService,ServletContextAware {
 
-	private final String loginURL = "202.199.128.21/academic/j_acegi_security_check";
-	private final String studentMessageURL = "http://202.199.128.21/academic/showHeader.do";
+	//private final String loginURL = "202.199.128.21/academic/j_acegi_security_check";
+	//private final String studentMessageURL = "http://202.199.128.21/academic/showHeader.do";
 	private final String studentRegistryURL = "http://202.199.128.21/academic/student/studentinfo/studentInfoModifyIndex.do?frombase=0&wantTag=0";
 	private final String modifyPasswordURL = "http://202.199.128.21/academic/sysmgr/modifypasswd_user.jsdo";
 	private final String queryBuildingOnDateURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedule_week.jsdo";
@@ -54,6 +54,8 @@ public class JWRemoteServiceImpl implements JWRemoteService,ServletContextAware 
 	private final String queryRemoteScoresURL = "http://202.199.128.21/academic/manager/score/studentOwnScore.do";
 	private final String queryAreaURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedulequery.jsdo";
 	private final String queryDateURL = "http://202.199.128.21/academic/listLeft.do";
+	
+	private final String loginCrackCodeURL = "http://111.206.45.12:30083/fetchCodeAndSessionId/";
 	
 	private final String queryNoteURL = "http://202.199.128.21/jwzx/infoArticleList.do?columnId=259&sortColumn=publicationDate&sortDirection=-1&pagingNumberPer=15";
 
@@ -71,14 +73,22 @@ public class JWRemoteServiceImpl implements JWRemoteService,ServletContextAware 
 	@Override
 	public String signinRemote(String studentId, String password) {
 		// TODO Auto-generated method stub
-			FetchResponse fetchResponse = URLFetcher.fetchURLByPost(loginURL, null, MapMaker.instance("j_username", studentId).param("j_password", password).toMap());
-			FetchResponse response2 = URLFetcher.fetchURLByGet(studentMessageURL, fetchResponse.getSessionId());
-			if(response2.getStatusCode()!=200){
-				System.out.println("登陆失败或已经超时，重新登陆！");
-				return null;
-			}else {
-				return fetchResponse.getSessionId();
-			}
+//			FetchResponse fetchResponse = URLFetcher.fetchURLByPost(loginURL, null, MapMaker.instance("j_username", studentId).param("j_password", password).toMap());
+//			FetchResponse response2 = URLFetcher.fetchURLByGet(studentMessageURL, fetchResponse.getSessionId());
+//			if(response2.getStatusCode()!=200){
+//				System.out.println("登陆失败或已经超时，重新登陆！");
+//				return null;
+//			}else {
+//				return fetchResponse.getSessionId();
+//			}
+		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(loginCrackCodeURL+studentId+"?randomCode="+password, null);
+		if(fetchResponse.getResponseBody().trim().length()<20){
+			System.out.println("Login Failed");
+			return null;
+		}else {
+			return fetchResponse.getResponseBody().trim();
+		}
+		
 	}
 
 	@Override
