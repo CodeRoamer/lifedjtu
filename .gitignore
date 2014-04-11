@@ -1,4 +1,9 @@
-.settings/
-build/
-src/lifedjtu-custom.properties
+# idea meta files #
+/.idea
 
+# maven target folder #
+/target
+
+# custom configuration file #
+
+src/main/resources/lifedjtu-custom.properties
