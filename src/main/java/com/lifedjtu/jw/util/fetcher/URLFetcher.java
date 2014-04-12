@@ -1,4 +1,4 @@
-package com.lifedjtu.jw.util;
+package com.lifedjtu.jw.util.fetcher;
 
 import static com.lifedjtu.jw.util.extractor.Extractor.*;
 
@@ -18,6 +18,8 @@ import javax.imageio.ImageIO;
 
 import com.lifedjtu.jw.config.LifeDjtuConfig;
 import com.lifedjtu.jw.pojos.dto.Pair;
+import com.lifedjtu.jw.util.LifeDjtuUtil;
+import com.lifedjtu.jw.util.MapMaker;
 
 
 //请使用IP地址，节约DNS查询时间
@@ -34,7 +36,7 @@ public class URLFetcher {
 		//设置最大重定向次数
 		fetch.setRedirectNum(LifeDjtuConfig.getIntegerProperty("redirectNum"));
 		//设置cookie
-		fetch.setCookie(LifeDjtuConfig.getProperty("sessionIdKey"), sessionId);
+		fetch.addCookie(LifeDjtuConfig.getProperty("sessionIdKey"), sessionId);
 		//发起一次get请求
 		fetchResponse.setInputStream(fetch.getAsStream(url));
 		//获取http code
@@ -81,7 +83,7 @@ public class URLFetcher {
 		//设置最大重定向次数
 		fetch.setRedirectNum(LifeDjtuConfig.getIntegerProperty("redirectNum"));
 		//设置cookie
-		fetch.setCookie(LifeDjtuConfig.getProperty("sessionIdKey"), sessionId);
+		fetch.addCookie(LifeDjtuConfig.getProperty("sessionIdKey"), sessionId);
 		//发起一次get请求
 		fetchResponse.setResponseBody(fetch.get(url));
 		//获取http code
@@ -124,7 +126,7 @@ public class URLFetcher {
 		//设置最大重定向次数
 		fetch.setRedirectNum(LifeDjtuConfig.getIntegerProperty("redirectNum"));
 		//设置cookie
-		fetch.setCookie(LifeDjtuConfig.getProperty("sessionIdKey"), sessionId);		
+		fetch.addCookie(LifeDjtuConfig.getProperty("sessionIdKey"), sessionId);
 		//设置post参数，实际post的内容
 		fetch.setPostData(params);		
 		//发起一次post请求
@@ -161,11 +163,16 @@ public class URLFetcher {
 	}
 	
 	public static void main(String[] args){
-		long currentTime = System.currentTimeMillis();
-		endlessSigninRemote("1018110323", "lh911119");
-		System.err.println((System.currentTimeMillis()-currentTime)/(double)1000+"s");
-		
-			    
+		final long currentTime = System.currentTimeMillis();
+
+        new Thread(){
+            @Override
+            public void run(){
+                endlessSigninRemote("1018110323", "lh911119");
+                System.err.println((System.currentTimeMillis()-currentTime)/(double)1000+"s");
+            }
+        }.start();
+
 	}
 	
 	public static String endlessSigninRemote(String studentId, String password){
@@ -187,8 +194,12 @@ public class URLFetcher {
 			System.out.println("登陆失败或已经超时，重新登陆！");
 			return null;
 		}else {
-			String infoString = $("#greeting", response2.getResponseBody()).get(0).getText().trim();
-			System.out.println(infoString);
+			try{
+                String infoString = $("#greeting", response2.getResponseBody()).get(0).getText().trim();
+                System.out.println(infoString);
+            }catch (Exception exception){
+                System.out.println(response2.getResponseBody());
+            }
 			return pair.getKey();
 		}
 	}
@@ -198,7 +209,7 @@ public class URLFetcher {
 		try{
 			FetchResponse fetchResponse = fetchStreamByGet("202.199.128.21/academic/getCaptcha.do?999999999999999999999999999999999999", sessionId);
 			
-			BufferedImage image = null;
+			BufferedImage image;
 			image = ImageIO.read(fetchResponse.getInputStream());
 
 		    int averageGrey = 0;
@@ -247,7 +258,7 @@ public class URLFetcher {
 		    	String str = LifeDjtuUtil.fixDamnCode(charArr);
 		    	System.err.println("After Fix: \""+str+"\"");
 		    	
-		    	return new Pair<String, String>(fetchResponse.getSessionId(),str);
+		    	return new Pair<>(fetchResponse.getSessionId(),str);
 		    }
 		}catch(Exception exception){
 			exception.printStackTrace();
@@ -262,7 +273,7 @@ public class URLFetcher {
 		ImageIO.write(image, "jpeg", file);
 
 	    
-	    List<String> cmd = new ArrayList<String>(); // 存放命令行参数的数组
+	    List<String> cmd = new ArrayList<>(); // 存放命令行参数的数组
 	    cmd.add("D:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe");
 	    cmd.add("");
 	    cmd.add("./"+textName); // 输出文件位置

@@ -1,7 +1,7 @@
 package com.lifedjtu.jw.ui.struts2.core;
 
 import com.lifedjtu.jw.business.task.JWUpdateCacheScheduler;
-import com.lifedjtu.jw.util.Crypto;
+import com.lifedjtu.jw.util.security.Crypto;
 import com.opensymphony.xwork2.Action;
 
 public class MainUpdateCacheAction {

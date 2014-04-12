@@ -1,16 +1,18 @@
-package com.lifedjtu.jw.util;
+package com.lifedjtu.jw.util.fetcher;
 
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HeaderIterator;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.params.ClientPNames;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.HttpParams;
 
-import javax.servlet.http.Cookie;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,14 +24,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LifeDjtuFetchUrl {
-	private DefaultHttpClient httpClient;
+	private CloseableHttpClient httpClient;
+
 	//request part below
-	
 	//get and post
-	private boolean allowRedirect = false;
-	private int redirectNum = 0;
-	private List<Cookie> setCookies = new ArrayList<Cookie>();
-	private Map<String, String> postData = new HashMap<String, String>();
+	private boolean allowRedirect = false; //允许跳转
+	private int redirectNum = 0; //跳转次数
+	private List<Cookie> cookies = new ArrayList<>(); //Cookie For Request
+	private Map<String, String> postData = new HashMap<>(); //post data for response
 	
 	//get
 	private HttpGet httpGet;
@@ -46,23 +48,6 @@ public class LifeDjtuFetchUrl {
 	
 	private String url;
 	
-	
-
-	public HttpGet getHttpGet() {
-		return httpGet;
-	}
-
-	public void setHttpGet(HttpGet httpGet) {
-		this.httpGet = httpGet;
-	}
-
-	public HttpPost getHttpPost() {
-		return httpPost;
-	}
-
-	public void setHttpPost(HttpPost httpPost) {
-		this.httpPost = httpPost;
-	}
 
 	public String getContentType() {
 		return contentType;
@@ -89,15 +74,15 @@ public class LifeDjtuFetchUrl {
 	}
 
 	public List<Cookie> getCookies() {
-		return setCookies;
+		return cookies;
 	}
 
-	public void setCookie(Cookie cookie) {
-		this.setCookies.add(cookie);
+	public void addCookie(Cookie cookie) {
+		this.cookies.add(cookie);
 	}
 
-	public void setCookie(String key, String value){
-		this.setCookies.add(new Cookie(key,value));
+	public void addCookie(String key, String value){
+		this.cookies.add(new Cookie(key,value));
 	}
 	
 	public Map<String, String> getPostData() {
@@ -152,10 +137,19 @@ public class LifeDjtuFetchUrl {
 		this.url = url;
 	}
 
+    /**
+     * HTTP Get Method
+     * @return response body
+     */
 	public String get(){
 		return get(url);
 	}
-	
+
+    /**
+     * HTTP Get Method: Return Stream Instead, Use for download file, such as images
+     * @param url url of forwarding request
+     * @return input stream object
+     */
 	public InputStream getAsStream(String url){
 		this.url = url;
 		httpGet = new HttpGet();
@@ -164,7 +158,12 @@ public class LifeDjtuFetchUrl {
 		
 		return connect(httpGet);
 	}
-	
+
+    /**
+     * HTTP GET Method
+     * @param url url of forwarding request
+     * @return response body
+     */
 	public String get(String url){
 		this.url = url;
 		httpGet = new HttpGet();
@@ -176,11 +175,20 @@ public class LifeDjtuFetchUrl {
 		return responseBody;
 		
 	}
-	
+
+    /**
+     * HTTP Post Method
+     * @return response body
+     */
 	public String post(){
 		return post(url);
 	}
-	
+
+    /**
+     * HTTP Post Method
+     * @param url url of forwarding request
+     * @return response body
+     */
 	public String post(String url){
 		this.url = url;
 		httpPost = new HttpPost();
@@ -196,27 +204,33 @@ public class LifeDjtuFetchUrl {
 		
 		return responseBody;
 	}
-	
-	
+
+    /**
+     * compose url, add request params
+     * @return composed uri object
+     */
 	private URI composeURI(){
 		StringBuilder builder = new StringBuilder(url);
 		if(postData!=null&&postData.size()!=0){
 			builder.append("?");
 			for(Map.Entry<String, String> entry:postData.entrySet()){
-				builder.append(entry.getKey()+"="+entry.getValue()+"&");
+				builder.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
 			}
 		}
 		try {
-			URI uri = new URI(builder.toString());
-			return uri;
+			return new URI(builder.toString());
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
+    /**
+     * compose entity
+     * @return HttpEntity
+     */
 	private HttpEntity composeEntity(){
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		if(postData!=null&&postData.size()!=0){
 			for(Map.Entry<String, String> entry:postData.entrySet()){
 				formparams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
@@ -232,15 +246,19 @@ public class LifeDjtuFetchUrl {
 		}
 		
 	}
-	
+
+    /**
+     * compose cookie for request
+     * @return string contains cookie info
+     */
 	public String composeCookieHeader(){
-		if(setCookies!=null&&setCookies.size()!=0){
+		if(cookies!=null&&cookies.size()!=0){
 			StringBuilder builder = new StringBuilder();
-			for(Cookie cookie : setCookies){
-				if(cookie.getValue()==null||cookie.getValue().equals("")){
+			for(Cookie cookie : cookies){
+				if(cookie.getValue()==null||"".equals(cookie.getValue())){
 					continue;
 				}
-				builder.append(cookie.getName()+"="+cookie.getValue()+";");
+				builder.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
 			}
 			return builder.toString();
 		}
@@ -250,15 +268,16 @@ public class LifeDjtuFetchUrl {
 	public InputStream connect(HttpUriRequest httpRequest){
 		BufferedReader reader = null;
 		try {
-			httpClient = new DefaultHttpClient();
-			//设置client请求
-			HttpParams params = httpClient.getParams();  
-			params.setParameter(ClientPNames.HANDLE_REDIRECTS, allowRedirect);
-			params.setParameter(ClientPNames.MAX_REDIRECTS, redirectNum);
-			httpClient.setParams(params);
+            httpClient = HttpClients.createMinimal();
+            //设置client请求
+//			HttpParams params = httpClient.getParams();
+//			params.setParameter(ClientPNames.HANDLE_REDIRECTS, allowRedirect);
+//			params.setParameter(ClientPNames.MAX_REDIRECTS, redirectNum);
+//			httpClient.setParams(params);
 			//执行connect
-			HttpResponse response = httpClient.execute(httpRequest);
-			reset();
+			CloseableHttpResponse response = httpClient.execute(httpRequest);
+
+			reset(); //reset
 
 			//抓取cookie，尤其是session cookie
 			Header cookieHeader = response.getFirstHeader("Set-Cookie");
@@ -267,7 +286,7 @@ public class LifeDjtuFetchUrl {
 			statusCode = response.getStatusLine().getStatusCode();
 			//获取全部的头部
 			HeaderIterator iter = response.headerIterator();
-			responseHeaders = new HashMap<String,String>();
+			responseHeaders = new HashMap<>();
 			while(iter.hasNext()){
 				Header header = iter.nextHeader();
 				responseHeaders.put(header.getName(), header.getValue());
@@ -298,7 +317,7 @@ public class LifeDjtuFetchUrl {
 			
 			if(plainText){
 				//编码判断
-				String encoding = "";
+				String encoding;
 				if(encodingHeader!=null){
 					encoding = encodingHeader.getValue().trim();
 				}else if(typeHeader != null){
@@ -314,12 +333,14 @@ public class LifeDjtuFetchUrl {
 				}
 				//System.out.println(encoding);
 				reader = new BufferedReader(new InputStreamReader(inputStream,encoding));
-				String line = "";
+				String line;
 				StringBuilder builder = new StringBuilder();
 				while((line=reader.readLine())!=null){
 					builder.append(line);
 				}
 				reader.close();
+                response.close();
+                httpClient.close();
 				responseBody = builder.toString();
 				
 				return null;
@@ -347,20 +368,16 @@ public class LifeDjtuFetchUrl {
 	public void reset() {
 		allowRedirect = false;
 		redirectNum = 0;
-		setCookies.clear();
+		cookies.clear();
 		postData.clear();
 		url = "";
 	}
 	
-	private boolean found = false;
-    private String result;
 
-
-	
 	
 	public static void main(String[] args){
 		LifeDjtuFetchUrl fetch = new LifeDjtuFetchUrl();
-		System.err.println(fetch.get("http://www.taobao.com"));
+		System.err.println(fetch.get("http://jw.djtu.edu.cn/academic/showHeader.do"));
 		System.err.println(fetch.getResponseCookies()+"\n"+fetch.getResponseHeaders()+"\n"+fetch.getStatusCode());
 	}
 }

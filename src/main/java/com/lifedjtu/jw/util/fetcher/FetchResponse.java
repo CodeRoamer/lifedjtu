@@ -1,4 +1,4 @@
-package com.lifedjtu.jw.util;
+package com.lifedjtu.jw.util.fetcher;
 
 import java.io.InputStream;
 import java.util.Map;

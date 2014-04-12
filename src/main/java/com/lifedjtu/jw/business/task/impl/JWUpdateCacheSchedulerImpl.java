@@ -1,10 +1,16 @@
 package com.lifedjtu.jw.business.task.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
+import com.lifedjtu.jw.business.JWRemoteService;
+import com.lifedjtu.jw.business.task.JWUpdateCacheScheduler;
+import com.lifedjtu.jw.dao.CriteriaWrapper;
+import com.lifedjtu.jw.dao.impl.*;
+import com.lifedjtu.jw.dao.support.UUIDGenerator;
+import com.lifedjtu.jw.pojos.*;
+import com.lifedjtu.jw.pojos.dto.BuildingDto;
+import com.lifedjtu.jw.pojos.dto.DjtuDate;
+import com.lifedjtu.jw.pojos.dto.RoomInfoDto;
+import com.lifedjtu.jw.util.LifeDjtuEnum.GroupFlag;
+import com.lifedjtu.jw.util.MapMaker;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -12,37 +18,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lifedjtu.jw.business.JWLocalService;
-import com.lifedjtu.jw.business.JWRemoteService;
-import com.lifedjtu.jw.business.task.JWUpdateCacheScheduler;
-import com.lifedjtu.jw.dao.CriteriaWrapper;
-import com.lifedjtu.jw.dao.impl.AreaDao;
-import com.lifedjtu.jw.dao.impl.BuildingDao;
-import com.lifedjtu.jw.dao.impl.CourseDao;
-import com.lifedjtu.jw.dao.impl.CourseInstanceDao;
-import com.lifedjtu.jw.dao.impl.FriendPendingDao;
-import com.lifedjtu.jw.dao.impl.IMGroupDao;
-import com.lifedjtu.jw.dao.impl.IMGroupUserDao;
-import com.lifedjtu.jw.dao.impl.InstantMessageDao;
-import com.lifedjtu.jw.dao.impl.RoomDao;
-import com.lifedjtu.jw.dao.impl.RoomTakenItemDao;
-import com.lifedjtu.jw.dao.impl.UserCourseDao;
-import com.lifedjtu.jw.dao.support.UUIDGenerator;
-import com.lifedjtu.jw.pojos.Area;
-import com.lifedjtu.jw.pojos.Building;
-import com.lifedjtu.jw.pojos.Course;
-import com.lifedjtu.jw.pojos.CourseInstance;
-import com.lifedjtu.jw.pojos.IMGroup;
-import com.lifedjtu.jw.pojos.IMGroupUser;
-import com.lifedjtu.jw.pojos.Room;
-import com.lifedjtu.jw.pojos.RoomTakenItem;
-import com.lifedjtu.jw.pojos.User;
-import com.lifedjtu.jw.pojos.UserCourse;
-import com.lifedjtu.jw.pojos.dto.BuildingDto;
-import com.lifedjtu.jw.pojos.dto.DjtuDate;
-import com.lifedjtu.jw.pojos.dto.RoomInfoDto;
-import com.lifedjtu.jw.util.LifeDjtuEnum.GroupFlag;
-import com.lifedjtu.jw.util.MapMaker;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 @Component("jwUpdateCacheScheduler")
 @Transactional
@@ -57,8 +36,6 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 	private RoomTakenItemDao roomTakenItemDao;
 	@Autowired
 	private JWRemoteService jwRemoteService;
-	@Autowired
-	private JWLocalService jwLocalService;
 	@Autowired
 	private CourseDao courseDao;
 	@Autowired
@@ -184,7 +161,7 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 		}
 		List<RoomInfoDto> roomInfoDtosTod = buildingDtoTod.getRoomInfoDtos();
 		List<RoomInfoDto> roomInfoDtosTom = buildingDtoTom.getRoomInfoDtos();
-		List<RoomTakenItem> roomTakenItems = new ArrayList<RoomTakenItem>();
+		List<RoomTakenItem> roomTakenItems = new ArrayList<>();
 		
 		Iterator<RoomInfoDto> iteratorTod = roomInfoDtosTod.iterator();
 		Iterator<RoomInfoDto> iteratorTom = roomInfoDtosTom.iterator();
@@ -216,82 +193,6 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 	}
 	
 
-	
-	
-	public UserCourseDao getUserCourseDao() {
-		return userCourseDao;
-	}
-	public void setUserCourseDao(UserCourseDao userCourseDao) {
-		this.userCourseDao = userCourseDao;
-	}
-	public CourseDao getCourseDao() {
-		return courseDao;
-	}
-	public void setCourseDao(CourseDao courseDao) {
-		this.courseDao = courseDao;
-	}
-	public CourseInstanceDao getCourseInstanceDao() {
-		return courseInstanceDao;
-	}
-	public void setCourseInstanceDao(CourseInstanceDao courseInstanceDao) {
-		this.courseInstanceDao = courseInstanceDao;
-	}
-	public IMGroupDao getImGroupDao() {
-		return imGroupDao;
-	}
-	public void setImGroupDao(IMGroupDao imGroupDao) {
-		this.imGroupDao = imGroupDao;
-	}
-	public IMGroupUserDao getImGroupUserDao() {
-		return imGroupUserDao;
-	}
-	public void setImGroupUserDao(IMGroupUserDao imGroupUserDao) {
-		this.imGroupUserDao = imGroupUserDao;
-	}
-	public InstantMessageDao getInstantMessageDao() {
-		return instantMessageDao;
-	}
-	public void setInstantMessageDao(InstantMessageDao instantMessageDao) {
-		this.instantMessageDao = instantMessageDao;
-	}
-	public AreaDao getAreaDao() {
-		return areaDao;
-	}
-	public void setAreaDao(AreaDao areaDao) {
-		this.areaDao = areaDao;
-	}
-	public BuildingDao getBuildingDao() {
-		return buildingDao;
-	}
-	public void setBuildingDao(BuildingDao buildingDao) {
-		this.buildingDao = buildingDao;
-	}
-	public RoomDao getRoomDao() {
-		return roomDao;
-	}
-	public void setRoomDao(RoomDao roomDao) {
-		this.roomDao = roomDao;
-	}
-	public JWRemoteService getJwRemoteService() {
-		return jwRemoteService;
-	}
-	public void setJwRemoteService(JWRemoteService jwRemoteService) {
-		this.jwRemoteService = jwRemoteService;
-	}
-	public JWLocalService getJwLocalService() {
-		return jwLocalService;
-	}
-
-	public void setJwLocalService(JWLocalService jwLocalService) {
-		this.jwLocalService = jwLocalService;
-	}
-
-	public RoomTakenItemDao getRoomTakenItemDao() {
-		return roomTakenItemDao;
-	}
-	public void setRoomTakenItemDao(RoomTakenItemDao roomTakenItemDao) {
-		this.roomTakenItemDao = roomTakenItemDao;
-	}
 	private Room queryRoom(List<Room> rooms, String roomName){
 		for(Room room : rooms){
 			if(room.getRoomName().equals(roomName)){

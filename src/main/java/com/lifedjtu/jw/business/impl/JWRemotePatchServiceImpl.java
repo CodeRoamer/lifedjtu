@@ -8,30 +8,28 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.lifedjtu.jw.business.JWRemoteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.lifedjtu.jw.business.JWRemotePatchService;
 import com.lifedjtu.jw.pojos.dto.EvaEntry;
 import com.lifedjtu.jw.pojos.dto.EvaList;
-import com.lifedjtu.jw.util.FetchResponse;
+import com.lifedjtu.jw.util.fetcher.FetchResponse;
 import com.lifedjtu.jw.util.MapMaker;
-import com.lifedjtu.jw.util.URLFetcher;
+import com.lifedjtu.jw.util.fetcher.URLFetcher;
 import com.lifedjtu.jw.util.extractor.DomElement;
 
 @Component("jwRemotePatchService")
 public class JWRemotePatchServiceImpl implements JWRemotePatchService{
 
+    @Autowired
+    private JWRemoteService jwRemoteService;
+
 	public String tempSignin(String studentId, String password){
-		String signinURL = "http://202.199.128.21/academic/j_acegi_security_check";
-		String headerURL = "http://202.199.128.21/academic/showHeader.do";
-		FetchResponse response = URLFetcher.fetchURLByPost(signinURL, null, MapMaker.instance("j_username", studentId).param("j_password", password).toMap());
-		String sessionId = response.getSessionId();		
-		FetchResponse headerResponse = URLFetcher.fetchURLByGet(headerURL, sessionId);
-		if(headerResponse.getStatusCode()!=200){
-			return null;
-		}else{
-			return sessionId;
-		}
+
+        return jwRemoteService.signinRemote(studentId,password);
+
 	}
 	
 	@Override

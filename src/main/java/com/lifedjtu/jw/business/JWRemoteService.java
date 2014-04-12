@@ -18,6 +18,8 @@ import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
 
 public interface JWRemoteService {
+    public String showHeader(String sessionId);
+
 	public String signinRemote(String studentId, String password);
 	
 	public StudentRegistry fetchStudentRegistry(String sessionId);

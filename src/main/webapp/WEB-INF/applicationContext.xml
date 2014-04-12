@@ -76,16 +76,16 @@
 	<aop:config>
 		<aop:pointcut expression="execution(public * com.lifedjtu.jw.dao.impl..*.*(..))"
 			id="dao-transaction" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="dao-transaction" />
-		
-		<aop:aspect ref="serviceAround">
-			<aop:pointcut id="booleanReturnCut"
-				expression="execution(public boolean com.lifedjtu..*.business.*Service+.*(..))" />
-			<aop:pointcut id="entityObjectReturnCut"
-				expression="execution(public com.lifedjtu.jw.pojos.EntityObject+ com.lifedjtu..*.business.*Service+.*(..))" />
-			<aop:pointcut id="collectionObjectReturnCut"
-				expression="execution(public java.util.Collection+ com.lifedjtu..*.business.*Service+.*(..))" />
-			
+        <aop:pointcut id="booleanReturnCut"
+                      expression="execution(public boolean com.lifedjtu..*.business.*Service+.*(..))" />
+        <aop:pointcut id="entityObjectReturnCut"
+                      expression="execution(public com.lifedjtu.jw.pojos.EntityObject+ com.lifedjtu..*.business.*Service+.*(..))" />
+        <aop:pointcut id="collectionObjectReturnCut"
+                      expression="execution(public java.util.Collection+ com.lifedjtu..*.business.*Service+.*(..))" />
+
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="dao-transaction" />
+
+        <aop:aspect ref="serviceAround">
 
 			<aop:around pointcut-ref="booleanReturnCut"
 				method="booleanAroundMethod"/>
@@ -94,9 +94,10 @@
 			<aop:around pointcut-ref="collectionObjectReturnCut"
 				method="objectAroundMethod"  />
 			
-
 		</aop:aspect>
-	</aop:config>
+
+
+    </aop:config>
 
 	<task:annotation-driven executor="lifeDjtuExecutor"
 		scheduler="lifeDjtuScheduler" />

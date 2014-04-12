@@ -2,6 +2,7 @@ package com.lifedjtu.jw.test;
 
 import java.io.File;
 
+import com.lifedjtu.jw.pojos.SystemNotice;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -48,14 +49,43 @@ public class RemoteServiceUnitTest {
 	@Test
 	public void testRemoteService(){
 		char sep = File.separatorChar;
-		ApplicationContext ctx=new FileSystemXmlApplicationContext("WebContent"+sep+"WEB-INF"+sep+"applicationContext.xml");
+        String path = new StringBuilder().append("src").append(sep).append("main").append(sep).append("webapp").append(sep).append("WEB-INF").append(sep).append("applicationContext.xml").toString();
+		ApplicationContext ctx=new FileSystemXmlApplicationContext(path);
 
-		JWRemoteService remoteService = (JWRemoteServiceImpl)ctx.getBean("jwRemoteService");
-		String sessionId = remoteService.signinRemote("1018110323", "lh911119");
-		CourseRecordDto courseRecordDto = remoteService.queryRemoteCourseRecord(sessionId, "382117465");
-		
-		System.err.println(courseRecordDto.toJSON());
-		
+		final JWRemoteService remoteService = (JWRemoteServiceImpl)ctx.getBean("jwRemoteService");
+
+        new Thread(){
+            @Override
+            public void run(){
+                long current = System.currentTimeMillis();
+                String sessionId = remoteService.signinRemote("1018110323", "lh911119");
+                System.out.println((System.currentTimeMillis()-current)/1000.0+"s");
+
+                if(sessionId!=null){
+                    System.out.println(remoteService.showHeader(sessionId));
+                }
+            }
+        }.start();
+
+        new Thread(){
+            @Override
+            public void run(){
+                long current = System.currentTimeMillis();
+                String sessionId = remoteService.signinRemote("1018110207", "1991080213");
+                System.out.println((System.currentTimeMillis()-current)/1000.0+"s");
+
+                if(sessionId!=null){
+                    System.out.println(remoteService.showHeader(sessionId));
+                }
+            }
+        }.start();
+
+        try{
+            Thread.sleep(100000);
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
+
 	}
 	
 	

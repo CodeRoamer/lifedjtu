@@ -1,4 +1,4 @@
-package com.lifedjtu.jw.util;
+package com.lifedjtu.jw.util.security;
 
 import java.security.MessageDigest;
 import java.util.UUID;

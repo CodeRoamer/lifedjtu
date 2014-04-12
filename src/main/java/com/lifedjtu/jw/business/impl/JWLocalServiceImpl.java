@@ -53,7 +53,7 @@ import com.lifedjtu.jw.pojos.dto.GroupDto;
 import com.lifedjtu.jw.pojos.dto.RoomDto;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
-import com.lifedjtu.jw.util.Crypto;
+import com.lifedjtu.jw.util.security.Crypto;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ExamStatus;
 import com.lifedjtu.jw.util.LifeDjtuEnum.FriendRequestStatus;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
@@ -91,120 +91,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	private FriendDao friendDao;
 	@Autowired
 	private FriendPendingDao friendPendingDao;
-	
-	public FriendDao getFriendDao() {
-		return friendDao;
-	}
 
-	public void setFriendDao(FriendDao friendDao) {
-		this.friendDao = friendDao;
-	}
-
-	public FriendPendingDao getFriendPendingDao() {
-		return friendPendingDao;
-	}
-
-	public void setFriendPendingDao(FriendPendingDao friendPendingDao) {
-		this.friendPendingDao = friendPendingDao;
-	}
-
-	public CourseDao getCourseDao() {
-		return courseDao;
-	}
-
-	public void setCourseDao(CourseDao courseDao) {
-		this.courseDao = courseDao;
-	}
-
-	public CourseInstanceDao getCourseInstanceDao() {
-		return courseInstanceDao;
-	}
-
-	public void setCourseInstanceDao(CourseInstanceDao courseInstanceDao) {
-		this.courseInstanceDao = courseInstanceDao;
-	}
-
-	public JWUpdateCacheScheduler getJwUpdateCacheScheduler() {
-		return jwUpdateCacheScheduler;
-	}
-
-	public void setJwUpdateCacheScheduler(
-			JWUpdateCacheScheduler jwUpdateCacheScheduler) {
-		this.jwUpdateCacheScheduler = jwUpdateCacheScheduler;
-	}
-	
-	public JWUpdateCacheAsyncer getJwUpdateCacheAsyncer() {
-		return jwUpdateCacheAsyncer;
-	}
-
-	public void setJwUpdateCacheAsyncer(JWUpdateCacheAsyncer jwUpdateCacheAsyncer) {
-		this.jwUpdateCacheAsyncer = jwUpdateCacheAsyncer;
-	}
-
-	public UserCourseDao getUserCourseDao() {
-		return userCourseDao;
-	}
-
-	public void setUserCourseDao(UserCourseDao userCourseDao) {
-		this.userCourseDao = userCourseDao;
-	}
-
-	public IMGroupUserDao getImGroupUserDao() {
-		return imGroupUserDao;
-	}
-
-	public void setImGroupUserDao(IMGroupUserDao imGroupUserDao) {
-		this.imGroupUserDao = imGroupUserDao;
-	}
-
-	public IMGroupDao getImGroupDao() {
-		return imGroupDao;
-	}
-
-	public void setImGroupDao(IMGroupDao imGroupDao) {
-		this.imGroupDao = imGroupDao;
-	}
-
-	public AreaDao getAreaDao() {
-		return areaDao;
-	}
-
-	public void setAreaDao(AreaDao areaDao) {
-		this.areaDao = areaDao;
-	}
-
-	public BuildingDao getBuildingDao() {
-		return buildingDao;
-	}
-
-	public void setBuildingDao(BuildingDao buildingDao) {
-		this.buildingDao = buildingDao;
-	}
-
-	public RoomTakenItemDao getRoomTakenItemDao() {
-		return roomTakenItemDao;
-	}
-
-	public void setRoomTakenItemDao(RoomTakenItemDao roomTakenItemDao) {
-		this.roomTakenItemDao = roomTakenItemDao;
-	}
-
-	public JWRemoteService getJwRemoteService() {
-		return jwRemoteService;
-	}
-
-	public void setJwRemoteService(JWRemoteService jwRemoteService) {
-		this.jwRemoteService = jwRemoteService;
-	}
-
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-	
 
 	@Override
 	public boolean isUserExistAndReady(String studentId) {

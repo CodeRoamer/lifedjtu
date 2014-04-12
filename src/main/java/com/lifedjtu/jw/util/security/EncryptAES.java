@@ -1,4 +1,4 @@
-package com.lifedjtu.jw.util;
+package com.lifedjtu.jw.util.security;
 
 import java.io.ObjectInputStream;
 import java.security.InvalidKeyException;

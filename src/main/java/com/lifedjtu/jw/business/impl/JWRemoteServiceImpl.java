@@ -32,35 +32,37 @@ import com.lifedjtu.jw.pojos.dto.RoomInfoDto;
 import com.lifedjtu.jw.pojos.dto.RoomWeekInfo;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
-import com.lifedjtu.jw.util.FetchResponse;
+import com.lifedjtu.jw.util.fetcher.FetchResponse;
 import com.lifedjtu.jw.util.LifeDjtuUtil;
 import com.lifedjtu.jw.util.MapMaker;
-import com.lifedjtu.jw.util.URLFetcher;
+import com.lifedjtu.jw.util.fetcher.URLFetcher;
 import com.lifedjtu.jw.util.extractor.DomElement;
 import com.lifedjtu.jw.util.extractor.Extractor;
 import com.lifedjtu.jw.util.pattern.InfoProcessHub;
+
+import static com.lifedjtu.jw.util.extractor.Extractor.$;
 
 @Component("jwRemoteService")
 public class JWRemoteServiceImpl implements JWRemoteService,ServletContextAware {
 
 	//private final String loginURL = "202.199.128.21/academic/j_acegi_security_check";
-	//private final String studentMessageURL = "http://202.199.128.21/academic/showHeader.do";
-	private final String studentRegistryURL = "http://202.199.128.21/academic/student/studentinfo/studentInfoModifyIndex.do?frombase=0&wantTag=0";
-	private final String modifyPasswordURL = "http://202.199.128.21/academic/sysmgr/modifypasswd_user.jsdo";
-	private final String queryBuildingOnDateURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedule_week.jsdo";
-	private final String queryRoomURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedule.jsdo";
-	private final String queryRemoteCourseTableURL = "http://202.199.128.21/academic/student/currcourse/currcourse.jsdo";
-	private final String queryRemoteExamsURL = "http://202.199.128.21/academic/manager/examstu/studentQueryAllExam.do?pagingPageVLID=1&sortDirectionVLID=-1&pagingNumberPerVLID=30&sortColumnVLID=examRoom.exam.endTime";
-	private final String queryRemoteScoresURL = "http://202.199.128.21/academic/manager/score/studentOwnScore.do";
-	private final String queryAreaURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedulequery.jsdo";
-	private final String queryDateURL = "http://202.199.128.21/academic/listLeft.do";
+	private final String studentMessageURL = "http://202.199.128.21/academic/showHeader.do";
+	private static final String studentRegistryURL = "http://202.199.128.21/academic/student/studentinfo/studentInfoModifyIndex.do?frombase=0&wantTag=0";
+	private static final String modifyPasswordURL = "http://202.199.128.21/academic/sysmgr/modifypasswd_user.jsdo";
+	private static final String queryBuildingOnDateURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedule_week.jsdo";
+	private static final String queryRoomURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedule.jsdo";
+	private static final String queryRemoteCourseTableURL = "http://202.199.128.21/academic/student/currcourse/currcourse.jsdo";
+	private static final String queryRemoteExamsURL = "http://202.199.128.21/academic/manager/examstu/studentQueryAllExam.do?pagingPageVLID=1&sortDirectionVLID=-1&pagingNumberPerVLID=30&sortColumnVLID=examRoom.exam.endTime";
+	private static final String queryRemoteScoresURL = "http://202.199.128.21/academic/manager/score/studentOwnScore.do";
+	private static final String queryAreaURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedulequery.jsdo";
+	private static final String queryDateURL = "http://202.199.128.21/academic/listLeft.do";
 	
-	private final String loginCrackCodeURL = "http://111.206.45.12:30083/fetchCodeAndSessionId/";
+	private static final String loginCrackCodeURL = "http://lifedjtuim.duapp.com/fetchCodeAndSessionId/";
 	
-	private final String queryNoteURL = "http://202.199.128.21/jwzx/infoArticleList.do?columnId=259&sortColumn=publicationDate&sortDirection=-1&pagingNumberPer=15";
+	private static final String queryNoteURL = "http://202.199.128.21/jwzx/infoArticleList.do?columnId=259&sortColumn=publicationDate&sortDirection=-1&pagingNumberPer=15";
 
 	//查询单门课程教学记录
-	private final String queryCourseRecord = "http://jw.djtu.edu.cn/academic/teacher/teachingtask/recordStudentIndex.do?";
+	private static final String queryCourseRecord = "http://202.199.128.21/academic/teacher/teachingtask/recordStudentIndex.do?";
 	
 	
 	private ServletContext servletContext;
@@ -68,22 +70,21 @@ public class JWRemoteServiceImpl implements JWRemoteService,ServletContextAware 
 	public void setServletContext(ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}
-	
-	
-	@Override
+
+
+    @Override
+    public String showHeader(String sessionId) {
+        FetchResponse fetchResponse = URLFetcher.fetchURLByGet(studentMessageURL,sessionId);
+        //System.out.println(fetchResponse.getResponseBody());
+        return $("#greeting", fetchResponse.getResponseBody()).get(0).getText().trim();
+    }
+
+    @Override
 	public String signinRemote(String studentId, String password) {
-		// TODO Auto-generated method stub
-//			FetchResponse fetchResponse = URLFetcher.fetchURLByPost(loginURL, null, MapMaker.instance("j_username", studentId).param("j_password", password).toMap());
-//			FetchResponse response2 = URLFetcher.fetchURLByGet(studentMessageURL, fetchResponse.getSessionId());
-//			if(response2.getStatusCode()!=200){
-//				System.out.println("登陆失败或已经超时，重新登陆！");
-//				return null;
-//			}else {
-//				return fetchResponse.getSessionId();
-//			}
+
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(loginCrackCodeURL+studentId+"?randomCode="+password, null);
 		if(fetchResponse.getResponseBody().trim().length()<20){
-			System.out.println("Login Failed");
+			System.out.println("Login Failed:\t"+fetchResponse.getResponseBody());
 			return null;
 		}else {
 			return fetchResponse.getResponseBody().trim();
@@ -214,7 +215,6 @@ public class JWRemoteServiceImpl implements JWRemoteService,ServletContextAware 
 
 	@Override
 	public List<CourseDto> queryRemoteCourseTable(String sessionId) {
-		// TODO Auto-generated method stub
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(queryRemoteCourseTableURL, sessionId);
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){
 			return null;
@@ -463,8 +463,6 @@ public class JWRemoteServiceImpl implements JWRemoteService,ServletContextAware 
 			maker.param("maxStatus", 1+"");
 		}
 		FetchResponse fetchResponse = URLFetcher.fetchURLByPost(queryRemoteScoresURL, sessionId, maker.toMap());
-
-		//System.err.println(fetchResponse.getResponseBody());
 
 		
 		if(!Extractor.$("table[class=error_top]",fetchResponse.getResponseBody()).isEmpty()){

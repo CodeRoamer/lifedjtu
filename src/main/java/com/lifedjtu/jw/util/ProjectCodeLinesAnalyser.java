@@ -6,7 +6,7 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
-public class ProjectCOLAnalyser {
+public class ProjectCodeLinesAnalyser {
 	public static void main(String[] args) throws Exception{
 		String root = System.getProperty("user.dir");
 		System.out.println(root);

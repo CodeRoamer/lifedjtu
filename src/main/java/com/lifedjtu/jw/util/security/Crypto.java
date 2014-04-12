@@ -1,8 +1,11 @@
-package com.lifedjtu.jw.util;
+package com.lifedjtu.jw.util.security;
 
 import java.util.UUID;
 
-
+/**
+ * the interface for encode & decode Operation
+ * @author Li He
+ */
 public class Crypto {
 	//用于加密密码
 	public static String encodeAES(String password){

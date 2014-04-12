@@ -2,9 +2,12 @@ package com.lifedjtu.jw.business.task.impl;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.lifedjtu.jw.dao.ProjectionWrapper;
+import com.lifedjtu.jw.dao.Tuple;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -73,19 +76,23 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	@Override
 	@Async
 	public void updateCourseInfo(String userId, List<CourseDto> courseDtos, DjtuDate djtuDate) {
-		List<Course> courses = new ArrayList<Course>();
-		List<CourseInstance> courseInstances = new ArrayList<CourseInstance>();
-		List<UserCourse> userCourses = new ArrayList<UserCourse>();
-		List<IMGroup> imGroups = new ArrayList<IMGroup>();
-		List<IMGroupUser> imGroupUsers = new ArrayList<IMGroupUser>();
+		List<Course> courses = new ArrayList<>();
+		List<CourseInstance> courseInstances = new ArrayList<>();
+		List<UserCourse> userCourses = new ArrayList<>();
+		List<IMGroup> imGroups = new ArrayList<>();
+		List<IMGroupUser> imGroupUsers = new ArrayList<>();
 		
 		//there is a need for me to get the user!!! sorry for the efficiency
 		//如果我不手动去User，那么在添加imGroupUser时 stduetnId字段仍为空。。。
 		//而且我需要修改user的ready字段
 		User user = userDao.findOneById(userId);
-		
+
+        List<UserCourse> persistedUserCourses = userCourseDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId)));
+        List<UserCourse> handledUserCourses = new ArrayList<>();
+
 		for(CourseDto courseDto : courseDtos){
 			//System.out.println("Course Info:\n"+courseDto.toJSON());
+            //course一旦添加，永远无需删除
 			Course course = courseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseAlias", courseDto.getAliasName()),Restrictions.eq("courseName", courseDto.getCourseName())));
 			if(course==null){
 				course = new Course();
@@ -97,6 +104,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 				courses.add(course);
 			}
 			//添加Course group
+            //group 一旦添加，永远无需删除
 			IMGroup imGroup_course = imGroupDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("course.id", course.getId())));
 			if(imGroup_course==null){
 				imGroup_course = new IMGroup();
@@ -109,7 +117,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			CourseInstance courseInstance = updateCourseInstanceInfo(course, courseDto, djtuDate.getSchoolYear(), djtuDate.getTerm());
 			courseInstances.add(courseInstance);
 			
-			//添加class group
+			//添加class group，与CourseInstance级联，CourseInstance不存在，Class Group没有存在意义
 			IMGroup imGroup_class = imGroupDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.id", courseInstance.getId())));
 			if(imGroup_class==null){
 				imGroup_class = new IMGroup();
@@ -120,37 +128,56 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			}
 			
 			
-			UserCourse userCourse = userCourseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId),Restrictions.eq("courseInstance.id", courseInstance.getId())));
-			//如果用户删课的话则么办？？？？？？
-			
-			
+			//UserCourse userCourse = userCourseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId),Restrictions.eq("courseInstance.id", courseInstance.getId())));
+			UserCourse userCourse = findUserCourseWithCourseInstanceId(courseInstance.getId(),persistedUserCourses);
+
 			if(userCourse==null){
 				userCourse = new UserCourse();
 				userCourse.setId(UUIDGenerator.randomUUID());
 				userCourse.setUser(user);
 				userCourse.setCourseInstance(courseInstance);
+                //add into list
 				userCourses.add(userCourse);
-			}
+
+                //user don't have this course, add into group
+                IMGroupUser imGroupUser_Course = new IMGroupUser();
+                imGroupUser_Course.setId(UUIDGenerator.randomUUID());
+                imGroupUser_Course.setImGroup(imGroup_course);
+                imGroupUser_Course.setStudentId(userCourse.getUser().getStudentId());
+                imGroupUser_Course.setUser(userCourse.getUser());
+                //add into list
+                imGroupUsers.add(imGroupUser_Course);
+
+                IMGroupUser imGroupUser_class = new IMGroupUser();
+                imGroupUser_class.setId(UUIDGenerator.randomUUID());
+                imGroupUser_class.setImGroup(imGroup_class);
+                imGroupUser_class.setStudentId(userCourse.getUser().getStudentId());
+                imGroupUser_class.setUser(userCourse.getUser());
+                //add into list
+                imGroupUsers.add(imGroupUser_class);
+			}else{
+                handledUserCourses.add(userCourse);
+            }
 			
-			IMGroupUser imGroupUser_Course = imGroupUserDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", imGroup_course.getId()),Restrictions.eq("user.id", userCourse.getUser().getId())));
-			if(imGroupUser_Course==null){
-				imGroupUser_Course = new IMGroupUser();
-				imGroupUser_Course.setId(UUIDGenerator.randomUUID());
-				imGroupUser_Course.setImGroup(imGroup_course);
-				imGroupUser_Course.setStudentId(userCourse.getUser().getStudentId());
-				imGroupUser_Course.setUser(userCourse.getUser());
-				imGroupUsers.add(imGroupUser_Course);
-			}
+//			IMGroupUser imGroupUser_Course = imGroupUserDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", imGroup_course.getId()),Restrictions.eq("user.id", userCourse.getUser().getId())));
+//			if(imGroupUser_Course==null){
+//				imGroupUser_Course = new IMGroupUser();
+//				imGroupUser_Course.setId(UUIDGenerator.randomUUID());
+//				imGroupUser_Course.setImGroup(imGroup_course);
+//				imGroupUser_Course.setStudentId(userCourse.getUser().getStudentId());
+//				imGroupUser_Course.setUser(userCourse.getUser());
+//				imGroupUsers.add(imGroupUser_Course);
+//			}
 			
-			IMGroupUser imGroupUser_class = imGroupUserDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", imGroup_class.getId()),Restrictions.eq("user.id", userCourse.getUser().getId())));
-			if(imGroupUser_class==null){
-				imGroupUser_class = new IMGroupUser();
-				imGroupUser_class.setId(UUIDGenerator.randomUUID());
-				imGroupUser_class.setImGroup(imGroup_class);
-				imGroupUser_class.setStudentId(userCourse.getUser().getStudentId());
-				imGroupUser_class.setUser(userCourse.getUser());
-				imGroupUsers.add(imGroupUser_class);
-			}
+//			IMGroupUser imGroupUser_class = imGroupUserDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", imGroup_class.getId()),Restrictions.eq("user.id", userCourse.getUser().getId())));
+//			if(imGroupUser_class==null){
+//				imGroupUser_class = new IMGroupUser();
+//				imGroupUser_class.setId(UUIDGenerator.randomUUID());
+//				imGroupUser_class.setImGroup(imGroup_class);
+//				imGroupUser_class.setStudentId(userCourse.getUser().getStudentId());
+//				imGroupUser_class.setUser(userCourse.getUser());
+//				imGroupUsers.add(imGroupUser_class);
+//			}
 			
 			//System.out.println("Course Instance:\n"+courseInstance.toJSON());
 			//System.out.println("User Course:\n"+userCourse.toJSON());
@@ -161,13 +188,35 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 		
 		imGroupDao.addMulti(imGroups);
 		imGroupUserDao.addMulti(imGroupUsers);
-		
+
+        //删除用户已经退出的课程记录与入组情况
+        persistedUserCourses.removeAll(handledUserCourses);
+
+        //删除群组记录，包括课程组与同班组
+        for(UserCourse uc : persistedUserCourses){
+            Tuple classGroup = imGroupDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseInstance", uc.getCourseInstance())), ProjectionWrapper.instance().fields("id"));
+            Tuple courseGroup = imGroupDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("course", uc.getCourseInstance().getCourse())), ProjectionWrapper.instance().fields("id"));
+
+            imGroupUserDao.deleteByParams(CriteriaWrapper.instance().and(Restrictions.eq("user.id", userId), Restrictions.in("imGroup.id", Arrays.asList(classGroup.get(0),courseGroup.get(0)))));
+            userCourseDao.delete(uc);
+        }
+
 		//所有的Group终将添加完毕，这是user 已经ready了
 		user.setUserReady(true);
 	}
 
+    private UserCourse findUserCourseWithCourseInstanceId(String courseInstanceId, List<UserCourse> list){
+        for(UserCourse uc : list){
+            if(uc.getCourseInstance().getId().equals(courseInstanceId)){
+                return uc;
+            }
+        }
+        return null;
+    }
+
 	@Override
 	public CourseInstance updateCourseInstanceInfo(Course course, CourseDto courseDto, int year, int term) {
+        //一个remoteId实际上已经可以锁定唯一的courseInstance
 		CourseInstance courseInstance = courseInstanceDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseAlias", courseDto.getAliasName()),Restrictions.eq("courseRemoteId", courseDto.getCourseRemoteId()),Restrictions.eq("courseName", courseDto.getCourseName())));
 		if(courseInstance==null){
 			courseInstance = new CourseInstance();
@@ -189,7 +238,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			if(temp!=null){
 				StringBuilder builder = new StringBuilder();
 				for(String str : temp.getClasses()){
-					builder.append(str+"|");
+					builder.append(str).append("|");
 				}
 				String classes = builder.toString();
 				courseInstance.setClasses(classes.substring(0,classes.length()-1));
@@ -203,7 +252,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			takenBuilder.append("时间地点均不占");
 		}else{
 			for(CourseTakenItem courseTakenItem : courseTakenItems){
-				takenBuilder.append(InfoProcessHub.transferCourseTakenItem(courseTakenItem)+";");
+				takenBuilder.append(InfoProcessHub.transferCourseTakenItem(courseTakenItem)).append(";");
 			}
 		}
 		
@@ -219,7 +268,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 	@Async
 	public void updateExamInfo(String userId, List<ExamDto> examDtos, DjtuDate djtuDate){
 		try{
-			List<SystemNotice> notices = new ArrayList<SystemNotice>();
+			List<SystemNotice> notices = new ArrayList<>();
 			
 			for(ExamDto examDto : examDtos){
 				Course course = courseDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseName", examDto.getCourseName()),Restrictions.eq("courseAlias", examDto.getCourseAliasName())));
@@ -350,7 +399,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			DjtuDate djtuDate) {
 		
 		try{
-			List<SystemNotice> notices = new ArrayList<SystemNotice>();
+			List<SystemNotice> notices = new ArrayList<>();
 			
 			for(ScoreDto scoreDto : scoreDtos){
 				UserCourse userCourse = userCourseDao.findOneByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").param("user", "user").toMap(),CriteriaWrapper.instance().and(Restrictions.eq("user.studentId", studentId),Restrictions.eq("courseInstance.year", djtuDate.getSchoolYear()), Restrictions.eq("courseInstance.term", djtuDate.getTerm()),Restrictions.eq("courseInstance.examStatus", scoreDto.getCourseProperty()), Restrictions.eq("courseInstance.courseAlias", scoreDto.getCourseAliasName())));
@@ -381,64 +430,4 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 		
 	}
 
-	
-	public CourseDao getCourseDao() {
-		return courseDao;
-	}
-
-	public void setCourseDao(CourseDao courseDao) {
-		this.courseDao = courseDao;
-	}
-
-	public CourseInstanceDao getCourseInstanceDao() {
-		return courseInstanceDao;
-	}
-
-	public void setCourseInstanceDao(CourseInstanceDao courseInstanceDao) {
-		this.courseInstanceDao = courseInstanceDao;
-	}
-
-	public ExamDao getExamDao() {
-		return examDao;
-	}
-
-	public void setExamDao(ExamDao examDao) {
-		this.examDao = examDao;
-	}
-
-	public ExamInstanceDao getExamInstanceDao() {
-		return examInstanceDao;
-	}
-
-	public void setExamInstanceDao(ExamInstanceDao examInstanceDao) {
-		this.examInstanceDao = examInstanceDao;
-	}
-	
-	public JWRemoteService getJwRemoteService() {
-		return jwRemoteService;
-	}
-
-	public void setJwRemoteService(JWRemoteService jwRemoteService) {
-		this.jwRemoteService = jwRemoteService;
-	}
-
-	public UserCourseDao getUserCourseDao() {
-		return userCourseDao;
-	}
-
-	public void setUserCourseDao(UserCourseDao userCourseDao) {
-		this.userCourseDao = userCourseDao;
-	}
-
-	public SystemNoticeDao getSystemNoticeDao() {
-		return systemNoticeDao;
-	}
-
-	public void setSystemNoticeDao(SystemNoticeDao systemNoticeDao) {
-		this.systemNoticeDao = systemNoticeDao;
-	}
-
-	
-	
-	
 }
