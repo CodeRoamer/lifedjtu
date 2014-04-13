@@ -1,15 +1,12 @@
 package com.lifedjtu.jw.test;
 
-import java.io.File;
-
-import com.lifedjtu.jw.pojos.SystemNotice;
+import com.lifedjtu.jw.business.JWRemoteService;
+import com.lifedjtu.jw.business.impl.JWRemoteServiceImpl;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import com.lifedjtu.jw.business.JWRemoteService;
-import com.lifedjtu.jw.business.impl.JWRemoteServiceImpl;
-import com.lifedjtu.jw.pojos.dto.CourseRecordDto;
+import java.io.File;
 
 public class RemoteServiceUnitTest {
 	/*
@@ -49,7 +46,7 @@ public class RemoteServiceUnitTest {
 	@Test
 	public void testRemoteService(){
 		char sep = File.separatorChar;
-        String path = new StringBuilder().append("src").append(sep).append("main").append(sep).append("webapp").append(sep).append("WEB-INF").append(sep).append("applicationContext.xml").toString();
+        String path = "src" + sep + "main" + sep + "webapp" + sep + "WEB-INF" + sep + "applicationContext.xml";
 		ApplicationContext ctx=new FileSystemXmlApplicationContext(path);
 
 		final JWRemoteService remoteService = (JWRemoteServiceImpl)ctx.getBean("jwRemoteService");

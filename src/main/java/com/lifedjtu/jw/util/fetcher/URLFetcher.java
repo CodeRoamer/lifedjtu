@@ -20,6 +20,7 @@ import com.lifedjtu.jw.config.LifeDjtuConfig;
 import com.lifedjtu.jw.pojos.dto.Pair;
 import com.lifedjtu.jw.util.LifeDjtuUtil;
 import com.lifedjtu.jw.util.MapMaker;
+import com.lifedjtu.jw.util.fetcher.support.FetchResponse;
 
 
 //请使用IP地址，节约DNS查询时间

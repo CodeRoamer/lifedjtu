@@ -1,4 +1,4 @@
-package com.lifedjtu.jw.util.fetcher;
+package com.lifedjtu.jw.util.fetcher.support;
 
 /**
  * Created by Li He on 2014/4/12.

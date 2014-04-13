@@ -1,5 +1,6 @@
 package com.lifedjtu.jw.util.fetcher;
 
+import com.lifedjtu.jw.util.fetcher.support.Cookie;
 import org.apache.http.Header;
 import org.apache.http.HeaderIterator;
 import org.apache.http.HttpEntity;
@@ -11,6 +12,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.*;
@@ -24,7 +26,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LifeDjtuFetchUrl {
-	private CloseableHttpClient httpClient;
+	private static CloseableHttpClient httpClient;
+    static {
+        httpClient = HttpClients.createMinimal(new PoolingHttpClientConnectionManager());
+    }
 
 	//request part below
 	//get and post
@@ -32,12 +37,7 @@ public class LifeDjtuFetchUrl {
 	private int redirectNum = 0; //跳转次数
 	private List<Cookie> cookies = new ArrayList<>(); //Cookie For Request
 	private Map<String, String> postData = new HashMap<>(); //post data for response
-	
-	//get
-	private HttpGet httpGet;
-	
-	//post
-	private HttpPost httpPost;
+
 	
 	//response part below
 	private String responseBody;
@@ -152,7 +152,7 @@ public class LifeDjtuFetchUrl {
      */
 	public InputStream getAsStream(String url){
 		this.url = url;
-		httpGet = new HttpGet();
+		HttpGet httpGet = new HttpGet();
 		httpGet.setURI(composeURI());
 		httpGet.setHeader("Cookie",composeCookieHeader());
 		
@@ -166,7 +166,7 @@ public class LifeDjtuFetchUrl {
      */
 	public String get(String url){
 		this.url = url;
-		httpGet = new HttpGet();
+        HttpGet httpGet = new HttpGet();
 		httpGet.setURI(composeURI());
 		httpGet.setHeader("Cookie",composeCookieHeader());
 		
@@ -176,13 +176,6 @@ public class LifeDjtuFetchUrl {
 		
 	}
 
-    /**
-     * HTTP Post Method
-     * @return response body
-     */
-	public String post(){
-		return post(url);
-	}
 
     /**
      * HTTP Post Method
@@ -191,7 +184,7 @@ public class LifeDjtuFetchUrl {
      */
 	public String post(String url){
 		this.url = url;
-		httpPost = new HttpPost();
+		HttpPost httpPost = new HttpPost();
 		try {
 			httpPost.setURI(new URI(url));
 		} catch (URISyntaxException e) {
@@ -267,15 +260,16 @@ public class LifeDjtuFetchUrl {
 	
 	public InputStream connect(HttpUriRequest httpRequest){
 		BufferedReader reader = null;
+        CloseableHttpResponse response = null;
 		try {
-            httpClient = HttpClients.createMinimal();
+            //httpClient = HttpClients.createMinimal();
             //设置client请求
 //			HttpParams params = httpClient.getParams();
 //			params.setParameter(ClientPNames.HANDLE_REDIRECTS, allowRedirect);
 //			params.setParameter(ClientPNames.MAX_REDIRECTS, redirectNum);
 //			httpClient.setParams(params);
 			//执行connect
-			CloseableHttpResponse response = httpClient.execute(httpRequest);
+			response = httpClient.execute(httpRequest);
 
 			reset(); //reset
 
@@ -340,7 +334,7 @@ public class LifeDjtuFetchUrl {
 				}
 				reader.close();
                 response.close();
-                httpClient.close();
+                //httpClient.close(); //don't close httpClient if you use a pool
 				responseBody = builder.toString();
 				
 				return null;
@@ -354,16 +348,25 @@ public class LifeDjtuFetchUrl {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-			if(reader!=null){
-				try {
-					reader.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
 			return null;
-		} 
-	}
+		} finally {
+            if(reader!=null){
+                try {
+                    reader.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            if(response!=null){
+                try{
+                    response.close();
+                }catch (Exception exception){
+                    exception.printStackTrace();
+                }
+
+            }
+        }
+    }
 	
 	public void reset() {
 		allowRedirect = false;

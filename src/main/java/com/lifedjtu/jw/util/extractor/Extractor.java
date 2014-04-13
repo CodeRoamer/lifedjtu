@@ -11,7 +11,10 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * Dom-scan Engine
+ * @author Li He
+ */
 public class Extractor {
 	public static final String CLASS_SELECTOR = ".";
 	public static final String ID_SELECTOR = "#";

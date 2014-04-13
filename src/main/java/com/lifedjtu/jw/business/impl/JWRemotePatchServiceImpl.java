@@ -15,8 +15,7 @@ import org.springframework.stereotype.Component;
 import com.lifedjtu.jw.business.JWRemotePatchService;
 import com.lifedjtu.jw.pojos.dto.EvaEntry;
 import com.lifedjtu.jw.pojos.dto.EvaList;
-import com.lifedjtu.jw.util.fetcher.FetchResponse;
-import com.lifedjtu.jw.util.MapMaker;
+import com.lifedjtu.jw.util.fetcher.support.FetchResponse;
 import com.lifedjtu.jw.util.fetcher.URLFetcher;
 import com.lifedjtu.jw.util.extractor.DomElement;
 

@@ -32,7 +32,7 @@ import com.lifedjtu.jw.pojos.dto.RoomInfoDto;
 import com.lifedjtu.jw.pojos.dto.RoomWeekInfo;
 import com.lifedjtu.jw.pojos.dto.ScoreDto;
 import com.lifedjtu.jw.pojos.dto.StudentRegistry;
-import com.lifedjtu.jw.util.fetcher.FetchResponse;
+import com.lifedjtu.jw.util.fetcher.support.FetchResponse;
 import com.lifedjtu.jw.util.LifeDjtuUtil;
 import com.lifedjtu.jw.util.MapMaker;
 import com.lifedjtu.jw.util.fetcher.URLFetcher;

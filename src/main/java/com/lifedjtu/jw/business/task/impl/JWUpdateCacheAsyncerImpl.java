@@ -158,29 +158,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			}else{
                 handledUserCourses.add(userCourse);
             }
-			
-//			IMGroupUser imGroupUser_Course = imGroupUserDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", imGroup_course.getId()),Restrictions.eq("user.id", userCourse.getUser().getId())));
-//			if(imGroupUser_Course==null){
-//				imGroupUser_Course = new IMGroupUser();
-//				imGroupUser_Course.setId(UUIDGenerator.randomUUID());
-//				imGroupUser_Course.setImGroup(imGroup_course);
-//				imGroupUser_Course.setStudentId(userCourse.getUser().getStudentId());
-//				imGroupUser_Course.setUser(userCourse.getUser());
-//				imGroupUsers.add(imGroupUser_Course);
-//			}
-			
-//			IMGroupUser imGroupUser_class = imGroupUserDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", imGroup_class.getId()),Restrictions.eq("user.id", userCourse.getUser().getId())));
-//			if(imGroupUser_class==null){
-//				imGroupUser_class = new IMGroupUser();
-//				imGroupUser_class.setId(UUIDGenerator.randomUUID());
-//				imGroupUser_class.setImGroup(imGroup_class);
-//				imGroupUser_class.setStudentId(userCourse.getUser().getStudentId());
-//				imGroupUser_class.setUser(userCourse.getUser());
-//				imGroupUsers.add(imGroupUser_class);
-//			}
-			
-			//System.out.println("Course Instance:\n"+courseInstance.toJSON());
-			//System.out.println("User Course:\n"+userCourse.toJSON());
+
 		}
 		courseDao.addMulti(courses);
 		courseInstanceDao.addMulti(courseInstances);
@@ -316,7 +294,7 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 				
 				//2. 通知间接用户
 				List<UserCourse> userCourses2 = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(),CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.getCourseAlias()),Restrictions.eq("courseInstance.year", djtuDate.getSchoolYear()), Restrictions.eq("courseInstance.term", djtuDate.getTerm()),Restrictions.eq("courseInstance.examStatus", examDto.getCourseProperty()),Restrictions.ne("courseInstance.id", courseInstance.getId())));
-				//List<ExamInstance> examInstances = new ArrayList<ExamInstance>();
+
 				for(UserCourse uc : userCourses2){
 					
 					if(!uc.isExamNoted()){
@@ -329,30 +307,8 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 						notices.add(notice);
 						uc.setExamNoted(true);
 					}
-					
-//					ExamInstance tempInstance = uc.getExamInstance();
-//					if(tempInstance==null){
-//						tempInstance = new ExamInstance();
-//						tempInstance.setCourseInstance(uc.getCourseInstance());
-//						tempInstance.setCourseName(uc.getCourseInstance().getCourseName());
-//						tempInstance.setExam(exam);
-//						tempInstance.setId(UUIDGenerator.randomUUID());
-//						tempInstance.setScoreOut(false);
-//						tempInstance.setExamDate(exam.getExamDate());
-//						tempInstance.setLastedMinutes(exam.getLastedMinutes());
-//						tempInstance.setRoomName(null);
-//						examInstances.add(tempInstance);
-//					}else if(tempInstance.getRoomName()==null||tempInstance.getRoomName().equals("")){
-//						tempInstance.setRoomName(null);
-//						tempInstance.setExamDate(exam.getExamDate());
-//						tempInstance.setLastedMinutes(exam.getLastedMinutes());
-//						examInstances.add(tempInstance);
-//					}else{
-//						continue;
-//					}
-//					uc.setExamInstance(tempInstance);
+
 				}
-				//examInstanceDao.addMulti(examInstances);
 				userCourseDao.addMulti(userCourses2);
 			}
 		
@@ -384,9 +340,9 @@ public class JWUpdateCacheAsyncerImpl implements JWUpdateCacheAsyncer{
 			examInstance.setId(UUIDGenerator.randomUUID());
 			examInstance.setScoreOut(false);
 		}
-		examInstance.setExamDate(timeEntry.getDate());
+		examInstance.setExamDate(timeEntry!=null?timeEntry.getDate():null);
 		examInstance.setExamStatus(examDto.getCourseProperty());
-		examInstance.setLastedMinutes(timeEntry.getLastedMinutes());
+		examInstance.setLastedMinutes(timeEntry!=null?timeEntry.getLastedMinutes():0);
 		examInstance.setRoomName(examDto.getRoomName());
 		examInstanceDao.add(examInstance);
 		return examInstance;

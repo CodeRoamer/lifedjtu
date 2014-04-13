@@ -6,18 +6,18 @@
 	<package name="main" extends="struts-default" namespace="/">		
 	
 		<result-types>
-			<result-type name="jsonResult" class="com.lifedjtu.jw.ui.struts2.result.JsonResult"></result-type>
+			<result-type name="jsonResult" class="com.lifedjtu.jw.ui.struts2.result.JsonResult" />
 		</result-types>
 	
 		<interceptors>
-			<interceptor name="userValidateInterceptor" class="com.lifedjtu.jw.ui.struts2.interceptor.UserValidateInterceptor"></interceptor>
+			<interceptor name="userValidateInterceptor" class="com.lifedjtu.jw.ui.struts2.interceptor.UserValidateInterceptor" />
 			<interceptor-stack name="lifedjtuStack">
-				<interceptor-ref name="defaultStack"></interceptor-ref>
-				<interceptor-ref name="userValidateInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="userValidateInterceptor" />
 			</interceptor-stack>
 		</interceptors>
 		
-		<default-interceptor-ref name="lifedjtuStack"></default-interceptor-ref>
+		<default-interceptor-ref name="lifedjtuStack" />
 		
 		<global-results>
 			<result type="chain" name="needLogin">
@@ -146,9 +146,6 @@
 			<result name="success" type="jsonResult">flag,memberList</result>
 		</action>
 		<action name="getSameCourseMembers" method="getSameCourseMembers" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
-			<result name="success" type="jsonResult">flag,memberList</result>
-		</action>
-		<action name="getSameGradeMembers" method="getSameGradeMembers" class="com.lifedjtu.jw.ui.struts2.core.WebserviceSecureAction">
 			<result name="success" type="jsonResult">flag,memberList</result>
 		</action>
 		
