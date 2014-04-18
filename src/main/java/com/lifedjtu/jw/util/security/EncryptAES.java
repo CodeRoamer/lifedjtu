@@ -35,7 +35,7 @@ public class EncryptAES {
 		
 		
 		try {
-			ObjectInputStream inputStream = new ObjectInputStream(EncryptAES.class.getResourceAsStream("key_gen.dat"));
+			ObjectInputStream inputStream = new ObjectInputStream(EncryptAES.class.getResourceAsStream("/key_gen.dat"));
 			deskey = (SecretKey)inputStream.readObject();
 			inputStream.close();
 		} catch (Exception e1) {

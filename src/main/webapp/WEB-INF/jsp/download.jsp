@@ -11,13 +11,13 @@
 <meta name="author" content="">
 
 <!-- Le styles -->
-<link href="./static/css/bootstrap.css" rel="stylesheet">
+<link href="/static/css/bootstrap.css" rel="stylesheet">
 
-<link href="./static/css/bootstrap-responsive.css" rel="stylesheet">
-<link href="./static/css/index.css" rel="stylesheet">
+<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="/static/css/index.css" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
-      <script src="./static/js/html5shiv.js"></script>
+      <script src="/static/js/html5shiv.js"></script>
     <![endif]-->
 
 <style>
@@ -27,12 +27,12 @@
     width: 0.96rem;
     height: 63px;
     height: 0.63rem;
-    background: url("./static/ico/tab-adr.png") no-repeat 0 0;
+    background: url("/static/ico/tab-adr.png") no-repeat 0 0;
     background-size: 100%;
 }
 
 .header-adr-on, .header-adr:hover {
-    background-image: url("./static/ico/tab-adr-on.png");
+    background-image: url("/static/ico/tab-adr-on.png");
     background-size: 100%;
 }
 
@@ -42,26 +42,26 @@
 	width: 0.83rem;
 	height: 63px;
 	height: 0.63rem;
-	background: url("./static/ico/tab-iph.png") no-repeat 0 0;
+	background: url("/static/ico/tab-iph.png") no-repeat 0 0;
 	background-size: 100%;
 }
 
 .header-iph-on,.header-iph:hover {
-	background-image: url("./static/ico/tab-iph-on.png");
+	background-image: url("/static/ico/tab-iph-on.png");
 	background-size: 100%;
 }
 </style>
 
 <!-- Fav and touch icons -->
 <link rel="apple-touch-icon-precomposed" sizes="144x144"
-	href="./static/ico/apple-touch-icon-144-precomposed.png">
+	href="/static/ico/apple-touch-icon-144-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="114x114"
-	href="./static/ico/apple-touch-icon-114-precomposed.png">
+	href="/static/ico/apple-touch-icon-114-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="72x72"
-	href="./static/ico/apple-touch-icon-72-precomposed.png">
+	href="/static/ico/apple-touch-icon-72-precomposed.png">
 <link rel="apple-touch-icon-precomposed"
-	href="./static/ico/apple-touch-icon-57-precomposed.png">
-<link rel="shortcut icon" href="./static/ico/favicon.png">
+	href="/static/ico/apple-touch-icon-57-precomposed.png">
+<link rel="shortcut icon" href="/static/ico/favicon.png">
 </head>
 
 <body>
@@ -105,19 +105,19 @@
 	<!-- Le javascript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="./static/js/jquery.js"></script>
-	<script src="./static/js/bootstrap-transition.js"></script>
-	<script src="./static/js/bootstrap-alert.js"></script>
-	<script src="./static/js/bootstrap-modal.js"></script>
-	<script src="./static/js/bootstrap-dropdown.js"></script>
-	<script src="./static/js/bootstrap-scrollspy.js"></script>
-	<script src="./static/js/bootstrap-tab.js"></script>
-	<script src="./static/js/bootstrap-tooltip.js"></script>
-	<script src="./static/js/bootstrap-popover.js"></script>
-	<script src="./static/js/bootstrap-button.js"></script>
-	<script src="./static/js/bootstrap-collapse.js"></script>
-	<script src="./static/js/bootstrap-carousel.js"></script>
-	<script src="./static/js/bootstrap-typeahead.js"></script>
+	<script src="/static/js/jquery.js"></script>
+	<script src="/static/js/bootstrap-transition.js"></script>
+	<script src="/static/js/bootstrap-alert.js"></script>
+	<script src="/static/js/bootstrap-modal.js"></script>
+	<script src="/static/js/bootstrap-dropdown.js"></script>
+	<script src="/static/js/bootstrap-scrollspy.js"></script>
+	<script src="/static/js/bootstrap-tab.js"></script>
+	<script src="/static/js/bootstrap-tooltip.js"></script>
+	<script src="/static/js/bootstrap-popover.js"></script>
+	<script src="/static/js/bootstrap-button.js"></script>
+	<script src="/static/js/bootstrap-collapse.js"></script>
+	<script src="/static/js/bootstrap-carousel.js"></script>
+	<script src="/static/js/bootstrap-typeahead.js"></script>
 
 </body>
 </html>

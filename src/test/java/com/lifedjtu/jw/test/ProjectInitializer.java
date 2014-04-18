@@ -40,7 +40,7 @@ public class ProjectInitializer {
 		System.err.println("开始添加用户，并测试课程与考试添加功能...");
 		List<User> users = getUsers();
 		userDao.addMulti(users);
-		DjtuDate djtuDate = remoteService.queryDjtuDate(sessionId);
+		DjtuDate djtuDate = remoteService.queryDjtuDate();
 		start = System.currentTimeMillis();
 		for(User user : users){
 			System.out.println("开始添加用户 "+user.getUsername()+" 的课程与考试状况...");

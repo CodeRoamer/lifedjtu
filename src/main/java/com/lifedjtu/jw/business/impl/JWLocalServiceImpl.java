@@ -96,9 +96,8 @@ public class JWLocalServiceImpl implements JWLocalService{
 	@Override
 	public boolean isUserExistAndReady(String studentId) {
 		User user = userDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)));
-		if(user != null&& user.isUserReady()) return true;
-		return false;
-	}
+        return user != null && user.isUserReady();
+    }
 
 	@Override
 	public User signupLocal(String studentId, String password) {
@@ -177,7 +176,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		String serverDynamicPass = Crypto.cypherDynamicPassword(user.getPrivateKey(), System.currentTimeMillis());
 		
-		LocalResult<Boolean> successResult = new LocalResult<Boolean>();
+		LocalResult<Boolean> successResult = new LocalResult<>();
 		//System.err.println(dynamicPass+"\n"+serverDynamicPass);
 		if(dynamicPass.equals(serverDynamicPass)){
 			//第二步，确认SessionId是否过期
@@ -199,7 +198,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		String serverDynamicPass = Crypto.cypherDynamicPassword(user.getPrivateKey(), System.currentTimeMillis());
 		
-		LocalResult<String> sessionResult = new LocalResult<String>();
+		LocalResult<String> sessionResult = new LocalResult<>();
 		//System.err.println(dynamicPass+"\n"+serverDynamicPass);
 		if(dynamicPass.equals(serverDynamicPass)){
 			//第二步，确认SessionId是否过期
@@ -243,7 +242,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			userDao.update(user);
 		}
 		
-		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		LocalResult<Boolean> localResult = new LocalResult<>();
 		localResult.autoFill(result);
 		
 		return localResult;
@@ -263,7 +262,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 
 	@Override
 	public LocalResult<List<CourseInstance>> queryLocalCourseTabel(String studentId, String sessionId, boolean eagerFetch) {
-		List<CourseInstance> courseInstances = new ArrayList<CourseInstance>();
+		List<CourseInstance> courseInstances = new ArrayList<>();
 
 		
 		if(eagerFetch){
@@ -274,7 +273,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			
 			Tuple tuple = userDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)), ProjectionWrapper.instance().fields("id","studentId"));
 			
-			jwUpdateCacheAsyncer.updateCourseInfo((String)tuple.get(0), courseDtos, jwRemoteService.queryDjtuDate(sessionId));
+			jwUpdateCacheAsyncer.updateCourseInfo((String)tuple.get(0), courseDtos, jwRemoteService.queryDjtuDate());
 			
 		}else{
 			List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("user", "user").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("user.studentId", studentId)));
@@ -285,7 +284,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		}		
 		
 		
-		LocalResult<List<CourseInstance>> localResult = new LocalResult<List<CourseInstance>>();
+		LocalResult<List<CourseInstance>> localResult = new LocalResult<>();
 		
 		localResult.autoFill(courseInstances);
 		
@@ -298,13 +297,13 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		List<ExamDto> examDtos = jwRemoteService.queryRemoteExams(sessionId);
 		
-		LocalResult<List<ExamDto>> localResult = new LocalResult<List<ExamDto>>();
+		LocalResult<List<ExamDto>> localResult = new LocalResult<>();
 		
 		localResult.autoFill(examDtos);
 		
 		Tuple tuple = userDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)), ProjectionWrapper.instance().fields("id","studentId"));
 		
-		jwUpdateCacheAsyncer.updateExamInfo((String)tuple.get(0), examDtos,jwRemoteService.queryDjtuDate(sessionId));
+		jwUpdateCacheAsyncer.updateExamInfo((String)tuple.get(0), examDtos,jwRemoteService.queryDjtuDate());
 		
 		return localResult;
 	}
@@ -320,7 +319,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		userDao.update(user);
 		
-		LocalResult<User> localResult = new LocalResult<User>();
+		LocalResult<User> localResult = new LocalResult<>();
 		localResult.autoFill(user);
 		
 		return localResult;
@@ -331,7 +330,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	public LocalResult<StudentRegistry> fetchStudentRegistry(String sessionId) {
 		StudentRegistry registry = jwRemoteService.fetchStudentRegistry(sessionId);
 
-		LocalResult<StudentRegistry> localResult = new LocalResult<StudentRegistry>();
+		LocalResult<StudentRegistry> localResult = new LocalResult<>();
 		localResult.autoFill(registry);
 		
 		return localResult;
@@ -343,7 +342,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		BuildingDto buildingDto = jwRemoteService.queryBuildingOnDate(sessionId, aid, buildingId, week, weekday);
 		
-		LocalResult<BuildingDto> localResult = new LocalResult<BuildingDto>();
+		LocalResult<BuildingDto> localResult = new LocalResult<>();
 		
 		localResult.autoFill(buildingDto);
 		
@@ -356,7 +355,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			int buildingId, int roomId) {
 		RoomDto roomDto = jwRemoteService.queryRoom(sessionId, aid, buildingId, roomId);
 		
-		LocalResult<RoomDto> localResult = new LocalResult<RoomDto>();
+		LocalResult<RoomDto> localResult = new LocalResult<>();
 		localResult.autoFill(roomDto);
 		
 		return localResult;
@@ -368,14 +367,14 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		if(schoolYear==0||term==0){
 			scoreDtos = jwRemoteService.queryRemoteScores(sessionId);
-			DjtuDate djtuDate = jwRemoteService.queryDjtuDate(sessionId);
+			DjtuDate djtuDate = jwRemoteService.queryDjtuDate();
 			jwUpdateCacheAsyncer.updateScoreOutInfo(studentId, scoreDtos, djtuDate);
 		}else{
 			scoreDtos = jwRemoteService.queryRemoteScores(sessionId, schoolYear, term, false);
 		}
 		
 		
-		LocalResult<List<ScoreDto>> localResult = new LocalResult<List<ScoreDto>>();
+		LocalResult<List<ScoreDto>> localResult = new LocalResult<>();
 		
 		
 		localResult.autoFill(scoreDtos);
@@ -396,7 +395,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			int schoolYear, int term) {
 		
 		if(schoolYear==0||term==0){
-			DjtuDate djtuDate = jwRemoteService.queryDjtuDate(sessionId);
+			DjtuDate djtuDate = jwRemoteService.queryDjtuDate();
 			schoolYear = djtuDate.getSchoolYear();
 			term = djtuDate.getTerm();
 		}
@@ -404,8 +403,8 @@ public class JWLocalServiceImpl implements JWLocalService{
 		List<ScoreDto> scoreDtos = jwRemoteService.queryRemoteScores(sessionId, schoolYear, term,true);
 		
 		if(scoreDtos==null||scoreDtos.size()==0){
-			LocalResult<Double> localResult = new LocalResult<Double>();
-			localResult.autoFill(Double.valueOf(0));
+			LocalResult<Double> localResult = new LocalResult<>();
+			localResult.autoFill((double) 0);
 			return localResult;
 					
 		}
@@ -431,24 +430,32 @@ public class JWLocalServiceImpl implements JWLocalService{
 				score =	Double.parseDouble(scoreDto.getTotalScore());
 			}catch(Exception exception){
 				String totalScore = scoreDto.getTotalScore();
-				
-				if(totalScore.equals("优")){
-					score = 90;
-				}else if(totalScore.equals("良")){
-					score = 80;
-				}else if(totalScore.equals("中")){
-					score = 70;
-				}else if(totalScore.equals("及格")){
-					score = 60;
-				}else if(totalScore.equals("不及格")){
-					score = 50;
-				}else if(totalScore.equals("合格")){
-					score = 100;
-				}else if(totalScore.equals("不合格")){
-					score = 0;
-				}else{
-					throw new RuntimeException("cannot translate score!!!:"+totalScore);
-				}
+
+                switch (totalScore) {
+                    case "优":
+                        score = 90;
+                        break;
+                    case "良":
+                        score = 80;
+                        break;
+                    case "中":
+                        score = 70;
+                        break;
+                    case "及格":
+                        score = 60;
+                        break;
+                    case "不及格":
+                        score = 50;
+                        break;
+                    case "合格":
+                        score = 100;
+                        break;
+                    case "不合格":
+                        score = 0;
+                        break;
+                    default:
+                        throw new RuntimeException("cannot translate score!!!:" + totalScore);
+                }
 				
 				//System.err.println("give it score:"+score);
 				
@@ -458,7 +465,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			
 		}
 		
-		LocalResult<Double> localResult = new LocalResult<Double>();
+		LocalResult<Double> localResult = new LocalResult<>();
 		localResult.autoFill(scoreSum/markSum);
 		
 		//System.err.println(localResult.getResult());
@@ -487,21 +494,21 @@ public class JWLocalServiceImpl implements JWLocalService{
 
 	@Override
 	public LocalResult<List<Area>> queryLocalAreas() {
-		LocalResult<List<Area>> localResult = new LocalResult<List<Area>>();
+		LocalResult<List<Area>> localResult = new LocalResult<>();
 		localResult.autoFill(areaDao.findAll());
 		return localResult;
 	}
 
 	@Override
 	public LocalResult<List<Building>> queryLocalBuildings(String areaId) {
-		LocalResult<List<Building>> localResult = new LocalResult<List<Building>>();
+		LocalResult<List<Building>> localResult = new LocalResult<>();
 		localResult.autoFill(buildingDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("area.id", areaId))));
 		return localResult;
 	}
 
 	@Override
 	public LocalResult<List<RoomTakenItem>> queryFreeRooms(String buildingId) {
-		LocalResult<List<RoomTakenItem>> localResult = new LocalResult<List<RoomTakenItem>>();
+		LocalResult<List<RoomTakenItem>> localResult = new LocalResult<>();
 		localResult.autoFill(roomTakenItemDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("building.id", buildingId))));
 		return localResult;
 	}
@@ -530,7 +537,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 				//System.err.println("did update room taken info");
 				executeFlag = true;
 			}else{
-				//System.err.println("did not update room taken info");
+				System.err.println("did not update room taken info");
 			}
 		}
 		
@@ -539,7 +546,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			jwUpdateCacheScheduler.updateRoomTakenInfo(jwRemoteService.randomSessionId());
 		}
 		
-		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		LocalResult<Boolean> localResult = new LocalResult<>();
 		localResult.autoFill(true);
 		
 		return localResult;
@@ -555,7 +562,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		//List<UserCourse> userCourses = userCourseDao.findByJoinedParams(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))));
 		//List<UserCourse> userCourses = userCourseDao.findByJoinedParamsInPageInOrder(MapMaker.instance("courseInstance", "courseInstance").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("courseInstance.courseAlias", courseInstance.get(0))), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
 		
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 		
 		List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParamsInPageInOrder(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.course.id", courseId)), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
 		
@@ -577,7 +584,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			users.add(user);
 		}
 		
-		LocalResult<List<User>> localResult = new LocalResult<List<User>>();
+		LocalResult<List<User>> localResult = new LocalResult<>();
 		localResult.autoFill(users);
 		
 		return localResult;
@@ -594,7 +601,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParamsInPageInOrder(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.courseInstance.id", courseInstanceId)), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
 		
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 		for(IMGroupUser imGroupUser:imGroupUsers){
 			User user = new User();
 			User temp = imGroupUser.getUser();
@@ -613,7 +620,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			users.add(user);
 		}
 		
-		LocalResult<List<User>> localResult = new LocalResult<List<User>>();
+		LocalResult<List<User>> localResult = new LocalResult<>();
 		localResult.autoFill(users);
 		
 		return localResult;
@@ -664,7 +671,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		CourseInstance courseInstance = courseInstanceDao.findOneByParams(CriteriaWrapper.instance().and(Restrictions.eq("courseRemoteId", courseRemoteId)));
 		
-		LocalResult<CourseInstance> localResult = new LocalResult<CourseInstance>();
+		LocalResult<CourseInstance> localResult = new LocalResult<>();
 		localResult.autoFill(courseInstance);
 		
 		return localResult;
@@ -675,7 +682,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			String courseInstanceId) {
 		int result = courseInstanceDao.updateFirstById(courseInstanceId, UpdateWrapper.instance().inc("'goodEval'", 1));
 					
-		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		LocalResult<Boolean> localResult = new LocalResult<>();
 		
 		if(result>0){
 			localResult.autoFill(true);
@@ -691,7 +698,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			String courseInstanceId) {
 		int result = courseInstanceDao.updateFirstById(courseInstanceId, UpdateWrapper.instance().inc("'badEval'", 1));
 		
-		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		LocalResult<Boolean> localResult = new LocalResult<>();
 		
 		if(result>0){
 			localResult.autoFill(true);
@@ -706,7 +713,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	public LocalResult<Integer> getSameCourseUserNum(String courseId) {
 		List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParams(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.course.id", courseId)));
 
-		LocalResult<Integer> localResult = new LocalResult<Integer>();
+		LocalResult<Integer> localResult = new LocalResult<>();
 		localResult.autoFill(imGroupUsers.size());
 		return localResult;
 	}
@@ -715,7 +722,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	public LocalResult<Integer> getSameClassUserNum(String courseInstanceId) {
 		List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParams(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.courseInstance.id", courseInstanceId)));
 		
-		LocalResult<Integer> localResult = new LocalResult<Integer>();
+		LocalResult<Integer> localResult = new LocalResult<>();
 		localResult.autoFill(imGroupUsers.size());
 		return localResult;
 	}
@@ -754,7 +761,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 		
 		friendPendingDao.add(friendPending);
 		
-		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		LocalResult<Boolean> localResult = new LocalResult<>();
 		localResult.autoFill(true);
 		
 		return localResult;
@@ -765,7 +772,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			String studentId) {
 		List<FriendPending> pendings = friendPendingDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("requestDesStudentId", studentId)));
 	
-		LocalResult<List<FriendPending>> localResult = new LocalResult<List<FriendPending>>();
+		LocalResult<List<FriendPending>> localResult = new LocalResult<>();
 		localResult.autoFill(pendings);
 		
 		return localResult;
@@ -775,7 +782,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	public LocalResult<Boolean> answerFriendRequest(String studentId,
 			String requestSourceStudentId, FriendRequestStatus status) {
 		
-		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		LocalResult<Boolean> localResult = new LocalResult<>();
 		if(FriendRequestStatus.PENDING==status){//非法！！，不能将任何一个请求重新改为pending
 			localResult.autoFill(false);
 			return localResult;
@@ -840,7 +847,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			friendPending.setRequestSourceReadFlag(1);
 		}
 		
-		LocalResult<List<FriendPending>> localResult = new LocalResult<List<FriendPending>>();
+		LocalResult<List<FriendPending>> localResult = new LocalResult<>();
 		
 		localResult.autoFill(list);
 		
@@ -851,7 +858,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	public LocalResult<List<User>> getFriendList(String studentId) {
 		List<Friend> friends = friendDao.findByParams(CriteriaWrapper.instance().and(Restrictions.eq("toUserStudentId", studentId)));
 	
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 		
 		for(Friend friend : friends){
 			User user = new User();
@@ -871,7 +878,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			users.add(user);
 		}
 		
-		LocalResult<List<User>> localResult = new LocalResult<List<User>>();
+		LocalResult<List<User>> localResult = new LocalResult<>();
 		localResult.autoFill(users);
 		
 		return localResult;
@@ -886,7 +893,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			friendDao.deleteByParams(CriteriaWrapper.instance().and(Restrictions.eq("'toUserStudentId'", friendStudentId),Restrictions.eq("'friendStudentId'", studentId)));
 		}
 		
-		LocalResult<Boolean> localResult = new LocalResult<Boolean>();
+		LocalResult<Boolean> localResult = new LocalResult<>();
 		localResult.autoFill(true);
 		return localResult;
 	}
@@ -906,7 +913,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 	@Override
 	public LocalResult<List<User>> getGroupUserList(String groupId,
 			int pageNum, int pageSize) {
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 		
 		//List<IMGroupUser> imGroupUsers = imGroupUserDao.findByJoinedParamsInPageInOrder(MapMaker.instance("imGroup", "imGroup").toMap(), CriteriaWrapper.instance().and(Restrictions.eq("imGroup.course.id", courseId)), Pageable.inPage(pageNum, pageSize), Sortable.instance("timestamp", Sortable.ASCEND));
 		
@@ -931,7 +938,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			users.add(user);
 		}
 		
-		LocalResult<List<User>> localResult = new LocalResult<List<User>>();
+		LocalResult<List<User>> localResult = new LocalResult<>();
 		localResult.autoFill(users);
 		
 		return localResult;
@@ -943,14 +950,14 @@ public class JWLocalServiceImpl implements JWLocalService{
 		//Tuple tuple = imGroupUserDao.findOneProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", groupId)), ProjectionWrapper.instance().fields("id").add(Projections.count("id")));
 		long size = imGroupUserDao.getCountByParam(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", groupId)));
 		
-		LocalResult<Integer> localResult = new LocalResult<Integer>();
+		LocalResult<Integer> localResult = new LocalResult<>();
 		localResult.autoFill((int)size);
 		return localResult;
 	}
 
 	@Override
 	public LocalResult<List<GroupDto>> getGroupsForUser(String studentId) {
-		List<GroupDto> groupDtos = new ArrayList<GroupDto>();
+		List<GroupDto> groupDtos = new ArrayList<>();
 		
 		List<Tuple> groupIds = imGroupUserDao.findProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("studentId", studentId)), ProjectionWrapper.instance().fields("imGroup.id")); 
 	
@@ -967,7 +974,7 @@ public class JWLocalServiceImpl implements JWLocalService{
 			}
 			
 			List<Tuple> tuples = imGroupUserDao.findProjectedByParams(CriteriaWrapper.instance().and(Restrictions.eq("imGroup.id", groupDto.getId())), ProjectionWrapper.instance().fields("studentId"));
-			List<String> studentIds = new ArrayList<String>();
+			List<String> studentIds = new ArrayList<>();
 			for(Tuple subTuple: tuples){
 				studentIds.add((String)subTuple.get(0));
 			}
@@ -975,14 +982,14 @@ public class JWLocalServiceImpl implements JWLocalService{
 			groupDtos.add(groupDto);
 		}
 		
-		LocalResult<List<GroupDto>> localResult = new LocalResult<List<GroupDto>>();
+		LocalResult<List<GroupDto>> localResult = new LocalResult<>();
 		localResult.autoFill(groupDtos);
 		return localResult;
 	}
 
 	@Override
 	public LocalResult<User> getUserDetailInfo(String studentId) {
-		LocalResult<User> localResult = new LocalResult<User>();
+		LocalResult<User> localResult = new LocalResult<>();
 		if(!isUserExistAndReady(studentId)){
 			localResult.autoFill(null);
 			return localResult;

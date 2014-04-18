@@ -37,7 +37,7 @@ public interface JWRemoteService {
 	public List<ScoreDto> queryRemoteScores(String sessionId);
 	public List<ScoreDto> queryRemoteScores(String sessionId, int schoolYear, int term, boolean onlyMax);
 	
-	public DjtuDate queryDjtuDate(String sessionId);
+	public DjtuDate queryDjtuDate();
 	
 	public CourseRecordDto queryRemoteCourseRecord(String sessionId,String remoteId);
 	

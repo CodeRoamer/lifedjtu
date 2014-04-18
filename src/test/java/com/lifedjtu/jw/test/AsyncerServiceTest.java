@@ -26,7 +26,7 @@ public class AsyncerServiceTest {
 		User user = userDao.findOneById("6929647b-f6c1-4889-bfed-e953ad19ff2b");
 		JWRemoteService remoteService = (JWRemoteService)ctx.getBean("jwRemoteService");
 		String sessionId = remoteService.signinRemote(user.getStudentId(), user.getPassword());
-		DjtuDate djtuDate = remoteService.queryDjtuDate(sessionId);
+		DjtuDate djtuDate = remoteService.queryDjtuDate();
 		List<CourseDto> courseDtos = remoteService.queryRemoteCourseTable(sessionId);
 		List<ExamDto> examDtos = remoteService.queryRemoteExams(sessionId);
 //		User user = new User();

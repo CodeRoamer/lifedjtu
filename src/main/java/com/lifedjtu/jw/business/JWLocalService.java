@@ -1,21 +1,11 @@
 package com.lifedjtu.jw.business;
 
-import java.util.List;
-
 import com.lifedjtu.jw.business.support.LocalResult;
-import com.lifedjtu.jw.pojos.Area;
-import com.lifedjtu.jw.pojos.Building;
-import com.lifedjtu.jw.pojos.CourseInstance;
-import com.lifedjtu.jw.pojos.FriendPending;
-import com.lifedjtu.jw.pojos.RoomTakenItem;
-import com.lifedjtu.jw.pojos.User;
-import com.lifedjtu.jw.pojos.dto.BuildingDto;
-import com.lifedjtu.jw.pojos.dto.ExamDto;
-import com.lifedjtu.jw.pojos.dto.GroupDto;
-import com.lifedjtu.jw.pojos.dto.RoomDto;
-import com.lifedjtu.jw.pojos.dto.ScoreDto;
-import com.lifedjtu.jw.pojos.dto.StudentRegistry;
+import com.lifedjtu.jw.pojos.*;
+import com.lifedjtu.jw.pojos.dto.*;
 import com.lifedjtu.jw.util.LifeDjtuEnum.FriendRequestStatus;
+
+import java.util.List;
 
 public interface JWLocalService {
 	/**

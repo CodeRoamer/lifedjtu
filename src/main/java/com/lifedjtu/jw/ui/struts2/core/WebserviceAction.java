@@ -1,7 +1,5 @@
 package com.lifedjtu.jw.ui.struts2.core;
 
-import java.util.List;
-
 import com.lifedjtu.jw.business.JWLocalService;
 import com.lifedjtu.jw.business.JWRemoteService;
 import com.lifedjtu.jw.business.support.LocalResult;
@@ -13,6 +11,8 @@ import com.lifedjtu.jw.pojos.dto.ArticleDto;
 import com.lifedjtu.jw.pojos.dto.DjtuDate;
 import com.lifedjtu.jw.ui.struts2.core.support.LifeDjtuAction;
 import com.lifedjtu.jw.util.LifeDjtuEnum.ResultState;
+
+import java.util.List;
 
 public class WebserviceAction extends LifeDjtuAction{
 
@@ -273,7 +273,7 @@ public class WebserviceAction extends LifeDjtuAction{
 	private DjtuDate date;
 	public String getDjtuDate(){
 		
-		date = jwRemoteService.queryDjtuDate(jwRemoteService.randomSessionId());
+		date = jwRemoteService.queryDjtuDate();
 		
 		flag = makeFlag(date);
 		

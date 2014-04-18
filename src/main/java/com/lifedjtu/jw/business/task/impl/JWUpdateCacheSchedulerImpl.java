@@ -135,7 +135,7 @@ public class JWUpdateCacheSchedulerImpl implements JWUpdateCacheScheduler{
 	}
 	@Override
 	public boolean updateRoomTakenItem(String sessionId) {
-		DjtuDate djtuDate = jwRemoteService.queryDjtuDate(sessionId);
+		DjtuDate djtuDate = jwRemoteService.queryDjtuDate();
 		//System.err.println(djtuDate.toJSON());
 		List<Building> buildings = buildingDao.findAll();
 		for(Building building : buildings){
