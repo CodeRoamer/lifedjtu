@@ -51,8 +51,9 @@ public class JWRemoteServiceImpl implements JWRemoteService,ServletContextAware 
 	private static final String queryRemoteScoresURL = "http://202.199.128.21/academic/manager/score/studentOwnScore.do";
 	private static final String queryAreaURL = "http://202.199.128.21/academic/teacher/teachresource/roomschedulequery.jsdo";
 	private static final String queryDateURL = "http://202.199.128.21/academic/listLeft.do";
-	
-	private static final String loginCrackCodeURL = "http://lifedjtuim.duapp.com/fetchCodeAndSessionId/";
+
+    private static final String imServerUrl = LifeDjtuConfig.getProperty("djtu.imServer");
+	private static final String loginCrackCodeURL = imServerUrl + (imServerUrl.endsWith("/")?"":"/") + "fetchCodeAndSessionId/";
 	
 	private static final String queryNoteURL = "http://202.199.128.21/jwzx/infoArticleList.do?columnId=259&sortColumn=publicationDate&sortDirection=-1&pagingNumberPer=15";
 
