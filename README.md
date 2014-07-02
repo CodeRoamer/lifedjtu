@@ -8,3 +8,7 @@ academic-oriented service platform.
 #### Screen Shot
 
 ![一键评估](http://git-cache.oss-cn-qingdao.aliyuncs.com/doomdagger/lifedjtu/1.jpg)
+
+### RESTFul API
+
+> 详情见[struts.xml](http://git.candylee.cn/doomdagger/lifedjtu/blob/master/src/main/resources/struts.xml)
