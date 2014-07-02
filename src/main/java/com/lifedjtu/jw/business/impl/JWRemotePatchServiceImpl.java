@@ -140,12 +140,10 @@ public class JWRemotePatchServiceImpl implements JWRemotePatchService{
 		
 		
 		FetchResponse postResponse = URLFetcher.fetchURLByPost(baseURL+postAffix, session, params);
-		
-		if(postResponse.getStatusCode()==200){
-			return true;
-		}else{
-			return false;
-		}
+
+        //System.out.println(postResponse.getStatusCode()+":\n"+postResponse.getResponseBody());
+
+        return postResponse.getStatusCode() == 200 || postResponse.getStatusCode() == 302;
 	}
 
 }

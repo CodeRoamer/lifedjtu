@@ -50,7 +50,7 @@ $('document').ready(function(){
 				 var sessionId = data.sessionId;
 				 if(sessionId==null||sessionId==undefined){
 					 bar.width("100%");
-					 makeAlert(-1,"亲，登陆失败了~~密码是不是错啦？");
+					 makeAlert(-1,"亲，登陆失败了~~这可能是由于破译验证码次数超限或密码错误所致，请再试一次");
 					 self.text("一键评估");
 					 self.removeAttr("disabled");
 					 bar.width("0%");
