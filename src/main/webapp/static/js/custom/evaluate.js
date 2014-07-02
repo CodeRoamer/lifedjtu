@@ -164,7 +164,8 @@ $('document').ready(function(){
 				 alert("评估失败！"+error);
 				 self.text("一键评估");
 				 self.removeAttr("disabled");
-			 }
+			 },
+            timeout:5000
 		});
 	});
 });

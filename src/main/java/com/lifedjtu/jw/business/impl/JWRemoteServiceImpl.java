@@ -79,7 +79,10 @@ public class JWRemoteServiceImpl implements JWRemoteService,ServletContextAware 
 	public String signinRemote(String studentId, String password) {
 
 		FetchResponse fetchResponse = URLFetcher.fetchURLByGet(loginCrackCodeURL+studentId+"?randomCode="+password, null);
-		if(fetchResponse.getResponseBody().trim().length()<20){
+
+        System.out.println("sign in remote...");
+
+        if(fetchResponse.getResponseBody().trim().length()<20){
 			System.out.println("Login Failed:\t"+fetchResponse.getResponseBody());
 			return null;
 		}else {

@@ -26,9 +26,12 @@ public class JWRemotePatchServiceImpl implements JWRemotePatchService{
     private JWRemoteService jwRemoteService;
 
 	public String tempSignin(String studentId, String password){
-
-        return jwRemoteService.signinRemote(studentId,password);
-
+        try{
+            return jwRemoteService.signinRemote(studentId,password);
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return null;
+        }
 	}
 	
 	@Override
