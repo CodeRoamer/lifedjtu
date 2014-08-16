@@ -1,7 +1,9 @@
 lifedjtu
 ========
 
-academic-oriented service platform.
+academic-oriented service platform. Also check out:
+* [lifedjtu instant messaging system](https://github.com/CodeRoamer/lifedjtu_im)
+* [lifedjtu web app](https://github.com/CodeRoamer/lifedjtu_webapp)
 
 教务在线服务平台，web端仅仅提供一键评估功能，其余的功能以API的形式提供出来供web客户端或app使用。以下为截图演示。
 
